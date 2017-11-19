@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using SummonersWarRuneScore.DataAccess;
@@ -15,7 +16,6 @@ namespace SummonersWarRuneScore
 		public int MonsterId { get; private set; }
 		public int Slot { get; private set; }
 		
-
 		public ScoredRune(int id, int monsterId, int slot)
 		{
 			Id = id;
@@ -29,22 +29,26 @@ namespace SummonersWarRuneScore
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		MainWindowDataContext mDataContext;
 		IMonsterRolesRepository mMonsterRoleRepository;
-		ObservableCollection<string> mMonsterRoles;
+		ObservableCollection<MonsterRole> mMonsterRoles;
 		
 		public MainWindow()
 		{
 			InitializeComponent();
 			mMonsterRoleRepository = new MonsterRolesRepository();
-			mMonsterRoles = new ObservableCollection<string>();
+			mMonsterRoles = new ObservableCollection<MonsterRole>();
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
+			mDataContext = new MainWindowDataContext();
+			DataContext = mDataContext;
+
+			mMonsterRoles.CollectionChanged += mMonsterRoles_CollectionChanged;
+
 			cbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
 			cbxRuneSet.SelectedIndex = 0;
-
-			lvMonsterRoles.ItemsSource = mMonsterRoles;
 			
 			dtGrdRunes.ItemsSource = new List<ScoredRune>
 			{
@@ -53,13 +57,27 @@ namespace SummonersWarRuneScore
 			};
 		}
 
+		private void mMonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			lvMonsterRoles.ItemsSource = mMonsterRoles.Select(monsterRole => monsterRole.Name);
+		}
+
 		private void cbxRuneSet_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			mMonsterRoles.Clear();
 			var monsterRoles = mMonsterRoleRepository.GetByRuneSet((RuneSet)cbxRuneSet.SelectedValue);
 			foreach (MonsterRole monsterRole in monsterRoles)
 			{
-				mMonsterRoles.Add(monsterRole.Name);
+				mMonsterRoles.Add(monsterRole);
+			}
+			lvMonsterRoles.SelectedIndex = 0;
+		}
+
+		private void lvMonsterRoles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if (mMonsterRoles.Count > 0 && lvMonsterRoles.SelectedIndex >= 0)
+			{
+				mDataContext.SelectedMonsterRole = mMonsterRoles[lvMonsterRoles.SelectedIndex];
 			}
 		}
 
@@ -68,14 +86,53 @@ namespace SummonersWarRuneScore
 			NewMonsterRoleDialog inputDialog = new NewMonsterRoleDialog();
 			if (inputDialog.ShowDialog() == true)
 			{
-				mMonsterRoles.Add(inputDialog.Answer);
+				mMonsterRoles.Add(new MonsterRole(inputDialog.Answer, (RuneSet)cbxRuneSet.SelectedValue));
 				lvMonsterRoles.SelectedItem = inputDialog.Answer;
 			}
 		}
 
 		private void btnSave_Click(object sender, RoutedEventArgs e)
 		{
-			mMonsterRoleRepository.Add(new MonsterRole((string)lvMonsterRoles.SelectedValue, (RuneSet)cbxRuneSet.SelectedValue));
+			if (lvMonsterRoles.SelectedIndex < 0) return;
+
+			MonsterRole updatedRole;
+			if (mDataContext.SelectedMonsterRole.IsNew)
+			{
+				updatedRole = mMonsterRoleRepository.Add(mDataContext.SelectedMonsterRole);
+			}
+			else
+			{
+				updatedRole = mMonsterRoleRepository.Update(mDataContext.SelectedMonsterRole);
+			}
+
+			mMonsterRoles[lvMonsterRoles.SelectedIndex] = updatedRole;
+			mDataContext.SelectedMonsterRole = updatedRole;
+		}
+
+		private void btnDelete_Click(object sender, RoutedEventArgs e)
+		{
+			mMonsterRoleRepository.Delete(mDataContext.SelectedMonsterRole.Id);
+			mMonsterRoles.Remove(mDataContext.SelectedMonsterRole);
+		}
+	}
+
+	public class MainWindowDataContext : INotifyPropertyChanged
+	{
+		private MonsterRole mSelectedMonsterRole;
+		public MonsterRole SelectedMonsterRole
+		{
+			get { return mSelectedMonsterRole; }
+			set
+			{
+				mSelectedMonsterRole = value;
+				NotifyPropertyChanged("SelectedMonsterRole");
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void NotifyPropertyChanged(string info)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 		}
 	}
 }

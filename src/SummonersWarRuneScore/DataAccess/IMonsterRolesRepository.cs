@@ -7,7 +7,8 @@ namespace SummonersWarRuneScore.DataAccess
 	{
 		List<MonsterRole> GetAll();
 		List<MonsterRole> GetByRuneSet(RuneSet runeSet);
-		void Add(MonsterRole monsterRole);
-		void Delete(MonsterRole monsterRole);
+		MonsterRole Add(MonsterRole monsterRole);
+		MonsterRole Update(MonsterRole monsterRole);
+		void Delete(int id);
 	}
 }
