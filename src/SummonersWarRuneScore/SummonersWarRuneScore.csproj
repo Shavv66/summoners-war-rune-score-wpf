@@ -88,6 +88,7 @@
     <Compile Include="Dialogs\NewMonsterRoleDialog.xaml.cs">
       <DependentUpon>NewMonsterRoleDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Domain\Constants\FileConstants.cs" />
     <Compile Include="Domain\MonsterRole.cs" />
     <Compile Include="Domain\RuneSet.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -98,6 +99,8 @@
   <ItemGroup>
     <Compile Include="DataAccess\IMonsterRolesRepository.cs" />
     <Compile Include="DataAccess\MonsterRolesRepository.cs" />
+    <Compile Include="ProfileImport\IProfileImportService.cs" />
+    <Compile Include="ProfileImport\ProfileImportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

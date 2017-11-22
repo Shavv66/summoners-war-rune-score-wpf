@@ -75,7 +75,7 @@
 		<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" />
 
 		<StackPanel Grid.Row="2">
-			<Button Name="btnImport" Content="Import Runes"/>
+			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" />
 			<DataGrid Name="dtGrdRunes" />
 		</StackPanel>
 	</Grid>

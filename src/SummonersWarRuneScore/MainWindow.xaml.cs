@@ -7,6 +7,8 @@ using System.Windows;
 using SummonersWarRuneScore.DataAccess;
 using SummonersWarRuneScore.Dialogs;
 using SummonersWarRuneScore.Domain;
+using Microsoft.Win32;
+using SummonersWarRuneScore.ProfileImport;
 
 namespace SummonersWarRuneScore
 {
@@ -114,9 +116,30 @@ namespace SummonersWarRuneScore
 			mMonsterRoleRepository.Delete(mDataContext.SelectedMonsterRole.Id);
 			mMonsterRoles.Remove(mDataContext.SelectedMonsterRole);
 		}
-	}
 
-	public class MainWindowDataContext : INotifyPropertyChanged
+		private void btnImport_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog
+			{
+				DefaultExt = ".json",
+				Filter = "JSON File|*.json"
+			};
+
+			if (openFileDialog.ShowDialog() ?? false)
+			{
+				IProfileImportService profileImportService = new ProfileImportService();
+				profileImportService.ImportFile(openFileDialog.FileName);
+				PopulateGrid();
+			}
+		}
+
+		private void PopulateGrid()
+		{
+
+		}
+    }
+
+    public class MainWindowDataContext : INotifyPropertyChanged
 	{
 		private MonsterRole mSelectedMonsterRole;
 		public MonsterRole SelectedMonsterRole

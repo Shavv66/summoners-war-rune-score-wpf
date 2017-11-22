@@ -15,7 +15,7 @@ namespace SummonersWarRuneScore.Dialogs
 
 		private void btnDialogOk_Click(object sender, RoutedEventArgs e)
 		{
-			this.DialogResult = true;
+			DialogResult = true;
 		}
 
 		private void Window_ContentRendered(object sender, EventArgs e)
