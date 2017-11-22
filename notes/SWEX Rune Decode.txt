@@ -1,0 +1,83 @@
+rune_id => int Id
+
+occupied_type => RuneLocation Location
+public enum RuneLocation
+{
+	EquippedOnMonster = 1,
+	Inventory = 2
+}
+
+occupied_id => int MonsterId
+
+slot_no => int Slot
+
+rank => RuneColour Colour
+public Enum RuneColour
+{
+	White = 1,
+	Green = 2,
+	Blue = 3,
+	Purple = 4,
+	Orange = 5
+}
+
+class => int Stars
+
+set_id => RuneSet Set
+public enum RuneSet
+{
+	Energy = 1,
+	Guard = 2,
+	Swift = 3,
+	Blade = 4,
+	Rage = 5,
+	Focus = 6,
+	Endure = 7,
+	Fatal = 8,
+	Despair = 10,
+	Vampire = 11,
+	Violent = 13,
+	Nemesis = 14,
+	Will = 15,
+	Shield = 16,
+	Revenge = 17,
+	Destroy = 18,
+	Fight = 19,
+	Determination = 20,
+	Enhance = 21,
+	Accuracy = 22,
+	Tolerance = 23
+}
+
+upgrade_curr => int Level
+
+sell_value => SellValue
+
+pri_eff[0] => RuneStatType PrimaryStat.Type
+prefix_eff[0] => RuneStatType PrefixStat.Type
+sec_eff[x][0] => RuneStatType Substats[x].Type
+public enum RuneStatType
+{
+	HpFlat = 1,
+	HpPercent = 2,
+	AtkFlat = 3,
+	AtkPercent = 4,
+	DefFlat = 5,
+	DefPercent = 6,
+	Spd = 8,
+	CriRate = 9,
+	CriDmg = 10,
+	Resistance = 11
+	Accuracy = 12,
+}
+
+extra => RuneQuality Quality
+public enum RuneQuality
+{
+	Unknown = 0,
+	Common = 1,
+	Magic = 2,
+	Rare = 3,
+	Hero = 4,
+	Legend = 5
+}
