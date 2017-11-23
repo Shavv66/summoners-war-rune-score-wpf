@@ -40,22 +40,22 @@
 					</Grid.ColumnDefinitions>
 
 					<StackPanel>
-						<Label Content="HP:" Target="{Binding ElementName=tbHp}" />
-						<xctk:DecimalUpDown Name="tbHpFlat" Text="{Binding Path=SelectedMonsterRole.HpFlatWeight}" />
 						<Label Content="HP%:" Target="{Binding ElementName=tbHpPercent}" />
 						<xctk:DecimalUpDown Name="tbHpPercent" Text="{Binding Path=SelectedMonsterRole.HpPercentWeight}" />
-						<Label Content="ATK:" Target="{Binding ElementName=tbAtk}" />
-						<xctk:DecimalUpDown Name="tbAtkFlat" Text="{Binding Path=SelectedMonsterRole.AtkFlatWeight}" />
 						<Label Content="ATK%:" Target="{Binding ElementName=tbAtkPercent}" />
 						<xctk:DecimalUpDown Name="tbAtkPercent" Text="{Binding Path=SelectedMonsterRole.AtkPercentWeight}" />
-						<Label Content="DEF:" Target="{Binding ElementName=tbDef}" />
-						<xctk:DecimalUpDown Name="tbDefFlat" Text="{Binding Path=SelectedMonsterRole.DefFlatWeight}" />
 						<Label Content="DEF%:" Target="{Binding ElementName=tbDefPercent}" />
 						<xctk:DecimalUpDown Name="tbDefPercent" Text="{Binding Path=SelectedMonsterRole.DefPercentWeight}" />
-						<Label Content="SPD:" Target="{Binding ElementName=tbSpd}" />
-						<xctk:DecimalUpDown Name="tbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" />
+						<Label Content="Expected Base HP:" Target="{Binding ElementName=tbExpectedBaseHp}" />
+						<xctk:DecimalUpDown Name="tbExpectedBaseHp" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseHp}" />
+						<Label Content="Expected Base ATK:" Target="{Binding ElementName=tbExpectedBaseAtk}" />
+						<xctk:DecimalUpDown Name="tbExpectedBaseAtk" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseAtk}" />
+						<Label Content="Expected Base DEF:" Target="{Binding ElementName=tbExpectedBaseDef}" />
+						<xctk:DecimalUpDown Name="tbExpectedBaseDef" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" />
 					</StackPanel>
 					<StackPanel Grid.Column="1">
+						<Label Content="SPD:" Target="{Binding ElementName=tbSpd}" />
+						<xctk:DecimalUpDown Name="tbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" />
 						<Label Content="Cri Rate:" Target="{Binding ElementName=tbCriRate}" />
 						<xctk:DecimalUpDown Name="tbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" />
 						<Label Content="Cri Dmg:" Target="{Binding ElementName=tbCriDmg}" />

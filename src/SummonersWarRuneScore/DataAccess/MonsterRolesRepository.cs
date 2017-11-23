@@ -25,8 +25,8 @@ namespace SummonersWarRuneScore.DataAccess
 			List<MonsterRole> allRoles = GetAll();
 			int id = allRoles.Select(existingMonsterRole => existingMonsterRole.Id).Max() + 1;
 
-			MonsterRole newRole = new MonsterRole(id, monsterRole.Name, monsterRole.RuneSet, monsterRole.HpFlatWeight, monsterRole.HpPercentWeight, monsterRole.AtkFlatWeight,
-				monsterRole.AtkPercentWeight, monsterRole.DefFlatWeight, monsterRole.DefPercentWeight, monsterRole.SpdWeight, monsterRole.CritRateWeight, monsterRole.CritDmgWeight,
+			MonsterRole newRole = new MonsterRole(id, monsterRole.Name, monsterRole.RuneSet, monsterRole.HpPercentWeight, monsterRole.AtkPercentWeight, monsterRole.DefPercentWeight, 
+				monsterRole.ExpectedBaseHp, monsterRole.ExpectedBaseAtk, monsterRole.ExpectedBaseDef, monsterRole.SpdWeight, monsterRole.CritRateWeight, monsterRole.CritDmgWeight,
 				monsterRole.ResistanceWeight, monsterRole.AccuracyWeight);
 
 			allRoles.Add(newRole);
@@ -44,13 +44,13 @@ namespace SummonersWarRuneScore.DataAccess
 			{
 				throw new System.Exception("Failed to update monster role: The given monster role was not found");
 			}
-
-			roleToUpdate.HpFlatWeight = monsterRole.HpFlatWeight;
+			
 			roleToUpdate.HpPercentWeight = monsterRole.HpPercentWeight;
-			roleToUpdate.AtkFlatWeight = monsterRole.AtkFlatWeight;
 			roleToUpdate.AtkPercentWeight = monsterRole.AtkPercentWeight;
-			roleToUpdate.DefFlatWeight = monsterRole.DefFlatWeight;
 			roleToUpdate.DefPercentWeight = monsterRole.DefPercentWeight;
+			roleToUpdate.ExpectedBaseHp = monsterRole.ExpectedBaseHp;
+			roleToUpdate.ExpectedBaseAtk = monsterRole.ExpectedBaseAtk;
+			roleToUpdate.ExpectedBaseDef = monsterRole.ExpectedBaseDef;
 			roleToUpdate.SpdWeight = monsterRole.SpdWeight;
 			roleToUpdate.CritRateWeight = monsterRole.CritRateWeight;
 			roleToUpdate.CritDmgWeight = monsterRole.CritDmgWeight;

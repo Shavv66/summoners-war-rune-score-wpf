@@ -7,12 +7,12 @@ namespace SummonersWarRuneScore.Domain
 		public int Id { get; private set; }
 		public string Name { get; private set; }
 		public RuneSet RuneSet { get; private set; }
-		public decimal HpFlatWeight { get; set; }
 		public decimal HpPercentWeight { get; set; }
-		public decimal AtkFlatWeight { get; set; }
 		public decimal AtkPercentWeight { get; set; }
-		public decimal DefFlatWeight { get; set; }
 		public decimal DefPercentWeight { get; set; }
+		public int ExpectedBaseHp { get; set; }
+		public int ExpectedBaseAtk { get; set; }
+		public int ExpectedBaseDef { get; set; }
 		public decimal SpdWeight { get; set; }
 		public decimal CritRateWeight { get; set; }
 		public decimal CritDmgWeight { get; set; }
@@ -25,18 +25,18 @@ namespace SummonersWarRuneScore.Domain
 		}
 
 		[JsonConstructor]
-		public MonsterRole(int id, string name, RuneSet runeSet, decimal hpFlatWeight, decimal hpPercentWeight, decimal atkFlatWeight, decimal atkPercentWeight, decimal defFlatWeight,
-			decimal defPercentWeight, decimal spdWeight, decimal critRateWeight, decimal critDmgWeight, decimal resistanceWeight, decimal accuracyWeight)
+		public MonsterRole(int id, string name, RuneSet runeSet, decimal hpPercentWeight, decimal atkPercentWeight, decimal defPercentWeight, int expectedBaseHp,
+			int expectedBaseAtk, int expectedBaseDef, decimal spdWeight, decimal critRateWeight, decimal critDmgWeight, decimal resistanceWeight, decimal accuracyWeight)
 		{
 			Id = id;
 			Name = name;
 			RuneSet = runeSet;
-			HpFlatWeight = hpFlatWeight;
 			HpPercentWeight = hpPercentWeight;
-			AtkFlatWeight = atkFlatWeight;
 			AtkPercentWeight = atkPercentWeight;
-			DefFlatWeight = defFlatWeight;
 			DefPercentWeight = defPercentWeight;
+			ExpectedBaseHp = expectedBaseHp;
+			ExpectedBaseAtk = expectedBaseAtk;
+			ExpectedBaseDef = expectedBaseDef;
 			SpdWeight = spdWeight;
 			CritRateWeight = critRateWeight;
 			CritDmgWeight = critDmgWeight;
