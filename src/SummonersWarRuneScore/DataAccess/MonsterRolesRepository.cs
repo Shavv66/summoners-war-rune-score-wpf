@@ -1,50 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SummonersWarRuneScore.Domain;
+using Newtonsoft.Json;
+using System.IO;
+using SummonersWarRuneScore.Domain.Constants;
 
 namespace SummonersWarRuneScore.DataAccess
 {
 	public class MonsterRolesRepository : IMonsterRolesRepository
 	{
-		private List<MonsterRole> mMonsterRoles;
-
-		public MonsterRolesRepository()
-		{
-			mMonsterRoles = new List<MonsterRole>
-			{
-				new MonsterRole(0, "Support", RuneSet.Energy, 0.01m, 1, 0.03m, 0.2m, 0.18m, 0.95m, 1.5m, 0.3m, 0.2m, 0.2m, 1),
-				new MonsterRole(1, "HP based damage dealer", RuneSet.Energy, 0.01m, 1, 0.03m, 0.2m, 0.04m, 0.2m, 1.5m, 1.5m, 1, 0.2m, 0.3m)
-			};
-		}
-
-		public MonsterRolesRepository(List<MonsterRole> monsterRoles)
-		{
-			mMonsterRoles = monsterRoles;
-		}
-
 		public List<MonsterRole> GetAll()
 		{
-			return mMonsterRoles;
+			string json = File.ReadAllText(FileConstants.MONSTER_ROLES_PATH);
+			return JsonConvert.DeserializeObject<List<MonsterRole>>(json);
 		}
 
 		public List<MonsterRole> GetByRuneSet(RuneSet runeSet)
 		{
-			return mMonsterRoles.Where(monsterRole => monsterRole.RuneSet == runeSet).ToList();
+			return GetAll().Where(monsterRole => monsterRole.RuneSet == runeSet).ToList();
 		}
 
 		public MonsterRole Add(MonsterRole monsterRole)
 		{
-			int id = mMonsterRoles.Select(existingMonsterRole => existingMonsterRole.Id).Max() + 1;
+			List<MonsterRole> allRoles = GetAll();
+			int id = allRoles.Select(existingMonsterRole => existingMonsterRole.Id).Max() + 1;
+
 			MonsterRole newRole = new MonsterRole(id, monsterRole.Name, monsterRole.RuneSet, monsterRole.HpFlatWeight, monsterRole.HpPercentWeight, monsterRole.AtkFlatWeight,
 				monsterRole.AtkPercentWeight, monsterRole.DefFlatWeight, monsterRole.DefPercentWeight, monsterRole.SpdWeight, monsterRole.CritRateWeight, monsterRole.CritDmgWeight,
 				monsterRole.ResistanceWeight, monsterRole.AccuracyWeight);
-			mMonsterRoles.Add(newRole);
+
+			allRoles.Add(newRole);
+			WriteRoles(allRoles);
+
 			return newRole;
 		}
 
 		public MonsterRole Update(MonsterRole monsterRole)
 		{
-			MonsterRole roleToUpdate = mMonsterRoles.Find(existingMonsterRole => existingMonsterRole.Id == monsterRole.Id);
+			List<MonsterRole> allRoles = GetAll();
+			MonsterRole roleToUpdate = allRoles.Find(existingMonsterRole => existingMonsterRole.Id == monsterRole.Id);
 
 			if (roleToUpdate == null)
 			{
@@ -63,12 +57,22 @@ namespace SummonersWarRuneScore.DataAccess
 			roleToUpdate.ResistanceWeight = monsterRole.ResistanceWeight;
 			roleToUpdate.AccuracyWeight = monsterRole.AccuracyWeight;
 
+			WriteRoles(allRoles);
+
 			return roleToUpdate;
 		}
 
 		public void Delete(int id)
 		{
-			mMonsterRoles.Remove(mMonsterRoles.Find(monsterRole => monsterRole.Id == id));
+			List<MonsterRole> allRoles = GetAll();
+			allRoles.Remove(allRoles.Find(monsterRole => monsterRole.Id == id));
+			WriteRoles(allRoles);
+		}
+
+		private void WriteRoles(List<MonsterRole> roles)
+		{
+			string json = JsonConvert.SerializeObject(roles);
+			File.WriteAllText(FileConstants.MONSTER_ROLES_PATH, json);
 		}
 	}
 }

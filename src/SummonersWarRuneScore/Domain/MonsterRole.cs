@@ -1,4 +1,6 @@
-﻿namespace SummonersWarRuneScore.Domain
+﻿using Newtonsoft.Json;
+
+namespace SummonersWarRuneScore.Domain
 {
 	public class MonsterRole
 	{
@@ -17,13 +19,12 @@
 		public decimal ResistanceWeight { get; set; }
 		public decimal AccuracyWeight { get; set; }
 
-		public bool IsNew => Id < 0;
-
 		public MonsterRole(string name, RuneSet runeSet)
 			: this(-1, name, runeSet, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 		{
 		}
 
+		[JsonConstructor]
 		public MonsterRole(int id, string name, RuneSet runeSet, decimal hpFlatWeight, decimal hpPercentWeight, decimal atkFlatWeight, decimal atkPercentWeight, decimal defFlatWeight,
 			decimal defPercentWeight, decimal spdWeight, decimal critRateWeight, decimal critDmgWeight, decimal resistanceWeight, decimal accuracyWeight)
 		{
@@ -41,6 +42,11 @@
 			CritDmgWeight = critDmgWeight;
 			ResistanceWeight = resistanceWeight;
 			AccuracyWeight = accuracyWeight;
+		}
+
+		public bool IsNew()
+		{
+			return Id < 0;
 		}
 	}
 }

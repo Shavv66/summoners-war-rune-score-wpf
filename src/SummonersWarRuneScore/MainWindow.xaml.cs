@@ -98,7 +98,7 @@ namespace SummonersWarRuneScore
 			if (lvMonsterRoles.SelectedIndex < 0) return;
 
 			MonsterRole updatedRole;
-			if (mDataContext.SelectedMonsterRole.IsNew)
+			if (mDataContext.SelectedMonsterRole.IsNew())
 			{
 				updatedRole = mMonsterRoleRepository.Add(mDataContext.SelectedMonsterRole);
 			}
