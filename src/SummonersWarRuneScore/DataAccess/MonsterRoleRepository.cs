@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SummonersWarRuneScore.Domain;
+using SummonersWarRuneScore.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.DataAccess
 {
-	public class MonsterRolesRepository : IMonsterRolesRepository
+	public class MonsterRoleRepository : IMonsterRoleRepository
 	{
 		private List<MonsterRole> mMonsterRoles;
 
-		public MonsterRolesRepository()
+		public MonsterRoleRepository()
 		{
 			mMonsterRoles = new List<MonsterRole>
 			{
@@ -17,7 +18,7 @@ namespace SummonersWarRuneScore.DataAccess
 			};
 		}
 
-		public MonsterRolesRepository(List<MonsterRole> monsterRoles)
+		public MonsterRoleRepository(List<MonsterRole> monsterRoles)
 		{
 			mMonsterRoles = monsterRoles;
 		}

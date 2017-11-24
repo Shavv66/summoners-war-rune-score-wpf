@@ -7,6 +7,7 @@ using System.Windows;
 using SummonersWarRuneScore.DataAccess;
 using SummonersWarRuneScore.Dialogs;
 using SummonersWarRuneScore.Domain;
+using SummonersWarRuneScore.Domain.Enumerations;
 using Microsoft.Win32;
 using SummonersWarRuneScore.ProfileImport;
 
@@ -32,13 +33,13 @@ namespace SummonersWarRuneScore
 	public partial class MainWindow : Window
 	{
 		MainWindowDataContext mDataContext;
-		IMonsterRolesRepository mMonsterRoleRepository;
+		IMonsterRoleRepository mMonsterRoleRepository;
 		ObservableCollection<MonsterRole> mMonsterRoles;
 		
 		public MainWindow()
 		{
 			InitializeComponent();
-			mMonsterRoleRepository = new MonsterRolesRepository();
+			mMonsterRoleRepository = new MonsterRoleRepository();
 			mMonsterRoles = new ObservableCollection<MonsterRole>();
 		}
 

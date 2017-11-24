@@ -1,4 +1,6 @@
-﻿namespace SummonersWarRuneScore.Domain
+﻿using SummonersWarRuneScore.Domain.Enumerations;
+
+namespace SummonersWarRuneScore.Domain
 {
 	public class MonsterRole
 	{
