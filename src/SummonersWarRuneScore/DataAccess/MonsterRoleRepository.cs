@@ -4,10 +4,11 @@ using SummonersWarRuneScore.Domain;
 using Newtonsoft.Json;
 using System.IO;
 using SummonersWarRuneScore.Domain.Constants;
+using SummonersWarRuneScore.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.DataAccess
 {
-	public class MonsterRolesRepository : IMonsterRolesRepository
+	public class MonsterRoleRepository : IMonsterRoleRepository
 	{
 		public List<MonsterRole> GetAll()
 		{

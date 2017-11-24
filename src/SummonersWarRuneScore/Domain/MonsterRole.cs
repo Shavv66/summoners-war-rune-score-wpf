@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SummonersWarRuneScore.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.Domain
 {

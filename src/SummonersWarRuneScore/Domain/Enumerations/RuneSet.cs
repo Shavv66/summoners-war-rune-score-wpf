@@ -1,4 +1,4 @@
-﻿namespace SummonersWarRuneScore.Domain
+﻿namespace SummonersWarRuneScore.Domain.Enumerations
 {
 	public enum RuneSet
 	{

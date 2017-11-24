@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using SummonersWarRuneScore.Domain;
+using SummonersWarRuneScore.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.DataAccess
 {
-	public interface IMonsterRolesRepository
+	public interface IMonsterRoleRepository
 	{
 		List<MonsterRole> GetAll();
 		List<MonsterRole> GetByRuneSet(RuneSet runeSet);

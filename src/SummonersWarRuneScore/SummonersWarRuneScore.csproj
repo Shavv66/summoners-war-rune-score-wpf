@@ -88,20 +88,28 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataAccess\IRuneRepository.cs" />
+    <Compile Include="DataAccess\RuneRepository.cs" />
     <Compile Include="Dialogs\NewMonsterRoleDialog.xaml.cs">
       <DependentUpon>NewMonsterRoleDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\Constants\FileConstants.cs" />
+    <Compile Include="Domain\Enumerations\RuneColour.cs" />
+    <Compile Include="Domain\Enumerations\RuneLocation.cs" />
+    <Compile Include="Domain\Enumerations\RuneQuality.cs" />
+    <Compile Include="Domain\Enumerations\RuneStatType.cs" />
     <Compile Include="Domain\MonsterRole.cs" />
-    <Compile Include="Domain\RuneSet.cs" />
+    <Compile Include="Domain\Rune.cs" />
+    <Compile Include="Domain\Enumerations\RuneSet.cs" />
+    <Compile Include="Domain\RuneStat.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\IMonsterRolesRepository.cs" />
-    <Compile Include="DataAccess\MonsterRolesRepository.cs" />
+    <Compile Include="DataAccess\IMonsterRoleRepository.cs" />
+    <Compile Include="DataAccess\MonsterRoleRepository.cs" />
     <Compile Include="ProfileImport\IProfileImportService.cs" />
     <Compile Include="ProfileImport\ProfileImportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
