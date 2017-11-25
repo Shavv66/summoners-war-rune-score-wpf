@@ -11,7 +11,7 @@ namespace SummonersWarRuneScore.Domain
 		public long Id { get; private set; }
 		public long SummonerId { get; private set; }
 		public RuneLocation Location { get; private set; }
-		public int MonsterId { get; private set; }
+		public long MonsterId { get; private set; }
 		public int Slot { get; private set; }
 		public RuneColour Colour { get; private set; }
 		public int Stars { get; private set; }
@@ -45,7 +45,7 @@ namespace SummonersWarRuneScore.Domain
 		//}
 
 		[JsonConstructor]
-		public Rune(long rune_id, long wizard_id, RuneLocation occupied_type, int occupied_id, int slot_no, RuneColour rank, int @class, RuneSet set_id, int upgrade_limit,
+		public Rune(long rune_id, long wizard_id, RuneLocation occupied_type, long occupied_id, int slot_no, RuneColour rank, int @class, RuneSet set_id, int upgrade_limit,
 			int upgrade_curr, int sell_value, List<int> pri_eff, List<int> prefix_eff, List<List<int>> sec_eff, RuneQuality extra)
 		{
 			Id = rune_id;

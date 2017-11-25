@@ -23,7 +23,19 @@ namespace SummonersWarRuneScore.DataAccess
 		{
 			string json = File.ReadAllText(mFilePath);
 			JObject profile = JObject.Parse(json);
-			return profile["runes"].Select(rune => JsonConvert.DeserializeObject<Rune>(JsonConvert.SerializeObject(rune))).ToList();
+
+			List<Rune> runes = ParseRunesJson(profile["runes"]);
+			foreach (JObject monster in profile["unit_list"])
+			{
+				runes.AddRange(ParseRunesJson(monster["runes"]));
+			}
+
+			return runes;
+		}
+
+		private List<Rune> ParseRunesJson(JToken jsonToken)
+		{
+			return jsonToken.Select(rune => JsonConvert.DeserializeObject<Rune>(JsonConvert.SerializeObject(rune))).ToList();
 		}
 	}
 }
