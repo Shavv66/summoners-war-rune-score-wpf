@@ -1,11 +1,10 @@
-﻿using SummonersWarRuneScore.Domain;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SummonersWarRuneScore.Domain;
 using SummonersWarRuneScore.Domain.Constants;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SummonersWarRuneScore.DataAccess
 {
@@ -23,7 +22,8 @@ namespace SummonersWarRuneScore.DataAccess
 		public List<Rune> GetAll()
 		{
 			string json = File.ReadAllText(mFilePath);
-			return new List<Rune>();
+			JObject profile = JObject.Parse(json);
+			return profile["runes"].Select(rune => JsonConvert.DeserializeObject<Rune>(JsonConvert.SerializeObject(rune))).ToList();
 		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿using SummonersWarRuneScore.Domain.Enumerations;
+﻿using Newtonsoft.Json;
+using SummonersWarRuneScore.Domain.Enumerations;
+using System.Collections.Generic;
 
 namespace SummonersWarRuneScore.Domain
 {
@@ -12,5 +14,7 @@ namespace SummonersWarRuneScore.Domain
 			Type = type;
 			Amount = amount;
 		}
+
+		public RuneStat(List<int> statAsIntList) : this((RuneStatType)statAsIntList[0], statAsIntList[1]) { }
 	}
 }

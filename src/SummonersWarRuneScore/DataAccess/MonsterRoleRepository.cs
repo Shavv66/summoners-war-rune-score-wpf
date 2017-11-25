@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
 using SummonersWarRuneScore.Domain;
-using Newtonsoft.Json;
-using System.IO;
 using SummonersWarRuneScore.Domain.Constants;
 using SummonersWarRuneScore.Domain.Enumerations;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SummonersWarRuneScore.DataAccess
 {
@@ -12,8 +13,15 @@ namespace SummonersWarRuneScore.DataAccess
 	{
 		public List<MonsterRole> GetAll()
 		{
-			string json = File.ReadAllText(FileConstants.MONSTER_ROLES_PATH);
-			return JsonConvert.DeserializeObject<List<MonsterRole>>(json);
+			try
+			{
+				string json = File.ReadAllText(FileConstants.MONSTER_ROLES_PATH);
+				return JsonConvert.DeserializeObject<List<MonsterRole>>(json);
+			}
+			catch(Exception)
+			{
+				return new List<MonsterRole>();
+			}
 		}
 
 		public List<MonsterRole> GetByRuneSet(RuneSet runeSet)
