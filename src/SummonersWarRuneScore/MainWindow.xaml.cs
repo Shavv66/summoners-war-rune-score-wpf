@@ -51,8 +51,6 @@ namespace SummonersWarRuneScore
 
 			cbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
 			cbxRuneSet.SelectedIndex = 0;
-
-			PopulateGrid();
 		}
 
 		private void mMonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
