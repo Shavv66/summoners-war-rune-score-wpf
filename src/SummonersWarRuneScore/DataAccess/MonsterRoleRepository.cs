@@ -11,11 +11,20 @@ namespace SummonersWarRuneScore.DataAccess
 {
 	public class MonsterRoleRepository : IMonsterRoleRepository
 	{
+		private string mFilePath;
+
+		public MonsterRoleRepository() : this(FileConstants.MONSTER_ROLES_PATH) { }
+
+		public MonsterRoleRepository(string filePath)
+		{
+			mFilePath = filePath;
+		}
+
 		public List<MonsterRole> GetAll()
 		{
 			try
 			{
-				string json = File.ReadAllText(FileConstants.MONSTER_ROLES_PATH);
+				string json = File.ReadAllText(mFilePath);
 				return JsonConvert.DeserializeObject<List<MonsterRole>>(json);
 			}
 			catch(Exception)
@@ -32,7 +41,7 @@ namespace SummonersWarRuneScore.DataAccess
 		public MonsterRole Add(MonsterRole monsterRole)
 		{
 			List<MonsterRole> allRoles = GetAll();
-			int id = allRoles.Select(existingMonsterRole => existingMonsterRole.Id).Max() + 1;
+			int id = allRoles.Count > 0 ? allRoles.Select(existingMonsterRole => existingMonsterRole.Id).Max() + 1 : 0;
 
 			MonsterRole newRole = new MonsterRole(id, monsterRole.Name, monsterRole.RuneSet, monsterRole.HpPercentWeight, monsterRole.AtkPercentWeight, monsterRole.DefPercentWeight, 
 				monsterRole.ExpectedBaseHp, monsterRole.ExpectedBaseAtk, monsterRole.ExpectedBaseDef, monsterRole.SpdWeight, monsterRole.CritRateWeight, monsterRole.CritDmgWeight,
@@ -81,7 +90,7 @@ namespace SummonersWarRuneScore.DataAccess
 		private void WriteRoles(List<MonsterRole> roles)
 		{
 			string json = JsonConvert.SerializeObject(roles);
-			File.WriteAllText(FileConstants.MONSTER_ROLES_PATH, json);
+			File.WriteAllText(mFilePath, json);
 		}
 	}
 }

@@ -49,5 +49,24 @@ namespace SummonersWarRuneScore.Domain
 		{
 			return Id < 0;
 		}
+
+		public decimal GetWeight(RuneStatType statType)
+		{
+			switch(statType)
+			{
+				case RuneStatType.HpPercent: return HpPercentWeight;
+				case RuneStatType.HpFlat: return (HpPercentWeight / ExpectedBaseHp) * 100;
+				case RuneStatType.AtkPercent: return AtkPercentWeight;
+				case RuneStatType.AtkFlat: return (AtkPercentWeight / ExpectedBaseAtk) * 100;
+				case RuneStatType.DefPercent: return DefPercentWeight;
+				case RuneStatType.DefFlat: return (DefPercentWeight / ExpectedBaseDef) * 100;
+				case RuneStatType.Spd: return SpdWeight;
+				case RuneStatType.CriRate: return CritRateWeight;
+				case RuneStatType.CriDmg: return CritDmgWeight;
+				case RuneStatType.Resistance: return ResistanceWeight;
+				case RuneStatType.Accuracy: return AccuracyWeight;
+				default: return 0;
+			}
+		}
 	}
 }

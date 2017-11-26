@@ -76,7 +76,7 @@
 
 		<StackPanel Grid.Row="2">
 			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" />
-			<DataGrid Name="dtGrdRunes" />
+			<DataGrid Name="dtGrdRunes" IsReadOnly="True" FontSize="14" />
 		</StackPanel>
 	</Grid>
 </Window>
