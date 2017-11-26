@@ -56,9 +56,9 @@
 					<StackPanel Grid.Column="1">
 						<Label Content="SPD:" Target="{Binding ElementName=tbSpd}" />
 						<xctk:DecimalUpDown Name="tbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" />
-						<Label Content="Cri Rate:" Target="{Binding ElementName=tbCriRate}" />
+						<Label Content="Cri Rate:" Target="{Binding ElementName=tbCritRate}" />
 						<xctk:DecimalUpDown Name="tbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" />
-						<Label Content="Cri Dmg:" Target="{Binding ElementName=tbCriDmg}" />
+						<Label Content="Cri Dmg:" Target="{Binding ElementName=tbCritDmg}" />
 						<xctk:DecimalUpDown Name="tbCritDmg" Text="{Binding Path=SelectedMonsterRole.CritDmgWeight}" />
 						<Label Content="Resistance:" Target="{Binding ElementName=tbResistance}" />
 						<xctk:DecimalUpDown Name="tbResistance" Text="{Binding Path=SelectedMonsterRole.ResistanceWeight}" />
