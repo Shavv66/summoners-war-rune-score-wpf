@@ -74,9 +74,9 @@
 
 		<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" />
 
-		<StackPanel Grid.Row="2">
-			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" />
-			<DataGrid Name="dtGrdRunes" IsReadOnly="True" FontSize="14" />
-		</StackPanel>
+		<DockPanel Grid.Row="2">
+			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" DockPanel.Dock="Top" />
+			<DataGrid Name="dtGrdRunes" IsReadOnly="True" FontSize="14" DockPanel.Dock="Bottom" />
+		</DockPanel>
 	</Grid>
 </Window>

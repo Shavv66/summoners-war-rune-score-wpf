@@ -200,7 +200,7 @@ namespace SummonersWarRuneScore
 				foreach (MonsterRole role in mMonsterRoles)
 				{
 					RuneScoringResult runeScore = mRuneScoreCache.GetScore(rune.Set, role.Name, rune.Id);
-					row[role.Name] = runeScore.CurrentScore;
+					row[role.Name] = Decimal.Round(runeScore.CurrentScore, 2);
 				}
 
 				table.Rows.Add(row);
