@@ -5,7 +5,7 @@ namespace SummonersWarRuneScore.Domain
 {
 	public interface IRuneScoreCache
 	{
-		RuneScoringResult GetScore(RuneSet set, string roleName, long runeId);
+		RuneScoringResult GetScore(int roleId, long runeId);
 		void SetScores(List<RuneScoringResult> runeScores);
 		void AddOrUpdateScores(List<RuneScoringResult> runeScores);
 	}

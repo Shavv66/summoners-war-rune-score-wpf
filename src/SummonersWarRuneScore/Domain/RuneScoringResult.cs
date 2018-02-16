@@ -1,23 +1,29 @@
 ﻿using SummonersWarRuneScore.Domain.Enumerations;
+using System.Collections.Generic;
 
 namespace SummonersWarRuneScore.Domain
 {
 	public class RuneScoringResult
 	{
 		// Meta data
-		public RuneSet RuneSet { get; private set; }
-		public string RoleName { get; private set; }
+		public int RoleId { get; private set; }
 		public long RuneId { get; private set; }
 
 		// Scores
-		public decimal CurrentScore { get; private set; }
+		private Dictionary<ScoreType, decimal> Scores { get; set; }
 
-		public RuneScoringResult(RuneSet runeSet, string roleName, long runeId, decimal currentScore)
+		public RuneScoringResult(int roleId, long runeId, decimal currentScore)
 		{
-			RuneSet = runeSet;
-			RoleName = roleName;
+			RoleId = roleId;
 			RuneId = runeId;
-			CurrentScore = currentScore;
+
+			Scores = new Dictionary<ScoreType, decimal>();
+			Scores[ScoreType.Current] = currentScore;
+		}
+
+		public decimal GetScore(ScoreType type)
+		{
+			return Scores[type];
 		}
 	}
 }

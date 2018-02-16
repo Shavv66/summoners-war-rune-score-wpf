@@ -1,21 +1,20 @@
-﻿using SummonersWarRuneScore.Domain.Enumerations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SummonersWarRuneScore.Domain
 {
 	public class RuneScoreCache : IRuneScoreCache
 	{
 		// Scores are stored in nested dictionaries to allow for fast cache lookups
-		private Dictionary<RuneSet, Dictionary<string, Dictionary<long, RuneScoringResult>>> mRuneScores;
+		private Dictionary<int, Dictionary<long, RuneScoringResult>> mRuneScores;
 
-		public RuneScoringResult GetScore(RuneSet set, string roleName, long runeId)
+		public RuneScoringResult GetScore(int roleId, long runeId)
 		{
-			return mRuneScores[set][roleName][runeId];
+			return mRuneScores[roleId][runeId];
 		}
 
 		public void SetScores(List<RuneScoringResult> runeScores)
 		{
-			mRuneScores = new Dictionary<RuneSet, Dictionary<string, Dictionary<long, RuneScoringResult>>>();
+			mRuneScores = new Dictionary<int, Dictionary<long, RuneScoringResult>>();
 			AddOrUpdateScores(runeScores);
 		}
 
@@ -23,17 +22,11 @@ namespace SummonersWarRuneScore.Domain
 		{
 			foreach (RuneScoringResult runeScore in runeScores)
 			{
-				if (!mRuneScores.ContainsKey(runeScore.RuneSet))
+				if (!mRuneScores.ContainsKey(runeScore.RoleId))
 				{
-					mRuneScores.Add(runeScore.RuneSet, new Dictionary<string, Dictionary<long, RuneScoringResult>>());
+					mRuneScores.Add(runeScore.RoleId, new Dictionary<long, RuneScoringResult>());
 				}
-				Dictionary<string, Dictionary<long, RuneScoringResult>> scoresForSet = mRuneScores[runeScore.RuneSet];
-
-				if (!scoresForSet.ContainsKey(runeScore.RoleName))
-				{
-					scoresForSet.Add(runeScore.RoleName, new Dictionary<long, RuneScoringResult>());
-				}
-				Dictionary<long, RuneScoringResult> scoresForRole = scoresForSet[runeScore.RoleName];
+				Dictionary<long, RuneScoringResult> scoresForRole = mRuneScores[runeScore.RoleId];
 
 				if (!scoresForRole.ContainsKey(runeScore.RuneId))
 				{

@@ -12,6 +12,9 @@ using Microsoft.Win32;
 using SummonersWarRuneScore.ProfileImport;
 using System.Data;
 using SummonersWarRuneScore.RuneScoring;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Collections;
 
 namespace SummonersWarRuneScore
 {
@@ -21,11 +24,14 @@ namespace SummonersWarRuneScore
 	public partial class MainWindow : Window
 	{
 		private MainWindowDataContext mDataContext;
+		private IRuneRepository mRuneRepository;
 		private IMonsterRoleRepository mMonsterRoleRepository;
 		private ObservableCollection<MonsterRole> mMonsterRoles;
 		IRuneScoringService mRuneScoringService;
+		IScoreRankingService mScoreRankingService;
 		private List<Rune> mRunes;
 		private RuneScoreCache mRuneScoreCache;
+		private ScoreRankCache mScoreRankCache;
 		
 		public MainWindow()
 		{
@@ -37,12 +43,15 @@ namespace SummonersWarRuneScore
 			mMonsterRoleRepository = new MonsterRoleRepository();
 			mMonsterRoles = new ObservableCollection<MonsterRole>();
 
-			IRuneRepository runeRepository = new RuneRepository();
-			mRunes = runeRepository.GetAll();
+			mRuneRepository = new RuneRepository();
+			mRunes = mRuneRepository.GetAll();
 
 			mRuneScoringService = new RuneScoringService();
 			mRuneScoreCache = new RuneScoreCache();
-			mRuneScoreCache.SetScores(mRuneScoringService.CalculateScores(mRunes, mMonsterRoleRepository.GetAll()));
+			mScoreRankingService = new ScoreRankingService();
+			mScoreRankCache = new ScoreRankCache();
+
+			ReScoreAllRunes();
 
 			mDataContext = new MainWindowDataContext();
 			DataContext = mDataContext;
@@ -107,6 +116,8 @@ namespace SummonersWarRuneScore
 
 			List<RuneScoringResult> updatedRoleScores = mRuneScoringService.CalculateScores(mRunes, new List<MonsterRole> { updatedRole });
 			mRuneScoreCache.AddOrUpdateScores(updatedRoleScores);
+			List<ScoreRankingResult> updatedRanks = mScoreRankingService.CalculateRanks(updatedRoleScores);
+			mScoreRankCache.AddOrUpdateRanks(updatedRanks);
 
 			PopulateGrid();
 		}
@@ -130,8 +141,17 @@ namespace SummonersWarRuneScore
 			{
 				IProfileImportService profileImportService = new ProfileImportService();
 				profileImportService.ImportFile(openFileDialog.FileName);
+				mRunes = mRuneRepository.GetAll();
+				ReScoreAllRunes();
 				PopulateGrid();
 			}
+		}
+
+		private void ReScoreAllRunes()
+		{
+			List<RuneScoringResult> scores = mRuneScoringService.CalculateScores(mRunes, mMonsterRoleRepository.GetAll());
+			mRuneScoreCache.SetScores(scores);
+			mScoreRankCache.SetRanks(mScoreRankingService.CalculateRanks(scores));
 		}
 
 		private void PopulateGrid()
@@ -162,9 +182,9 @@ namespace SummonersWarRuneScore
 
 			foreach (MonsterRole role in mMonsterRoles)
 			{
-				table.Columns.Add(role.Name, typeof(decimal));
+				table.Columns.Add(role.Name, typeof(RankedScore));
 			}
-
+			
 			foreach (Rune rune in mRunes.Where(rune => rune.Set == (RuneSet)cbxRuneSet.SelectedValue))
 			{
 				DataRow row = table.NewRow();
@@ -199,18 +219,23 @@ namespace SummonersWarRuneScore
 
 				foreach (MonsterRole role in mMonsterRoles)
 				{
-					RuneScoringResult runeScore = mRuneScoreCache.GetScore(rune.Set, role.Name, rune.Id);
-					row[role.Name] = Decimal.Round(runeScore.CurrentScore, 2);
+					RuneScoringResult runeScore = mRuneScoreCache.GetScore(role.Id, rune.Id);
+					ScoreRankingResult scoreRank = mScoreRankCache.GetRank(role.Id, rune.Id, ScoreType.Current);
+
+					decimal score = Decimal.Round(runeScore.GetScore(ScoreType.Current), 2);
+					int rank = scoreRank.Rank;
+
+					row[role.Name] = new RankedScore(score, rank);
 				}
 
 				table.Rows.Add(row);
 			}
 
-			dtGrdRunes.ItemsSource = table.DefaultView;
+			dtGrdRunes.ItemsSource = table.AsDataView();
 		}
-    }
+	}
 
-    public class MainWindowDataContext : INotifyPropertyChanged
+	public class MainWindowDataContext : INotifyPropertyChanged
 	{
 		private MonsterRole mSelectedMonsterRole;
 		public MonsterRole SelectedMonsterRole
@@ -227,6 +252,34 @@ namespace SummonersWarRuneScore
 		private void NotifyPropertyChanged(string info)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+		}
+	}
+
+	public class RankedScore : IComparable
+	{
+		public decimal Score { get; set; }
+		public int Rank { get; set; }
+
+		public RankedScore(decimal score, int rank)
+		{
+			Score = score;
+			Rank = rank;
+		}
+
+		public int CompareTo(object other)
+		{
+			RankedScore otherScore = other as RankedScore;
+			if (otherScore == null)
+			{
+				return 0;
+			}
+
+			return Score.CompareTo(otherScore.Score);
+		}
+
+		public override string ToString()
+		{
+			return $"{Score} ({Rank})";
 		}
 	}
 }

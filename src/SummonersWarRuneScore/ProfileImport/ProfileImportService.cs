@@ -7,7 +7,7 @@ namespace SummonersWarRuneScore.ProfileImport
     {
         public void ImportFile(string filePath)
         {
-			File.Copy(filePath, FileConstants.CURRENT_PROFILE_PATH);
+			File.Copy(filePath, FileConstants.CURRENT_PROFILE_PATH, true);
         }
     }
 }

@@ -60,7 +60,7 @@ namespace SummonersWarRuneScore.DataAccess
 
 			if (roleToUpdate == null)
 			{
-				throw new System.Exception("Failed to update monster role: The given monster role was not found");
+				throw new Exception("Failed to update monster role: The given monster role was not found");
 			}
 			
 			roleToUpdate.HpPercentWeight = monsterRole.HpPercentWeight;

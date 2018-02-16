@@ -76,11 +76,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\Enumerations\ScoreType.cs" />
     <Compile Include="Domain\IRuneScoreCache.cs" />
+    <Compile Include="Domain\IScoreRankCache.cs" />
     <Compile Include="Domain\RuneScoreCache.cs" />
     <Compile Include="Domain\RuneScoringResult.cs" />
+    <Compile Include="Domain\ScoreRankCache.cs" />
+    <Compile Include="Domain\ScoreRankingResult.cs" />
     <Compile Include="RuneScoring\IRuneScoringService.cs" />
+    <Compile Include="RuneScoring\IScoreRankingService.cs" />
     <Compile Include="RuneScoring\RuneScoringService.cs" />
+    <Compile Include="RuneScoring\ScoreRankingService.cs" />
     <Page Include="Dialogs\NewMonsterRoleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

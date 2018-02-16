@@ -13,7 +13,10 @@ namespace SummonersWarRuneScore.RuneScoring
 			{
 				foreach (MonsterRole role in monsterRoles)
 				{
-					runeScores.Add(new RuneScoringResult(rune.Set, role.Name, rune.Id, CalculateCurrentScore(rune, role)));
+					if (rune.Set == role.RuneSet)
+					{
+						runeScores.Add(new RuneScoringResult(role.Id, rune.Id, CalculateCurrentScore(rune, role)));
+					}
 				}
 			}
 
