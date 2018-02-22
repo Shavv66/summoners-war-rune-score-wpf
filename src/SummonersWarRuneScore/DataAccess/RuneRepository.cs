@@ -21,6 +21,11 @@ namespace SummonersWarRuneScore.DataAccess
 
 		public List<Rune> GetAll()
 		{
+			if (!File.Exists(mFilePath))
+			{
+				return new List<Rune>();
+			}
+
 			string json = File.ReadAllText(mFilePath);
 			JObject profile = JObject.Parse(json);
 
