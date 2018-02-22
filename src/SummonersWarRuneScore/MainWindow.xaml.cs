@@ -60,6 +60,9 @@ namespace SummonersWarRuneScore
 
 			cbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
 			cbxRuneSet.SelectedIndex = 0;
+
+			cbxSlotFilter.ItemsSource = new List<string> { "<All>", "1", "2", "3", "4", "5", "6" };
+			cbxSlotFilter.SelectedIndex = 0;
 		}
 
 		private void mMonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
