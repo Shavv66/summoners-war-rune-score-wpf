@@ -10,6 +10,8 @@
 	<Window.Resources>
 		<SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlDarkDarkColorKey}}" />
 		<SolidColorBrush x:Key="PrimaryFontBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}" />
+		<SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
+		<SolidColorBrush x:Key="AlternateSecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}" />
 
 		<!-- Styling for the column headers. Copied, modified and documented from https://social.msdn.microsoft.com/Forums/sqlserver/en-US/2c9e160a-d99f-4022-9002-55a1df94c4b0/wpf-how-to-keep-the-sort-arrow-displayed-in-the-sorted-column-in-datagrid?forum=wpf -->
 		<Style x:Key="GridColumnHeaderStyle" 
@@ -136,6 +138,10 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+
+		<Style x:Key="DecimalBoxStyle" TargetType="{x:Type xctk:DecimalUpDown}">
+			<Setter Property="BorderThickness" Value="0, 1, 0, 1" />
+		</Style>
 	</Window.Resources>
 	
 	<Grid>
@@ -172,29 +178,29 @@
 
 					<StackPanel>
 						<Label Content="HP%:" Target="{Binding ElementName=tbHpPercent}" />
-						<xctk:DecimalUpDown Name="tbHpPercent" Text="{Binding Path=SelectedMonsterRole.HpPercentWeight}" />
+						<xctk:DecimalUpDown Name="tbHpPercent" Text="{Binding Path=SelectedMonsterRole.HpPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="ATK%:" Target="{Binding ElementName=tbAtkPercent}" />
-						<xctk:DecimalUpDown Name="tbAtkPercent" Text="{Binding Path=SelectedMonsterRole.AtkPercentWeight}" />
+						<xctk:DecimalUpDown Name="tbAtkPercent" Text="{Binding Path=SelectedMonsterRole.AtkPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="DEF%:" Target="{Binding ElementName=tbDefPercent}" />
-						<xctk:DecimalUpDown Name="tbDefPercent" Text="{Binding Path=SelectedMonsterRole.DefPercentWeight}" />
+						<xctk:DecimalUpDown Name="tbDefPercent" Text="{Binding Path=SelectedMonsterRole.DefPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Expected Base HP:" Target="{Binding ElementName=tbExpectedBaseHp}" />
-						<xctk:DecimalUpDown Name="tbExpectedBaseHp" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseHp}" />
+						<xctk:DecimalUpDown Name="tbExpectedBaseHp" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseHp}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Expected Base ATK:" Target="{Binding ElementName=tbExpectedBaseAtk}" />
-						<xctk:DecimalUpDown Name="tbExpectedBaseAtk" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseAtk}" />
+						<xctk:DecimalUpDown Name="tbExpectedBaseAtk" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseAtk}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Expected Base DEF:" Target="{Binding ElementName=tbExpectedBaseDef}" />
-						<xctk:DecimalUpDown Name="tbExpectedBaseDef" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" />
+						<xctk:DecimalUpDown Name="tbExpectedBaseDef" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" Style="{StaticResource DecimalBoxStyle}" />
 					</StackPanel>
 					<StackPanel Grid.Column="1">
 						<Label Content="SPD:" Target="{Binding ElementName=tbSpd}" />
-						<xctk:DecimalUpDown Name="tbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" />
+						<xctk:DecimalUpDown Name="tbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Cri Rate:" Target="{Binding ElementName=tbCritRate}" />
-						<xctk:DecimalUpDown Name="tbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" />
+						<xctk:DecimalUpDown Name="tbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Cri Dmg:" Target="{Binding ElementName=tbCritDmg}" />
-						<xctk:DecimalUpDown Name="tbCritDmg" Text="{Binding Path=SelectedMonsterRole.CritDmgWeight}" />
+						<xctk:DecimalUpDown Name="tbCritDmg" Text="{Binding Path=SelectedMonsterRole.CritDmgWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Resistance:" Target="{Binding ElementName=tbResistance}" />
-						<xctk:DecimalUpDown Name="tbResistance" Text="{Binding Path=SelectedMonsterRole.ResistanceWeight}" />
+						<xctk:DecimalUpDown Name="tbResistance" Text="{Binding Path=SelectedMonsterRole.ResistanceWeight}" Style="{StaticResource DecimalBoxStyle}" />
 						<Label Content="Accuracy:" Target="{Binding ElementName=tbAccuracy}" />
-						<xctk:DecimalUpDown Name="tbAccuracy" Text="{Binding Path=SelectedMonsterRole.AccuracyWeight}" />
+						<xctk:DecimalUpDown Name="tbAccuracy" Text="{Binding Path=SelectedMonsterRole.AccuracyWeight}" Style="{StaticResource DecimalBoxStyle}" />
 					</StackPanel>
 				</Grid>
 			</ScrollViewer>
@@ -213,22 +219,14 @@
 				ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}"
 				RowStyle="{StaticResource GridRowStyle}"
 				CellStyle="{StaticResource GridCellStyle}"
-				FontSize="16" FontFamily="Gadugi" FontWeight="Light" TextOptions.TextFormattingMode="Ideal"
+				FontFamily="Gadugi" FontSize="16" FontWeight="Light" TextOptions.TextFormattingMode="Ideal"
 				Background="{x:Null}"
 				ColumnHeaderHeight="45" RowHeight="32" 
 				CanUserResizeColumns="False" CanUserReorderColumns="False"
 				BorderThickness="0" RowHeaderWidth="0"
-			>
-				<DataGrid.AlternatingRowBackground>
-					<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
-				</DataGrid.AlternatingRowBackground>
-				<DataGrid.VerticalGridLinesBrush>
-					<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
-				</DataGrid.VerticalGridLinesBrush>
-				<DataGrid.HorizontalGridLinesBrush>
-					<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
-				</DataGrid.HorizontalGridLinesBrush>
-			</DataGrid>
+				GridLinesVisibility="Vertical" VerticalGridLinesBrush="{StaticResource AlternateSecondaryBackgroundBrush}"
+				AlternatingRowBackground="{StaticResource SecondaryBackgroundBrush}"
+			/>
 		</DockPanel>
 	</Grid>
 </Window>
