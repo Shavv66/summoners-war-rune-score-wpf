@@ -76,6 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\Enumerations\FilterLogic.cs" />
+    <Compile Include="Domain\Enumerations\FilterOperator.cs" />
+    <Compile Include="Domain\Filter.cs" />
+    <Compile Include="Domain\FilterItem.cs" />
+    <Compile Include="Domain\IFilter.cs" />
     <Compile Include="Domain\Enumerations\ScoreType.cs" />
     <Compile Include="Domain\IRuneScoreCache.cs" />
     <Compile Include="Domain\IScoreRankCache.cs" />
@@ -83,6 +88,8 @@
     <Compile Include="Domain\RuneScoringResult.cs" />
     <Compile Include="Domain\ScoreRankCache.cs" />
     <Compile Include="Domain\ScoreRankingResult.cs" />
+    <Compile Include="Filtering\IRuneFilteringService.cs" />
+    <Compile Include="Filtering\RuneFilteringService.cs" />
     <Compile Include="RuneScoring\IRuneScoringService.cs" />
     <Compile Include="RuneScoring\IScoreRankingService.cs" />
     <Compile Include="RuneScoring\RuneScoringService.cs" />

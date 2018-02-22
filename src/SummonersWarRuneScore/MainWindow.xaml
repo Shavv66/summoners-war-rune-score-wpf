@@ -212,6 +212,13 @@
 		<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" />
 
 		<DockPanel Grid.Row="2">
+			<DockPanel DockPanel.Dock="Left" Width="250">
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="20" Margin="3">Filters</TextBlock>
+				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Height="25">
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}">Slot</Label>
+					<ListBox DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxSlotFilter"></ListBox>
+				</DockPanel>
+			</DockPanel>
 			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" DockPanel.Dock="Top" VerticalAlignment="Center" />
 			<DataGrid 
 				Name="dtGrdRunes" DockPanel.Dock="Bottom"
