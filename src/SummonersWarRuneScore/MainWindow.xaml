@@ -116,8 +116,12 @@
 			</Setter>
 		</Style>
 
-		<Style x:Key="GridCellStyle"
-        TargetType="{x:Type DataGridCell}">
+		<Style x:Key="GridRowStyle" TargetType="{x:Type DataGridRow}">
+			<!-- Prevent selection -->
+			<Setter Property="IsHitTestVisible" Value="False" />
+		</Style>
+
+		<Style x:Key="GridCellStyle" TargetType="{x:Type DataGridCell}">
 			<!-- Prevent selection -->
 			<Setter Property="IsHitTestVisible" Value="False" />
 			
@@ -203,7 +207,18 @@
 
 		<DockPanel Grid.Row="2">
 			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" DockPanel.Dock="Top" VerticalAlignment="Center" />
-			<DataGrid Name="dtGrdRunes" IsReadOnly="True" ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}" CellStyle="{StaticResource GridCellStyle}" FontSize="16" DockPanel.Dock="Bottom" Background="{x:Null}" ColumnHeaderHeight="45" FontFamily="Gadugi" TextOptions.TextFormattingMode="Ideal" FontWeight="Light" RowHeight="32" CanUserResizeColumns="False" CanUserReorderColumns="False" BorderThickness="0" RowHeaderWidth="0">
+			<DataGrid 
+				Name="dtGrdRunes" DockPanel.Dock="Bottom"
+				IsReadOnly="True"
+				ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}"
+				RowStyle="{StaticResource GridRowStyle}"
+				CellStyle="{StaticResource GridCellStyle}"
+				FontSize="16" FontFamily="Gadugi" FontWeight="Light" TextOptions.TextFormattingMode="Ideal"
+				Background="{x:Null}"
+				ColumnHeaderHeight="45" RowHeight="32" 
+				CanUserResizeColumns="False" CanUserReorderColumns="False"
+				BorderThickness="0" RowHeaderWidth="0"
+			>
 				<DataGrid.AlternatingRowBackground>
 					<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
 				</DataGrid.AlternatingRowBackground>
