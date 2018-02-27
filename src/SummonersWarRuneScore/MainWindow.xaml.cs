@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
+﻿using Microsoft.Win32;
 using SummonersWarRuneScore.DataAccess;
 using SummonersWarRuneScore.Dialogs;
 using SummonersWarRuneScore.Domain;
 using SummonersWarRuneScore.Domain.Enumerations;
-using Microsoft.Win32;
+using SummonersWarRuneScore.Filtering;
 using SummonersWarRuneScore.ProfileImport;
-using System.Data;
 using SummonersWarRuneScore.RuneScoring;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Collections;
 
 namespace SummonersWarRuneScore
 {
@@ -30,8 +29,12 @@ namespace SummonersWarRuneScore
 		IRuneScoringService mRuneScoringService;
 		IScoreRankingService mScoreRankingService;
 		private List<Rune> mRunes;
-		private RuneScoreCache mRuneScoreCache;
-		private ScoreRankCache mScoreRankCache;
+		private IRuneScoreCache mRuneScoreCache;
+		private IScoreRankCache mScoreRankCache;
+		private IRuneFilteringService mRuneFilteringService;
+
+		private string mAllItem;
+		private bool mChangingListBoxSelection;
 		
 		public MainWindow()
 		{
@@ -51,7 +54,7 @@ namespace SummonersWarRuneScore
 			mScoreRankingService = new ScoreRankingService();
 			mScoreRankCache = new ScoreRankCache();
 
-			ReScoreAllRunes();
+			mRuneFilteringService = new RuneFilteringService();
 
 			mDataContext = new MainWindowDataContext();
 			DataContext = mDataContext;
@@ -61,8 +64,12 @@ namespace SummonersWarRuneScore
 			cbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
 			cbxRuneSet.SelectedIndex = 0;
 
-			cbxSlotFilter.ItemsSource = new List<string> { "<All>", "1", "2", "3", "4", "5", "6" };
-			cbxSlotFilter.SelectedIndex = 0;
+			mAllItem = "<All>";
+			cbxSlotFilter.ItemsSource = new List<string> { mAllItem, "1", "2", "3", "4", "5", "6" };
+			cbxSlotFilter.SelectAll();
+
+			cbxLocationFilter.ItemsSource = new List<string> { "Inventory", "EquippedOnMonster" };
+			cbxLocationFilter.SelectAll();
 		}
 
 		private void mMonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -145,14 +152,13 @@ namespace SummonersWarRuneScore
 				IProfileImportService profileImportService = new ProfileImportService();
 				profileImportService.ImportFile(openFileDialog.FileName);
 				mRunes = mRuneRepository.GetAll();
-				ReScoreAllRunes();
 				PopulateGrid();
 			}
 		}
 
-		private void ReScoreAllRunes()
+		private void ReScoreAllRunes(List<Rune> filteredRunes)
 		{
-			List<RuneScoringResult> scores = mRuneScoringService.CalculateScores(mRunes, mMonsterRoleRepository.GetAll());
+			List<RuneScoringResult> scores = mRuneScoringService.CalculateScores(filteredRunes, mMonsterRoleRepository.GetAll());
 			mRuneScoreCache.SetScores(scores);
 			mScoreRankCache.SetRanks(mScoreRankingService.CalculateRanks(scores));
 		}
@@ -187,8 +193,11 @@ namespace SummonersWarRuneScore
 			{
 				table.Columns.Add(role.Name, typeof(RankedScore));
 			}
-			
-			foreach (Rune rune in mRunes.Where(rune => rune.Set == (RuneSet)cbxRuneSet.SelectedValue))
+
+			List<Rune> filteredRunes = mRuneFilteringService.FilterRunes(mRunes, BuildRuneFilter());
+			ReScoreAllRunes(filteredRunes);
+
+			foreach (Rune rune in filteredRunes)
 			{
 				DataRow row = table.NewRow();
 				row["Rune ID"] = rune.Id;
@@ -235,6 +244,82 @@ namespace SummonersWarRuneScore
 			}
 
 			dtGrdRunes.ItemsSource = table.AsDataView();
+		}
+
+		private Filter BuildRuneFilter()
+		{
+			List<IFilter> filters = new List<IFilter>();
+
+			FilterItem setFilter = new FilterItem(RuneFilterProperty.Set, OperatorType.Equal, (RuneSet)cbxRuneSet.SelectedValue);
+			filters.Add(setFilter);
+
+			List<IFilter> slotFilter = new List<IFilter>();
+			foreach (string item in cbxSlotFilter.SelectedItems)
+			{
+				bool isSlotNumber = int.TryParse(item, out int slot);
+				if (isSlotNumber)
+				{
+					slotFilter.Add(new FilterItem(RuneFilterProperty.Slot, OperatorType.Equal, slot));
+				}
+			}
+			filters.Add(new Filter(slotFilter, FilterLogic.Or));
+
+			List<IFilter> locationFilter = new List<IFilter>();
+			foreach (string item in cbxLocationFilter.SelectedItems)
+			{
+				locationFilter.Add(new FilterItem(RuneFilterProperty.Location, OperatorType.Equal, Enum.Parse(typeof(RuneLocation), item)));
+			}
+			filters.Add(new Filter(locationFilter, FilterLogic.Or));
+
+			return new Filter(filters, FilterLogic.And);
+		}
+
+		private void cbxSlotFilter_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if (mChangingListBoxSelection)
+			{
+				return;
+			}
+
+			mChangingListBoxSelection = true;
+
+			ListBox listBox = (ListBox)sender;
+			bool added = e.AddedItems.Count > 0;
+			string selectedItem = (string)(added ? e.AddedItems[0] : e.RemovedItems[0]);
+			if (selectedItem == mAllItem)
+			{
+				if (added)
+				{
+					listBox.SelectAll();
+				}
+				else
+				{
+					listBox.SelectedIndex = -1;
+				}
+			}
+			else
+			{
+				if (added)
+				{
+					if (listBox.SelectedItems.Count == 6)
+					{
+						listBox.SelectedItems.Add(mAllItem);
+					}
+				}
+				else
+				{
+					listBox.SelectedItems.Remove(mAllItem);
+				}
+			}
+
+			mChangingListBoxSelection = false;
+
+			PopulateGrid();
+		}
+
+		private void cbxLocationFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			PopulateGrid();
 		}
 	}
 

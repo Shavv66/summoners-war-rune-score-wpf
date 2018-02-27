@@ -77,7 +77,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Domain\Enumerations\FilterLogic.cs" />
-    <Compile Include="Domain\Enumerations\FilterOperator.cs" />
+    <Compile Include="Domain\Enumerations\RuneFilterProperty.cs" />
+    <Compile Include="Domain\FilterOperator.cs" />
     <Compile Include="Domain\Filter.cs" />
     <Compile Include="Domain\FilterItem.cs" />
     <Compile Include="Domain\IFilter.cs" />
