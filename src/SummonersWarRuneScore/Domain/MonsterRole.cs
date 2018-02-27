@@ -21,7 +21,7 @@ namespace SummonersWarRuneScore.Domain
 		public decimal AccuracyWeight { get; set; }
 
 		public MonsterRole(string name, RuneSet runeSet)
-			: this(-1, name, runeSet, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+			: this(-1, name, runeSet, 1, 1, 1, 10000, 650, 550, 1.5m, 1.5m, 1m, 0.5m, 1m)
 		{
 		}
 
@@ -55,11 +55,11 @@ namespace SummonersWarRuneScore.Domain
 			switch(statType)
 			{
 				case RuneStatType.HpPercent: return HpPercentWeight;
-				case RuneStatType.HpFlat: return (HpPercentWeight / ExpectedBaseHp) * 100;
+				case RuneStatType.HpFlat: return ExpectedBaseHp == 0 ? 0 : (HpPercentWeight / ExpectedBaseHp) * 100;
 				case RuneStatType.AtkPercent: return AtkPercentWeight;
-				case RuneStatType.AtkFlat: return (AtkPercentWeight / ExpectedBaseAtk) * 100;
+				case RuneStatType.AtkFlat: return ExpectedBaseAtk == 0 ? 0 : (AtkPercentWeight / ExpectedBaseAtk) * 100;
 				case RuneStatType.DefPercent: return DefPercentWeight;
-				case RuneStatType.DefFlat: return (DefPercentWeight / ExpectedBaseDef) * 100;
+				case RuneStatType.DefFlat: return ExpectedBaseDef == 0 ? 0 : (DefPercentWeight / ExpectedBaseDef) * 100;
 				case RuneStatType.Spd: return SpdWeight;
 				case RuneStatType.CriRate: return CritRateWeight;
 				case RuneStatType.CriDmg: return CritDmgWeight;

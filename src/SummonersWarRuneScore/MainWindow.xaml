@@ -153,23 +153,25 @@
 
 		<Grid>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="50*" />
 				<ColumnDefinition Width="25*" />
 				<ColumnDefinition Width="25*"/>
+				<ColumnDefinition Width="50*" />
 			</Grid.ColumnDefinitions>
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="22" />
-				<RowDefinition />
+				<RowDefinition Height="50*" />
+				<RowDefinition Height="22" />
+				<RowDefinition Height="50*" />
 				<RowDefinition Height="22" />
 			</Grid.RowDefinitions>
 
-			<ComboBox Name="cbxRuneSet" Grid.ColumnSpan="1" SelectionChanged="cbxRuneSet_SelectionChanged" />
-			<ListView Name="lvMonsterRoles" Grid.Row="1" Grid.RowSpan="2" SelectionChanged="lvMonsterRoles_SelectionChanged" />
+			<ComboBox Name="cbxRuneSet" Grid.ColumnSpan="2" SelectionChanged="cbxRuneSet_SelectionChanged" />
+			<ListView Name="lvMonsterRoles" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" SelectionChanged="lvMonsterRoles_SelectionChanged" />
 
-			<Button Name="btnAdd" Content="Add New Role" Grid.Column="1" Grid.ColumnSpan="2" Click="btnAdd_Click" />
+			<Button Name="btnAdd" Content="Add New Role" Grid.Row="2" Grid.ColumnSpan="2" Click="btnAdd_Click" />
 
-			<ScrollViewer Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+			<ScrollViewer Grid.Row="3" Grid.ColumnSpan="2">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition />
@@ -205,30 +207,36 @@
 				</Grid>
 			</ScrollViewer>
 
-			<Button Name="btnDelete" Content="Delete" Grid.Column="1" Grid.Row="2" Click="btnDelete_Click" />
-			<Button Name="btnSave" Content="Save" Grid.Column="2" Grid.Row="2" Click="btnSave_Click" />
+			<Button Name="btnSave" Content="Save" Grid.Row="4" Click="btnSave_Click" />
+			<Button Name="btnDelete" Content="Delete" Grid.Row="4" Grid.Column="1" Click="btnDelete_Click" />
+
+			<Button Name="btnImport" Grid.Column="2" Content="Import Runes" Click="btnImport_Click" />
 		</Grid>
 
 		<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" />
 
 		<DockPanel Grid.Row="2">
-			<DockPanel DockPanel.Dock="Left" Width="250">
-				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="20" Margin="3">Filters</TextBlock>
-				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Height="25">
-					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}">Slot</Label>
-					<ListBox DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxSlotFilter"></ListBox>
+			<DockPanel DockPanel.Dock="Left" Width="250" Margin="5, 0, 10 , 0">
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="22" Margin="4">Filters</TextBlock>
+				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}" Margin="0, 0, 15, 0">Location</Label>
+					<ListBox DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxLocationFilter" SelectionChanged="cbxLocationFilter_SelectionChanged" />
+				</DockPanel>
+				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0, 20, 0, 0">
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}" Margin="0, 0, 40, 0">Slot</Label>
+					<ListBox DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxSlotFilter" SelectionChanged="cbxSlotFilter_SelectionChanged" />
 				</DockPanel>
 			</DockPanel>
-			<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" DockPanel.Dock="Top" VerticalAlignment="Center" />
+			
 			<DataGrid 
-				Name="dtGrdRunes" DockPanel.Dock="Bottom"
+				Name="dtGrdRunes"
 				IsReadOnly="True"
 				ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}"
 				RowStyle="{StaticResource GridRowStyle}"
 				CellStyle="{StaticResource GridCellStyle}"
 				FontFamily="Gadugi" FontSize="16" FontWeight="Light" TextOptions.TextFormattingMode="Ideal"
 				Background="{x:Null}"
-				ColumnHeaderHeight="45" RowHeight="32" 
+				ColumnHeaderHeight="45" RowHeight="32"
 				CanUserResizeColumns="False" CanUserReorderColumns="False"
 				BorderThickness="0" RowHeaderWidth="0"
 				GridLinesVisibility="Vertical" VerticalGridLinesBrush="{StaticResource AlternateSecondaryBackgroundBrush}"

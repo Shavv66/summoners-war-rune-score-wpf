@@ -4,14 +4,14 @@ namespace SummonersWarRuneScore.Domain
 {
 	public class FilterItem : IFilter
     {
-		public string PropertyName { get; private set; }
+		public RuneFilterProperty Property { get; private set; }
 		public FilterOperator Operator { get; private set; }
 		public object Value { get; private set; }
 
-		public FilterItem(string propertyName, FilterOperator @operator, object value)
+		public FilterItem(RuneFilterProperty property, OperatorType @operator, object value)
 		{
-			PropertyName = propertyName;
-			Operator = @operator;
+			Property = property;
+			Operator = new FilterOperator(@operator);
 			Value = value;
 		}
     }
