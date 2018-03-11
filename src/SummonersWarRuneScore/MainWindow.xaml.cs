@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace SummonersWarRuneScore
 {
@@ -39,6 +41,7 @@ namespace SummonersWarRuneScore
 		public MainWindow()
 		{
 			InitializeComponent();
+			Style = (Style)FindResource(typeof(Window));
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -68,8 +71,9 @@ namespace SummonersWarRuneScore
 			cbxSlotFilter.ItemsSource = new List<string> { mAllItem, "1", "2", "3", "4", "5", "6" };
 			cbxSlotFilter.SelectAll();
 
+
 			cbxLocationFilter.ItemsSource = new List<string> { "Inventory", "EquippedOnMonster" };
-			cbxLocationFilter.SelectAll();
+			cbxLocationFilter.SelectedItems.Add("Inventory");
 		}
 
 		private void mMonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -165,6 +169,20 @@ namespace SummonersWarRuneScore
 
 		private void PopulateGrid()
 		{
+			string currentSort = "";
+			Tuple<string, ListSortDirection> sortedColumn = null;
+			if (dtGrdRunes.ItemsSource != null)
+			{
+				currentSort = (dtGrdRunes.ItemsSource as DataView).Sort;
+				foreach (DataGridColumn column in dtGrdRunes.Columns)
+				{
+					if (column.SortDirection != null)
+					{
+						sortedColumn = new Tuple<string, ListSortDirection>(column.SortMemberPath, column.SortDirection.Value);
+					}
+				}
+			}
+
 			DataTable table = new DataTable();
 
 			table.Columns.Add("Rune ID", typeof(long));
@@ -173,21 +191,19 @@ namespace SummonersWarRuneScore
 			table.Columns.Add("Grade", typeof(int));
 			table.Columns.Add("Set", typeof(string));
 			table.Columns.Add("Level", typeof(int));
-			table.Columns.Add("Primary Stat", typeof(string));
-			table.Columns.Add("Primary Stat Amount", typeof(int));
-			table.Columns.Add("In-built Stat", typeof(string));
-			table.Columns.Add("In-built Stat Amount", typeof(int));
-			table.Columns.Add("HP%", typeof(int));
-			table.Columns.Add("HP", typeof(int));
-			table.Columns.Add("ATK%", typeof(int));
-			table.Columns.Add("ATK", typeof(int));
-			table.Columns.Add("DEF%", typeof(int));
-			table.Columns.Add("DEF", typeof(int));
-			table.Columns.Add("SPD", typeof(int));
-			table.Columns.Add("CRate", typeof(int));
-			table.Columns.Add("CDmg", typeof(int));
-			table.Columns.Add("RES", typeof(int));
-			table.Columns.Add("ACC", typeof(int));
+			table.Columns.Add("Primary Stat", typeof(RuneStat));
+			//table.Columns.Add("In-built Stat", typeof(RuneStat));
+			//table.Columns.Add("HP%", typeof(int));
+			//table.Columns.Add("HP", typeof(int));
+			//table.Columns.Add("ATK%", typeof(int));
+			//table.Columns.Add("ATK", typeof(int));
+			//table.Columns.Add("DEF%", typeof(int));
+			//table.Columns.Add("DEF", typeof(int));
+			//table.Columns.Add("SPD", typeof(int));
+			//table.Columns.Add("CRate", typeof(int));
+			//table.Columns.Add("CDmg", typeof(int));
+			//table.Columns.Add("RES", typeof(int));
+			//table.Columns.Add("ACC", typeof(int));
 
 			foreach (MonsterRole role in mMonsterRoles)
 			{
@@ -206,28 +222,26 @@ namespace SummonersWarRuneScore
 				row["Grade"] = rune.Stars;
 				row["Set"] = rune.Set;
 				row["Level"] = rune.Level;
-				row["Primary Stat"] = rune.PrimaryStat.Type;
-				row["Primary Stat Amount"] = rune.PrimaryStat.Amount;
-				row["In-built Stat"] = rune.PrefixStat.Type == 0 ? "" : rune.PrefixStat.Type.ToString();
-				row["In-built Stat Amount"] = rune.PrefixStat.Amount;
+				row["Primary Stat"] = rune.PrimaryStat;
+				//row["In-built Stat"] = rune.PrefixStat;
 
-				foreach (RuneStat stat in rune.Substats)
-				{
-					switch (stat.Type)
-					{
-						case RuneStatType.HpPercent: row["HP%"] = stat.Amount; break;
-						case RuneStatType.HpFlat: row["HP"] = stat.Amount; break;
-						case RuneStatType.AtkPercent: row["ATK%"] = stat.Amount; break;
-						case RuneStatType.AtkFlat: row["ATK"] = stat.Amount; break;
-						case RuneStatType.DefPercent: row["DEF%"] = stat.Amount; break;
-						case RuneStatType.DefFlat: row["DEF"] = stat.Amount; break;
-						case RuneStatType.Spd: row["SPD"] = stat.Amount; break;
-						case RuneStatType.CriRate: row["CRate"] = stat.Amount; break;
-						case RuneStatType.CriDmg: row["CDmg"] = stat.Amount; break;
-						case RuneStatType.Resistance: row["RES"] = stat.Amount; break;
-						case RuneStatType.Accuracy: row["ACC"] = stat.Amount; break;
-					}
-				}
+				//foreach (RuneStat stat in rune.Substats)
+				//{
+				//	switch (stat.Type)
+				//	{
+				//		case RuneStatType.HpPercent: row["HP%"] = stat.Amount; break;
+				//		case RuneStatType.HpFlat: row["HP"] = stat.Amount; break;
+				//		case RuneStatType.AtkPercent: row["ATK%"] = stat.Amount; break;
+				//		case RuneStatType.AtkFlat: row["ATK"] = stat.Amount; break;
+				//		case RuneStatType.DefPercent: row["DEF%"] = stat.Amount; break;
+				//		case RuneStatType.DefFlat: row["DEF"] = stat.Amount; break;
+				//		case RuneStatType.Spd: row["SPD"] = stat.Amount; break;
+				//		case RuneStatType.CriRate: row["CRate"] = stat.Amount; break;
+				//		case RuneStatType.CriDmg: row["CDmg"] = stat.Amount; break;
+				//		case RuneStatType.Resistance: row["RES"] = stat.Amount; break;
+				//		case RuneStatType.Accuracy: row["ACC"] = stat.Amount; break;
+				//	}
+				//}
 
 				foreach (MonsterRole role in mMonsterRoles)
 				{
@@ -244,6 +258,19 @@ namespace SummonersWarRuneScore
 			}
 
 			dtGrdRunes.ItemsSource = table.AsDataView();
+
+			if (!String.IsNullOrEmpty(currentSort) && sortedColumn != null)
+			{
+				DataGridColumn sortColumn = dtGrdRunes.Columns.FirstOrDefault(column => column.SortMemberPath == sortedColumn.Item1);
+				if (sortColumn != null)
+				{
+					(dtGrdRunes.ItemsSource as DataView).Sort = currentSort;
+					sortColumn.SortDirection = sortedColumn.Item2;
+				}
+			}
+
+			// Hide ID column
+			dtGrdRunes.Columns[0].Visibility = Visibility.Hidden;
 		}
 
 		private Filter BuildRuneFilter()
@@ -321,6 +348,22 @@ namespace SummonersWarRuneScore
 		{
 			PopulateGrid();
 		}
+
+		private void dtGrdRunes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			DataRow row = (dtGrdRunes.SelectedItem as DataRowView)?.Row;
+			if (row == null)
+			{
+				mDataContext.SelectedRune = null;
+			}
+			else
+			{
+				Rune selectedRune = mRunes.Single(rune => rune.Id == (long)row["Rune ID"]);
+				mDataContext.SelectedRune = selectedRune;
+			}
+
+			runeVisualiser.Rune = mDataContext.SelectedRune;
+		}
 	}
 
 	public class MainWindowDataContext : INotifyPropertyChanged
@@ -333,6 +376,17 @@ namespace SummonersWarRuneScore
 			{
 				mSelectedMonsterRole = value;
 				NotifyPropertyChanged("SelectedMonsterRole");
+			}
+		}
+
+		private Rune mSelectedRune;
+		public Rune SelectedRune
+		{
+			get { return mSelectedRune; }
+			set
+			{
+				mSelectedRune = value;
+				NotifyPropertyChanged("SelectedRune");
 			}
 		}
 
@@ -368,6 +422,19 @@ namespace SummonersWarRuneScore
 		public override string ToString()
 		{
 			return $"{Score} ({Rank})";
+		}
+	}
+
+	public class NullToVisibilityConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return value == null ? Visibility.Hidden : Visibility.Visible;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

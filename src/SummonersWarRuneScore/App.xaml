@@ -4,6 +4,9 @@
              xmlns:local="clr-namespace:SummonersWarRuneScore"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+		<!--<Style TargetType="{x:Type Window}">
+			<Setter Property="FontFamily" Value="Gadugi" />
+			<Setter Property="FontWeight" Value="Light" />
+		</Style>-->
+	</Application.Resources>
 </Application>

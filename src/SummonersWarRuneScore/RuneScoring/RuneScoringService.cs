@@ -26,6 +26,7 @@ namespace SummonersWarRuneScore.RuneScoring
 		private decimal CalculateCurrentScore(Rune rune, MonsterRole role)
 		{
 			decimal score = 0;
+			score += rune.PrimaryStat.Amount * role.GetWeight(rune.PrimaryStat.Type);
 			if (rune.PrefixStat != null)
 			{
 				score += rune.PrefixStat.Amount * role.GetWeight(rune.PrefixStat.Type);

@@ -4,14 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:usercontrols="clr-namespace:SummonersWarRuneScore.UserControls"
+		xmlns:summonerswarrunescore="clr-namespace:SummonersWarRuneScore"
 		mc:Ignorable="d"
         Title="Summoners War Rune Score" Height="960" Width="1280" Loaded="Window_Loaded">
 
 	<Window.Resources>
+		<summonerswarrunescore:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+
+		<Color x:Key="ThemeColour">RoyalBlue</Color>
+		<SolidColorBrush x:Key="ThemeStandardBrush" Color="{StaticResource ThemeColour}" />
 		<SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlDarkDarkColorKey}}" />
 		<SolidColorBrush x:Key="PrimaryFontBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}" />
 		<SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
 		<SolidColorBrush x:Key="AlternateSecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}" />
+		<!--<SolidColorBrush x:Key="RuneVisualiserBorder" Color=-->
+
+		<Style TargetType="{x:Type Window}">
+			<Setter Property="FontFamily" Value="Gadugi" />
+			<Setter Property="FontWeight" Value="Light" />
+		</Style>
 
 		<!-- Styling for the column headers. Copied, modified and documented from https://social.msdn.microsoft.com/Forums/sqlserver/en-US/2c9e160a-d99f-4022-9002-55a1df94c4b0/wpf-how-to-keep-the-sort-arrow-displayed-in-the-sorted-column-in-datagrid?forum=wpf -->
 		<Style x:Key="GridColumnHeaderStyle" 
@@ -118,22 +130,29 @@
 			</Setter>
 		</Style>
 
-		<Style x:Key="GridRowStyle" TargetType="{x:Type DataGridRow}">
-			<!-- Prevent selection -->
+		<!--<Style x:Key="GridRowStyle" TargetType="{x:Type DataGridRow}">
+			--><!-- Prevent selection --><!--
 			<Setter Property="IsHitTestVisible" Value="False" />
-		</Style>
+		</Style>-->
 
 		<Style x:Key="GridCellStyle" TargetType="{x:Type DataGridCell}">
-			<!-- Prevent selection -->
-			<Setter Property="IsHitTestVisible" Value="False" />
-			
 			<!-- Position text inside cells (vertical centering, left and right margin for padding) -->
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="{x:Type DataGridCell}">
-						<Grid Background="{TemplateBinding Background}" Margin="3, 0, 3, 0">
-							<ContentPresenter VerticalAlignment="Center" />
+						<Grid Background="{TemplateBinding Background}">
+							<ContentPresenter VerticalAlignment="Center" Margin="3, 0, 3, 0" />
 						</Grid>
+
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Background">
+									<Setter.Value>
+										<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.75" />
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</ControlTemplate.Triggers>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
@@ -141,6 +160,74 @@
 
 		<Style x:Key="DecimalBoxStyle" TargetType="{x:Type xctk:DecimalUpDown}">
 			<Setter Property="BorderThickness" Value="0, 1, 0, 1" />
+		</Style>
+
+		<Style x:Key="ButtonBase" TargetType="Button">
+			<Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
+			<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="BorderBrush" Value="{StaticResource SecondaryBackgroundBrush}" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" Value="{StaticResource ThemeStandardBrush}" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="MajorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
+			<Setter Property="Height" Value="30" />
+			<Setter Property="FontSize" Value="14" />
+		</Style>
+
+		<Style x:Key="MinorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
+			<Setter Property="Height" Value="22" />
+		</Style>
+
+		<Style x:Key="RightMostMinorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource MinorFunctionButtonStyle}">
+			<Setter Property="BorderThickness"  Value="0, 1, 1, 1" />
+		</Style>
+
+		<Style x:Key="FilterListBoxItemStyle" TargetType="ListBoxItem">
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ListBoxItem">
+						<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+							<ContentPresenter Margin="4, 0, 0, 2" HorizontalAlignment="Center" />
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Background">
+									<Setter.Value>
+										<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.25" />
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+							<MultiTrigger>
+								<MultiTrigger.Conditions>
+									<Condition Property="IsSelected" Value="False" />
+									<Condition Property="IsMouseOver" Value="True" />
+								</MultiTrigger.Conditions>
+								<Setter Property="Background">
+									<Setter.Value>
+										<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.12" />
+									</Setter.Value>
+								</Setter>
+							</MultiTrigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
 		</Style>
 	</Window.Resources>
 	
@@ -169,7 +256,7 @@
 			<ComboBox Name="cbxRuneSet" Grid.ColumnSpan="2" SelectionChanged="cbxRuneSet_SelectionChanged" />
 			<ListView Name="lvMonsterRoles" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" SelectionChanged="lvMonsterRoles_SelectionChanged" />
 
-			<Button Name="btnAdd" Content="Add New Role" Grid.Row="2" Grid.ColumnSpan="2" Click="btnAdd_Click" />
+			<Button Name="btnAdd" Content="Add New Role" Grid.Row="2" Grid.ColumnSpan="2" Click="btnAdd_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
 
 			<ScrollViewer Grid.Row="3" Grid.ColumnSpan="2">
 				<Grid>
@@ -207,24 +294,34 @@
 				</Grid>
 			</ScrollViewer>
 
-			<Button Name="btnSave" Content="Save" Grid.Row="4" Click="btnSave_Click" />
-			<Button Name="btnDelete" Content="Delete" Grid.Row="4" Grid.Column="1" Click="btnDelete_Click" />
+			<Button Name="btnSave" Content="Save" Grid.Row="4" Click="btnSave_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
+			<Button Name="btnDelete" Content="Delete" Grid.Row="4" Grid.Column="1" Click="btnDelete_Click" Style="{StaticResource RightMostMinorFunctionButtonStyle}" />
 
-			<Button Name="btnImport" Grid.Column="2" Content="Import Runes" Click="btnImport_Click" />
+			<StackPanel Grid.Column="2" Grid.RowSpan="2">
+				<Button Name="btnImport" Content="Import Runes" Click="btnImport_Click" Style="{StaticResource MajorFunctionButtonStyle}" />
+			</StackPanel>
+
+			<usercontrols:RuneVisualiser
+				x:Name="runeVisualiser"
+				Visibility="{Binding Path=SelectedRune, Converter={StaticResource NullToVisibilityConverter}}"
+				Grid.Column="2" Grid.Row="3" Grid.RowSpan="2"
+				HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Margin="2, 0, 0, 1" 
+			/>
 		</Grid>
 
 		<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" />
 
 		<DockPanel Grid.Row="2">
 			<DockPanel DockPanel.Dock="Left" Width="250" Margin="5, 0, 10 , 0">
-				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="22" Margin="4">Filters</TextBlock>
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="22" Margin="4, 4, 4, 18">Filters</TextBlock>
 				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
-					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}" Margin="0, 0, 15, 0">Location</Label>
-					<ListBox DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxLocationFilter" SelectionChanged="cbxLocationFilter_SelectionChanged" />
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}" Margin="0, 0, 11, 0" FontSize="14">Location</Label>
+					<ListBox ItemContainerStyle="{StaticResource FilterListBoxItemStyle}" DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxLocationFilter" SelectionChanged="cbxLocationFilter_SelectionChanged" />
 				</DockPanel>
 				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0, 20, 0, 0">
-					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}" Margin="0, 0, 40, 0">Slot</Label>
-					<ListBox DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxSlotFilter" SelectionChanged="cbxSlotFilter_SelectionChanged" />
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=cbxSlotFilter}" Margin="0, 0, 40, 0" FontSize="14">Slot</Label>
+					<ListBox ItemContainerStyle="{StaticResource FilterListBoxItemStyle}" DockPanel.Dock="Right" SelectionMode="Multiple" Name="cbxSlotFilter" SelectionChanged="cbxSlotFilter_SelectionChanged" />
 				</DockPanel>
 			</DockPanel>
 			
@@ -232,15 +329,15 @@
 				Name="dtGrdRunes"
 				IsReadOnly="True"
 				ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}"
-				RowStyle="{StaticResource GridRowStyle}"
 				CellStyle="{StaticResource GridCellStyle}"
-				FontFamily="Gadugi" FontSize="16" FontWeight="Light" TextOptions.TextFormattingMode="Ideal"
+				FontSize="16"
 				Background="{x:Null}"
 				ColumnHeaderHeight="45" RowHeight="32"
 				CanUserResizeColumns="False" CanUserReorderColumns="False"
 				BorderThickness="0" RowHeaderWidth="0"
 				GridLinesVisibility="Vertical" VerticalGridLinesBrush="{StaticResource AlternateSecondaryBackgroundBrush}"
 				AlternatingRowBackground="{StaticResource SecondaryBackgroundBrush}"
+				SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="dtGrdRunes_SelectionChanged"
 			/>
 		</DockPanel>
 	</Grid>
