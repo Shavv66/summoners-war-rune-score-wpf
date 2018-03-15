@@ -6,7 +6,8 @@
         mc:Ignorable="d"
 		FontSize="14"
         Title="Add Monster Role" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" 
-		WindowStyle="ToolWindow" ResizeMode="NoResize">
+		WindowStyle="ToolWindow" ResizeMode="NoResize"
+        ContentRendered="Window_ContentRendered">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -70,7 +71,7 @@
 		<ComboBox Name="cbxRoleToClone" IsEnabled="{Binding ElementName=chkCloneWeights, Path=IsChecked}" Text="{Binding Name}" Grid.Row="4" Grid.ColumnSpan="2" Height="26" Width="200" HorizontalAlignment="Left" />
 
 		<WrapPanel Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0, 8, 0, 0">
-			<Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_OK</Button>
+			<Button IsDefault="True" Name="btnDialogOk" Click="BtnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_OK</Button>
 			<Button IsCancel="True" MinWidth="60">_Cancel</Button>
 		</WrapPanel>
 	</Grid>

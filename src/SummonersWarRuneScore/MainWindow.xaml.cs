@@ -11,11 +11,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace SummonersWarRuneScore
 {
@@ -403,46 +401,6 @@ namespace SummonersWarRuneScore
 		private void NotifyPropertyChanged(string info)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
-		}
-	}
-
-	public class RankedScore : IComparable
-	{
-		private readonly decimal mScore;
-		private readonly int mRank;
-
-		public RankedScore(decimal score, int rank)
-		{
-			mScore = score;
-			mRank = rank;
-		}
-
-		public int CompareTo(object other)
-		{
-			if (!(other is RankedScore otherScore))
-			{
-				return 0;
-			}
-
-			return mScore.CompareTo(otherScore.mScore);
-		}
-
-		public override string ToString()
-		{
-			return $"{mScore} ({mRank})";
-		}
-	}
-
-	public class NullToVisibilityConverter : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			return value == null ? Visibility.Hidden : Visibility.Visible;
-		}
-
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

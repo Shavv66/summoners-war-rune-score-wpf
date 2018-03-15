@@ -79,6 +79,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Client\Converters\RuneColourToBrushConverter.cs" />
     <Compile Include="Components\Domain\Enumerations\FilterLogic.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneFilterProperty.cs" />
     <Compile Include="Components\Domain\FilterOperator.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Components\Domain\FilterItem.cs" />
     <Compile Include="Components\Domain\IFilter.cs" />
     <Compile Include="Components\Domain\Enumerations\ScoreType.cs" />
+    <Compile Include="Components\Domain\RankedScore.cs" />
     <Compile Include="Components\RuneScoring\IRuneScoreCache.cs" />
     <Compile Include="Components\RuneScoring\IScoreRankCache.cs" />
     <Compile Include="Components\RuneScoring\RuneScoreCache.cs" />
@@ -102,6 +105,10 @@
       <DependentUpon>RuneVisualiser.xaml</DependentUpon>
     </Compile>
     <Page Include="Client\Dialogs\EditMonsterRoleDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Resources\RuneColours.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,7 +181,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Client\Converters\" />
     <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <ItemGroup>

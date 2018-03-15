@@ -40,7 +40,7 @@ namespace SummonersWarRuneScore.Client.Dialogs
 			mDataContext = new EditMonsterRoleDataContext();
 			(Content as FrameworkElement).DataContext = mDataContext;
 
-			List<RuneSetCheckListItem> runeSetItems = new List<RuneSetCheckListItem>();
+			var runeSetItems = new List<RuneSetCheckListItem>();
 			foreach (RuneSet runeSet in Enum.GetValues(typeof(RuneSet)))
 			{
 				runeSetItems.Add(new RuneSetCheckListItem(runeSet, false));
@@ -50,7 +50,7 @@ namespace SummonersWarRuneScore.Client.Dialogs
 			cbxRoleToClone.ItemsSource = mMonsterRoleRepository.GetAll();
 		}
 
-		private void btnDialogOk_Click(object sender, RoutedEventArgs e)
+		private void BtnDialogOk_Click(object sender, RoutedEventArgs e)
 		{
 			DialogResult = true;
 		}
