@@ -1,5 +1,5 @@
-﻿using SummonersWarRuneScore.Domain.Constants;
-using System.IO;
+﻿using System.IO;
+using SummonersWarRuneScore.Components.Domain.Constants;
 
 namespace SummonersWarRuneScore.ProfileImport
 {

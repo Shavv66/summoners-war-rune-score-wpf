@@ -1,5 +1,5 @@
-﻿using SummonersWarRuneScore.Domain;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SummonersWarRuneScore.Components.Domain;
 
 namespace SummonersWarRuneScore.Filtering
 {

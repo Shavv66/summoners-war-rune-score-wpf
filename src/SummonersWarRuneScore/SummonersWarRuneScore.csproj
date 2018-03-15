@@ -81,19 +81,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Domain\Enumerations\FilterLogic.cs" />
-    <Compile Include="Domain\Enumerations\RuneFilterProperty.cs" />
-    <Compile Include="Domain\FilterOperator.cs" />
-    <Compile Include="Domain\Filter.cs" />
-    <Compile Include="Domain\FilterItem.cs" />
-    <Compile Include="Domain\IFilter.cs" />
-    <Compile Include="Domain\Enumerations\ScoreType.cs" />
-    <Compile Include="Domain\IRuneScoreCache.cs" />
-    <Compile Include="Domain\IScoreRankCache.cs" />
-    <Compile Include="Domain\RuneScoreCache.cs" />
-    <Compile Include="Domain\RuneScoringResult.cs" />
-    <Compile Include="Domain\ScoreRankCache.cs" />
-    <Compile Include="Domain\ScoreRankingResult.cs" />
+    <Compile Include="Components\Domain\Enumerations\FilterLogic.cs" />
+    <Compile Include="Components\Domain\Enumerations\RuneFilterProperty.cs" />
+    <Compile Include="Components\Domain\FilterOperator.cs" />
+    <Compile Include="Components\Domain\Filter.cs" />
+    <Compile Include="Components\Domain\FilterItem.cs" />
+    <Compile Include="Components\Domain\IFilter.cs" />
+    <Compile Include="Components\Domain\Enumerations\ScoreType.cs" />
+    <Compile Include="RuneScoring\IRuneScoreCache.cs" />
+    <Compile Include="RuneScoring\IScoreRankCache.cs" />
+    <Compile Include="RuneScoring\RuneScoreCache.cs" />
+    <Compile Include="Components\Domain\RuneScoringResult.cs" />
+    <Compile Include="RuneScoring\ScoreRankCache.cs" />
+    <Compile Include="Components\Domain\ScoreRankingResult.cs" />
     <Compile Include="Filtering\IRuneFilteringService.cs" />
     <Compile Include="Filtering\RuneFilteringService.cs" />
     <Compile Include="RuneScoring\IRuneScoringService.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="UserControls\RuneVisualiser.xaml.cs">
       <DependentUpon>RuneVisualiser.xaml</DependentUpon>
     </Compile>
-    <Page Include="Dialogs\NewMonsterRoleDialog.xaml">
+    <Page Include="Dialogs\EditMonsterRoleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,32 +115,36 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\IRuneRepository.cs" />
-    <Compile Include="DataAccess\RuneRepository.cs" />
-    <Compile Include="Dialogs\NewMonsterRoleDialog.xaml.cs">
-      <DependentUpon>NewMonsterRoleDialog.xaml</DependentUpon>
+    <Compile Include="Components\DataAccess\IRuneRepository.cs" />
+    <Compile Include="Components\DataAccess\RuneRepository.cs" />
+    <Compile Include="Dialogs\EditMonsterRoleDialog.xaml.cs">
+      <DependentUpon>EditMonsterRoleDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Domain\Constants\FileConstants.cs" />
-    <Compile Include="Domain\Enumerations\RuneColour.cs" />
-    <Compile Include="Domain\Enumerations\RuneLocation.cs" />
-    <Compile Include="Domain\Enumerations\RuneQuality.cs" />
-    <Compile Include="Domain\Enumerations\RuneStatType.cs" />
+    <Compile Include="Components\Domain\Constants\FileConstants.cs" />
+    <Compile Include="Components\Domain\Enumerations\RuneColour.cs" />
+    <Compile Include="Components\Domain\Enumerations\RuneLocation.cs" />
+    <Compile Include="Components\Domain\Enumerations\RuneQuality.cs" />
+    <Compile Include="Components\Domain\Enumerations\RuneStatType.cs" />
     <Compile Include="Domain\MonsterRole.cs" />
-    <Compile Include="Domain\Rune.cs" />
-    <Compile Include="Domain\Enumerations\RuneSet.cs" />
-    <Compile Include="Domain\RuneStat.cs" />
+    <Compile Include="Components\Domain\Rune.cs" />
+    <Compile Include="Components\Domain\Enumerations\RuneSet.cs" />
+    <Compile Include="Components\Domain\RuneStat.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\ThemeResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\RuneVisualiser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\IMonsterRoleRepository.cs" />
-    <Compile Include="DataAccess\MonsterRoleRepository.cs" />
+    <Compile Include="Components\DataAccess\IMonsterRoleRepository.cs" />
+    <Compile Include="Components\DataAccess\MonsterRoleRepository.cs" />
     <Compile Include="ProfileImport\IProfileImportService.cs" />
     <Compile Include="ProfileImport\ProfileImportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -173,6 +177,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Converters\" />
     <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <ItemGroup>
