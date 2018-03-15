@@ -1,0 +1,77 @@
+﻿<Window x:Class="SummonersWarRuneScore.Dialogs.EditMonsterRoleDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+		FontSize="14"
+        Title="Add Monster Role" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" 
+		WindowStyle="ToolWindow" ResizeMode="NoResize">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Resources/ThemeResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<Style x:Key="CheckListItemStyle" TargetType="ListBoxItem">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="ListBoxItem">
+							<Border Background="{TemplateBinding Background}">
+								<ContentPresenter Margin="2, 2, 0, 2" />
+							</Border>
+							
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background">
+										<Setter.Value>
+											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.12" />
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+    <Grid Margin="10">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="35" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Label Name="lblRoleName">Role Name:</Label>
+		<TextBox Name="txtRoleName" Grid.Column="1" Width="250" VerticalAlignment="Center" Margin="4, 0, 0, 0" Padding="1, 2, 0, 3"></TextBox>
+
+		<Label Grid.Row="1" Name="lblRuneSets">Rune sets:</Label>
+		<ListBox Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding RuneSetItems}" ItemContainerStyle="{StaticResource CheckListItemStyle}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<CheckBox Content="{Binding RuneSet}" IsChecked="{Binding IsChecked}" VerticalContentAlignment="Center"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<CheckBox Name="chkCloneWeights" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" VerticalContentAlignment="Center">
+			Clone weights from existing role:
+		</CheckBox>
+
+		<ComboBox Name="cbxRoleToClone" IsEnabled="{Binding ElementName=chkCloneWeights, Path=IsChecked}" Text="{Binding Name}" Grid.Row="4" Grid.ColumnSpan="2" Height="26" Width="200" HorizontalAlignment="Left" />
+
+		<WrapPanel Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0, 8, 0, 0">
+			<Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_OK</Button>
+			<Button IsCancel="True" MinWidth="60">_Cancel</Button>
+		</WrapPanel>
+	</Grid>
+</Window>

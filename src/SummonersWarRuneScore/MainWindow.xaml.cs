@@ -1,8 +1,5 @@
 ﻿using Microsoft.Win32;
-using SummonersWarRuneScore.DataAccess;
 using SummonersWarRuneScore.Dialogs;
-using SummonersWarRuneScore.Domain;
-using SummonersWarRuneScore.Domain.Enumerations;
 using SummonersWarRuneScore.Filtering;
 using SummonersWarRuneScore.ProfileImport;
 using SummonersWarRuneScore.RuneScoring;
@@ -16,6 +13,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using SummonersWarRuneScore.Components.DataAccess;
+using SummonersWarRuneScore.Components.Domain;
+using SummonersWarRuneScore.Components.Domain.Enumerations;
+using SummonersWarRuneScore.Domain;
 
 namespace SummonersWarRuneScore
 {
@@ -28,8 +29,8 @@ namespace SummonersWarRuneScore
 		private IRuneRepository mRuneRepository;
 		private IMonsterRoleRepository mMonsterRoleRepository;
 		private ObservableCollection<MonsterRole> mMonsterRoles;
-		IRuneScoringService mRuneScoringService;
-		IScoreRankingService mScoreRankingService;
+		private IRuneScoringService mRuneScoringService;
+		private IScoreRankingService mScoreRankingService;
 		private List<Rune> mRunes;
 		private IRuneScoreCache mRuneScoreCache;
 		private IScoreRankCache mScoreRankCache;
@@ -62,58 +63,63 @@ namespace SummonersWarRuneScore
 			mDataContext = new MainWindowDataContext();
 			DataContext = mDataContext;
 
-			mMonsterRoles.CollectionChanged += mMonsterRoles_CollectionChanged;
+			mMonsterRoles.CollectionChanged += MonsterRoles_CollectionChanged;
 
-			cbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
-			cbxRuneSet.SelectedIndex = 0;
+			CbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
+			CbxRuneSet.SelectedIndex = 0;
 
 			mAllItem = "<All>";
-			cbxSlotFilter.ItemsSource = new List<string> { mAllItem, "1", "2", "3", "4", "5", "6" };
-			cbxSlotFilter.SelectAll();
+			CbxSlotFilter.ItemsSource = new List<string> { mAllItem, "1", "2", "3", "4", "5", "6" };
+			CbxSlotFilter.SelectAll();
 
 
-			cbxLocationFilter.ItemsSource = new List<string> { "Inventory", "EquippedOnMonster" };
-			cbxLocationFilter.SelectedItems.Add("Inventory");
+			CbxLocationFilter.ItemsSource = new List<string> { "Inventory", "EquippedOnMonster" };
+			CbxLocationFilter.SelectedItems.Add("Inventory");
 		}
 
-		private void mMonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void MonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			lvMonsterRoles.ItemsSource = mMonsterRoles.Select(monsterRole => monsterRole.Name);
+			LvMonsterRoles.ItemsSource = mMonsterRoles.Select(monsterRole => monsterRole.Name);
 		}
 
-		private void cbxRuneSet_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		private void CbxRuneSet_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			mMonsterRoles.Clear();
-			var monsterRoles = mMonsterRoleRepository.GetByRuneSet((RuneSet)cbxRuneSet.SelectedValue);
+			List<MonsterRole> monsterRoles = mMonsterRoleRepository.GetByRuneSet((RuneSet)CbxRuneSet.SelectedValue);
 			foreach (MonsterRole monsterRole in monsterRoles)
 			{
 				mMonsterRoles.Add(monsterRole);
 			}
-			lvMonsterRoles.SelectedIndex = 0;
+			LvMonsterRoles.SelectedIndex = 0;
 			PopulateGrid();
 		}
 
-		private void lvMonsterRoles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		private void LvMonsterRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (mMonsterRoles.Count > 0 && lvMonsterRoles.SelectedIndex >= 0)
+			if (mMonsterRoles.Count > 0 && LvMonsterRoles.SelectedIndex >= 0)
 			{
-				mDataContext.SelectedMonsterRole = mMonsterRoles[lvMonsterRoles.SelectedIndex];
+				mDataContext.SelectedMonsterRole = mMonsterRoles[LvMonsterRoles.SelectedIndex];
 			}
 		}
 
-		private void btnAdd_Click(object sender, RoutedEventArgs e)
+		private void BtnAdd_Click(object sender, RoutedEventArgs e)
 		{
-			NewMonsterRoleDialog inputDialog = new NewMonsterRoleDialog();
+			var inputDialog = new EditMonsterRoleDialog
+			{
+				Owner = this
+			};
 			if (inputDialog.ShowDialog() == true)
 			{
-				mMonsterRoles.Add(new MonsterRole(inputDialog.Answer, (RuneSet)cbxRuneSet.SelectedValue));
-				lvMonsterRoles.SelectedItem = inputDialog.Answer;
+				var newRole = new MonsterRole(inputDialog.RoleName, inputDialog.RuneSets);
+				newRole.CopyWeightsFrom(inputDialog.RoleToClone);
+				mMonsterRoles.Add(newRole);
+				LvMonsterRoles.SelectedItem = inputDialog.RoleName;
 			}
 		}
 
-		private void btnSave_Click(object sender, RoutedEventArgs e)
+		private void BtnSave_Click(object sender, RoutedEventArgs e)
 		{
-			if (lvMonsterRoles.SelectedIndex < 0) return;
+			if (LvMonsterRoles.SelectedIndex < 0) return;
 
 			MonsterRole updatedRole;
 			if (mDataContext.SelectedMonsterRole.IsNew())
@@ -125,7 +131,7 @@ namespace SummonersWarRuneScore
 				updatedRole = mMonsterRoleRepository.Update(mDataContext.SelectedMonsterRole);
 			}
 
-			mMonsterRoles[lvMonsterRoles.SelectedIndex] = updatedRole;
+			mMonsterRoles[LvMonsterRoles.SelectedIndex] = updatedRole;
 			mDataContext.SelectedMonsterRole = updatedRole;
 
 			List<RuneScoringResult> updatedRoleScores = mRuneScoringService.CalculateScores(mRunes, new List<MonsterRole> { updatedRole });
@@ -136,14 +142,18 @@ namespace SummonersWarRuneScore
 			PopulateGrid();
 		}
 
-		private void btnDelete_Click(object sender, RoutedEventArgs e)
+		private void BtnDelete_Click(object sender, RoutedEventArgs e)
 		{
-			mMonsterRoleRepository.Delete(mDataContext.SelectedMonsterRole.Id);
-			mMonsterRoles.Remove(mDataContext.SelectedMonsterRole);
-			PopulateGrid();
+			if (MessageBox.Show(this, $"Are you sure you want to delete role '{mDataContext.SelectedMonsterRole.Name}'?", "Delete Monster Role", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+				== MessageBoxResult.Yes)
+			{
+				mMonsterRoleRepository.Delete(mDataContext.SelectedMonsterRole.Id);
+				mMonsterRoles.Remove(mDataContext.SelectedMonsterRole);
+				PopulateGrid();
+			}
 		}
 
-		private void btnImport_Click(object sender, RoutedEventArgs e)
+		private void BtnImport_Click(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog
 			{
@@ -169,12 +179,12 @@ namespace SummonersWarRuneScore
 
 		private void PopulateGrid()
 		{
-			string currentSort = "";
+			var currentSort = "";
 			Tuple<string, ListSortDirection> sortedColumn = null;
-			if (dtGrdRunes.ItemsSource != null)
+			if (DtGrdRunes.ItemsSource != null)
 			{
-				currentSort = (dtGrdRunes.ItemsSource as DataView).Sort;
-				foreach (DataGridColumn column in dtGrdRunes.Columns)
+				currentSort = ((DataView)DtGrdRunes.ItemsSource).Sort;
+				foreach (DataGridColumn column in DtGrdRunes.Columns)
 				{
 					if (column.SortDirection != null)
 					{
@@ -183,7 +193,7 @@ namespace SummonersWarRuneScore
 				}
 			}
 
-			DataTable table = new DataTable();
+			var table = new DataTable();
 
 			table.Columns.Add("Rune ID", typeof(long));
 			table.Columns.Add("Location", typeof(string));
@@ -257,31 +267,31 @@ namespace SummonersWarRuneScore
 				table.Rows.Add(row);
 			}
 
-			dtGrdRunes.ItemsSource = table.AsDataView();
+			DtGrdRunes.ItemsSource = table.AsDataView();
 
-			if (!String.IsNullOrEmpty(currentSort) && sortedColumn != null)
+			if (!string.IsNullOrEmpty(currentSort) && sortedColumn != null)
 			{
-				DataGridColumn sortColumn = dtGrdRunes.Columns.FirstOrDefault(column => column.SortMemberPath == sortedColumn.Item1);
+				DataGridColumn sortColumn = DtGrdRunes.Columns.FirstOrDefault(column => column.SortMemberPath == sortedColumn.Item1);
 				if (sortColumn != null)
 				{
-					(dtGrdRunes.ItemsSource as DataView).Sort = currentSort;
+					((DataView)DtGrdRunes.ItemsSource).Sort = currentSort;
 					sortColumn.SortDirection = sortedColumn.Item2;
 				}
 			}
 
 			// Hide ID column
-			dtGrdRunes.Columns[0].Visibility = Visibility.Hidden;
+			DtGrdRunes.Columns[0].Visibility = Visibility.Hidden;
 		}
 
 		private Filter BuildRuneFilter()
 		{
-			List<IFilter> filters = new List<IFilter>();
+			var filters = new List<IFilter>();
 
-			FilterItem setFilter = new FilterItem(RuneFilterProperty.Set, OperatorType.Equal, (RuneSet)cbxRuneSet.SelectedValue);
+			var setFilter = new FilterItem(RuneFilterProperty.Set, OperatorType.Equal, (RuneSet)CbxRuneSet.SelectedValue);
 			filters.Add(setFilter);
 
-			List<IFilter> slotFilter = new List<IFilter>();
-			foreach (string item in cbxSlotFilter.SelectedItems)
+			var slotFilter = new List<IFilter>();
+			foreach (string item in CbxSlotFilter.SelectedItems)
 			{
 				bool isSlotNumber = int.TryParse(item, out int slot);
 				if (isSlotNumber)
@@ -291,8 +301,8 @@ namespace SummonersWarRuneScore
 			}
 			filters.Add(new Filter(slotFilter, FilterLogic.Or));
 
-			List<IFilter> locationFilter = new List<IFilter>();
-			foreach (string item in cbxLocationFilter.SelectedItems)
+			var locationFilter = new List<IFilter>();
+			foreach (string item in CbxLocationFilter.SelectedItems)
 			{
 				locationFilter.Add(new FilterItem(RuneFilterProperty.Location, OperatorType.Equal, Enum.Parse(typeof(RuneLocation), item)));
 			}
@@ -301,7 +311,7 @@ namespace SummonersWarRuneScore
 			return new Filter(filters, FilterLogic.And);
 		}
 
-		private void cbxSlotFilter_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		private void CbxSlotFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (mChangingListBoxSelection)
 			{
@@ -344,14 +354,14 @@ namespace SummonersWarRuneScore
 			PopulateGrid();
 		}
 
-		private void cbxLocationFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void CbxLocationFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			PopulateGrid();
 		}
 
-		private void dtGrdRunes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void DtGrdRunes_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			DataRow row = (dtGrdRunes.SelectedItem as DataRowView)?.Row;
+			DataRow row = (DtGrdRunes.SelectedItem as DataRowView)?.Row;
 			if (row == null)
 			{
 				mDataContext.SelectedRune = null;
@@ -362,7 +372,7 @@ namespace SummonersWarRuneScore
 				mDataContext.SelectedRune = selectedRune;
 			}
 
-			runeVisualiser.Rune = mDataContext.SelectedRune;
+			RuneVisualiser.Rune = mDataContext.SelectedRune;
 		}
 	}
 
@@ -371,7 +381,7 @@ namespace SummonersWarRuneScore
 		private MonsterRole mSelectedMonsterRole;
 		public MonsterRole SelectedMonsterRole
 		{
-			get { return mSelectedMonsterRole; }
+			get => mSelectedMonsterRole;
 			set
 			{
 				mSelectedMonsterRole = value;
@@ -382,7 +392,7 @@ namespace SummonersWarRuneScore
 		private Rune mSelectedRune;
 		public Rune SelectedRune
 		{
-			get { return mSelectedRune; }
+			get => mSelectedRune;
 			set
 			{
 				mSelectedRune = value;
@@ -399,29 +409,28 @@ namespace SummonersWarRuneScore
 
 	public class RankedScore : IComparable
 	{
-		public decimal Score { get; set; }
-		public int Rank { get; set; }
+		private readonly decimal mScore;
+		private readonly int mRank;
 
 		public RankedScore(decimal score, int rank)
 		{
-			Score = score;
-			Rank = rank;
+			mScore = score;
+			mRank = rank;
 		}
 
 		public int CompareTo(object other)
 		{
-			RankedScore otherScore = other as RankedScore;
-			if (otherScore == null)
+			if (!(other is RankedScore otherScore))
 			{
 				return 0;
 			}
 
-			return Score.CompareTo(otherScore.Score);
+			return mScore.CompareTo(otherScore.mScore);
 		}
 
 		public override string ToString()
 		{
-			return $"{Score} ({Rank})";
+			return $"{mScore} ({mRank})";
 		}
 	}
 

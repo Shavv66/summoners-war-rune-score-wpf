@@ -1,8 +1,8 @@
-﻿using SummonersWarRuneScore.Domain;
-using SummonersWarRuneScore.Domain.Enumerations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SummonersWarRuneScore.Components.Domain;
+using SummonersWarRuneScore.Components.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.Filtering
 {

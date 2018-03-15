@@ -3,10 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SummonersWarRuneScore"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
-		<!--<Style TargetType="{x:Type Window}">
-			<Setter Property="FontFamily" Value="Gadugi" />
-			<Setter Property="FontWeight" Value="Light" />
-		</Style>-->
+	<Application.Resources>
+		
 	</Application.Resources>
 </Application>

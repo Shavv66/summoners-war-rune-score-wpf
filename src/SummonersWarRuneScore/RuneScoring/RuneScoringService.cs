@@ -1,5 +1,6 @@
-﻿using SummonersWarRuneScore.Domain;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SummonersWarRuneScore.Components.Domain;
+using SummonersWarRuneScore.Domain;
 
 namespace SummonersWarRuneScore.RuneScoring
 {
@@ -13,7 +14,7 @@ namespace SummonersWarRuneScore.RuneScoring
 			{
 				foreach (MonsterRole role in monsterRoles)
 				{
-					if (rune.Set == role.RuneSet)
+					if (role.RuneSets.Contains(rune.Set))
 					{
 						runeScores.Add(new RuneScoringResult(role.Id, rune.Id, CalculateCurrentScore(rune, role)));
 					}

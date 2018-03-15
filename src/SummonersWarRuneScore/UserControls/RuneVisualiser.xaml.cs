@@ -1,11 +1,11 @@
-﻿using SummonersWarRuneScore.Domain;
-using SummonersWarRuneScore.Domain.Enumerations;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using SummonersWarRuneScore.Components.Domain;
+using SummonersWarRuneScore.Components.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.UserControls
 {
@@ -14,7 +14,7 @@ namespace SummonersWarRuneScore.UserControls
 	/// </summary>
 	public partial class RuneVisualiser : UserControl
     {
-		private RuneVisualiserDataContext mDataContext;
+		private readonly RuneVisualiserDataContext mDataContext;
 		public Rune Rune
 		{
 			get { return mDataContext.Rune; }
