@@ -64,35 +64,4 @@ namespace SummonersWarRuneScore.Client.UserControls
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 		}
 	}
-
-	public class RuneColourToBrushConverter : IMultiValueConverter
-	{
-		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-		{
-			UserControl control = values[0] as UserControl;
-			RuneColour runeColour = RuneColour.White;
-			try
-			{
-				runeColour = (RuneColour)values[1];
-			}
-			catch (InvalidCastException)
-			{
-				return control.FindResource("WhiteRune");
-			}
-
-			switch (runeColour)
-			{
-				case RuneColour.Green: return control.FindResource("GreenRune");
-				case RuneColour.Blue: return control.FindResource("BlueRune");
-				case RuneColour.Purple: return control.FindResource("PurpleRune");
-				case RuneColour.Orange: return control.FindResource("OrangeRune");
-				default: return control.FindResource("WhiteRune");
-			}
-		}
-
-		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-		{
-			throw new NotImplementedException();
-		}
-	}
 }
