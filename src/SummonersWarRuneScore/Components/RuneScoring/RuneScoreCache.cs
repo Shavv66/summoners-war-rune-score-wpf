@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SummonersWarRuneScore.Components.Domain;
 
-namespace SummonersWarRuneScore.RuneScoring
+namespace SummonersWarRuneScore.Components.RuneScoring
 {
 	public class RuneScoreCache : IRuneScoreCache
 	{

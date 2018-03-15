@@ -4,7 +4,7 @@ using System.Linq;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
 
-namespace SummonersWarRuneScore.Filtering
+namespace SummonersWarRuneScore.Components.Filtering
 {
 	public class RuneFilteringService : IRuneFilteringService
     {

@@ -6,9 +6,8 @@ using System.Windows;
 using SummonersWarRuneScore.Components.DataAccess;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
-using SummonersWarRuneScore.Domain;
 
-namespace SummonersWarRuneScore.Dialogs
+namespace SummonersWarRuneScore.Client.Dialogs
 {
 	/// <summary>
 	/// Interaction logic for NewMonsterRoleDialog.xaml

@@ -46,11 +46,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -88,22 +86,22 @@
     <Compile Include="Components\Domain\FilterItem.cs" />
     <Compile Include="Components\Domain\IFilter.cs" />
     <Compile Include="Components\Domain\Enumerations\ScoreType.cs" />
-    <Compile Include="RuneScoring\IRuneScoreCache.cs" />
-    <Compile Include="RuneScoring\IScoreRankCache.cs" />
-    <Compile Include="RuneScoring\RuneScoreCache.cs" />
+    <Compile Include="Components\RuneScoring\IRuneScoreCache.cs" />
+    <Compile Include="Components\RuneScoring\IScoreRankCache.cs" />
+    <Compile Include="Components\RuneScoring\RuneScoreCache.cs" />
     <Compile Include="Components\Domain\RuneScoringResult.cs" />
-    <Compile Include="RuneScoring\ScoreRankCache.cs" />
+    <Compile Include="Components\RuneScoring\ScoreRankCache.cs" />
     <Compile Include="Components\Domain\ScoreRankingResult.cs" />
-    <Compile Include="Filtering\IRuneFilteringService.cs" />
-    <Compile Include="Filtering\RuneFilteringService.cs" />
-    <Compile Include="RuneScoring\IRuneScoringService.cs" />
-    <Compile Include="RuneScoring\IScoreRankingService.cs" />
-    <Compile Include="RuneScoring\RuneScoringService.cs" />
-    <Compile Include="RuneScoring\ScoreRankingService.cs" />
-    <Compile Include="UserControls\RuneVisualiser.xaml.cs">
+    <Compile Include="Components\Filtering\IRuneFilteringService.cs" />
+    <Compile Include="Components\Filtering\RuneFilteringService.cs" />
+    <Compile Include="Components\RuneScoring\IRuneScoringService.cs" />
+    <Compile Include="Components\RuneScoring\IScoreRankingService.cs" />
+    <Compile Include="Components\RuneScoring\RuneScoringService.cs" />
+    <Compile Include="Components\RuneScoring\ScoreRankingService.cs" />
+    <Compile Include="Client\UserControls\RuneVisualiser.xaml.cs">
       <DependentUpon>RuneVisualiser.xaml</DependentUpon>
     </Compile>
-    <Page Include="Dialogs\EditMonsterRoleDialog.xaml">
+    <Page Include="Client\Dialogs\EditMonsterRoleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,7 +115,7 @@
     </Compile>
     <Compile Include="Components\DataAccess\IRuneRepository.cs" />
     <Compile Include="Components\DataAccess\RuneRepository.cs" />
-    <Compile Include="Dialogs\EditMonsterRoleDialog.xaml.cs">
+    <Compile Include="Client\Dialogs\EditMonsterRoleDialog.xaml.cs">
       <DependentUpon>EditMonsterRoleDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Domain\Constants\FileConstants.cs" />
@@ -125,7 +123,7 @@
     <Compile Include="Components\Domain\Enumerations\RuneLocation.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneQuality.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneStatType.cs" />
-    <Compile Include="Domain\MonsterRole.cs" />
+    <Compile Include="Components\Domain\MonsterRole.cs" />
     <Compile Include="Components\Domain\Rune.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneSet.cs" />
     <Compile Include="Components\Domain\RuneStat.cs" />
@@ -133,11 +131,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resources\ThemeResources.xaml">
+    <Page Include="Client\Resources\ThemeResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\RuneVisualiser.xaml">
+    <Page Include="Client\UserControls\RuneVisualiser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,8 +143,8 @@
   <ItemGroup>
     <Compile Include="Components\DataAccess\IMonsterRoleRepository.cs" />
     <Compile Include="Components\DataAccess\MonsterRoleRepository.cs" />
-    <Compile Include="ProfileImport\IProfileImportService.cs" />
-    <Compile Include="ProfileImport\ProfileImportService.cs" />
+    <Compile Include="Components\ProfileImport\IProfileImportService.cs" />
+    <Compile Include="Components\ProfileImport\ProfileImportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -165,7 +163,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -177,7 +174,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converters\" />
+    <Folder Include="Client\Converters\" />
     <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <ItemGroup>

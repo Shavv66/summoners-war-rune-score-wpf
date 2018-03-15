@@ -1,8 +1,11 @@
 ﻿using Microsoft.Win32;
-using SummonersWarRuneScore.Dialogs;
-using SummonersWarRuneScore.Filtering;
-using SummonersWarRuneScore.ProfileImport;
-using SummonersWarRuneScore.RuneScoring;
+using SummonersWarRuneScore.Client.Dialogs;
+using SummonersWarRuneScore.Components.DataAccess;
+using SummonersWarRuneScore.Components.Domain;
+using SummonersWarRuneScore.Components.Domain.Enumerations;
+using SummonersWarRuneScore.Components.Filtering;
+using SummonersWarRuneScore.Components.ProfileImport;
+using SummonersWarRuneScore.Components.RuneScoring;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,10 +16,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using SummonersWarRuneScore.Components.DataAccess;
-using SummonersWarRuneScore.Components.Domain;
-using SummonersWarRuneScore.Components.Domain.Enumerations;
-using SummonersWarRuneScore.Domain;
 
 namespace SummonersWarRuneScore
 {

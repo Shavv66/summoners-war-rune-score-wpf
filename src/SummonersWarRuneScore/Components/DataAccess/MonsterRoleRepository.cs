@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Constants;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
-using SummonersWarRuneScore.Domain;
 
 namespace SummonersWarRuneScore.Components.DataAccess
 {

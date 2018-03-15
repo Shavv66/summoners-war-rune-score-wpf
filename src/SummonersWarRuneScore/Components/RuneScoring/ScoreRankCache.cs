@@ -2,7 +2,7 @@
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
 
-namespace SummonersWarRuneScore.RuneScoring
+namespace SummonersWarRuneScore.Components.RuneScoring
 {
 	public class ScoreRankCache : IScoreRankCache
 	{

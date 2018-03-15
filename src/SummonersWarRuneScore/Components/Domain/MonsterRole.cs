@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
 
-namespace SummonersWarRuneScore.Domain
+namespace SummonersWarRuneScore.Components.Domain
 {
 	public class MonsterRole
 	{

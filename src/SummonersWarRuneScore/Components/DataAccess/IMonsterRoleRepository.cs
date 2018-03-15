@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
-using SummonersWarRuneScore.Domain;
 
 namespace SummonersWarRuneScore.Components.DataAccess
 {
