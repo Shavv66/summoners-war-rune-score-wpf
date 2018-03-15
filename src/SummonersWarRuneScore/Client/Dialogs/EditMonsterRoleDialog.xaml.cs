@@ -15,7 +15,7 @@ namespace SummonersWarRuneScore.Client.Dialogs
 	public partial class EditMonsterRoleDialog : Window
 	{
 		private readonly EditMonsterRoleDataContext mDataContext;
-		private readonly IMonsterRoleRepository mMonsterRoleRepository;
+		private readonly List<MonsterRole> mAllMonsterRoles;
 
 		public string RoleName => txtRoleName.Text;
 
@@ -35,10 +35,10 @@ namespace SummonersWarRuneScore.Client.Dialogs
 		{
 			InitializeComponent();
 
-			mMonsterRoleRepository = new MonsterRoleRepository();
+			mAllMonsterRoles = new MonsterRoleRepository().GetAll();
 
 			mDataContext = new EditMonsterRoleDataContext();
-			(Content as FrameworkElement).DataContext = mDataContext;
+			((FrameworkElement)Content).DataContext = mDataContext;
 
 			var runeSetItems = new List<RuneSetCheckListItem>();
 			foreach (RuneSet runeSet in Enum.GetValues(typeof(RuneSet)))
@@ -47,12 +47,41 @@ namespace SummonersWarRuneScore.Client.Dialogs
 			}
 			mDataContext.RuneSetItems = runeSetItems;
 
-			cbxRoleToClone.ItemsSource = mMonsterRoleRepository.GetAll();
+			cbxRoleToClone.ItemsSource = mAllMonsterRoles;
 		}
 
 		private void BtnDialogOk_Click(object sender, RoutedEventArgs e)
 		{
+			if (!ValidateRole())
+			{
+				e.Handled = true;
+				return;
+			}
+
 			DialogResult = true;
+		}
+
+		private bool ValidateRole()
+		{
+			if (string.IsNullOrEmpty(RoleName))
+			{
+				MessageBox.Show(this, "Role name cannot be empty", "Invalid Role", MessageBoxButton.OK, MessageBoxImage.Error);
+				return false;
+			}
+
+			if (RuneSets.Count == 0)
+			{
+				MessageBox.Show(this, "Please select at least one rune set", "Invalid Role", MessageBoxButton.OK, MessageBoxImage.Error);
+				return false;
+			}
+
+			if (mAllMonsterRoles.Any(monsterRole => monsterRole.Name == RoleName))
+			{
+				MessageBox.Show(this, "That role name already exists", "Invalid Role", MessageBoxButton.OK, MessageBoxImage.Error);
+				return false;
+			}
+
+			return true;
 		}
 
 		private void Window_ContentRendered(object sender, EventArgs e)
@@ -67,7 +96,7 @@ namespace SummonersWarRuneScore.Client.Dialogs
 		private List<RuneSetCheckListItem> mRuneSetItems;
 		public List<RuneSetCheckListItem> RuneSetItems
 		{
-			get { return mRuneSetItems; }
+			get => mRuneSetItems;
 			set
 			{
 				mRuneSetItems = value;

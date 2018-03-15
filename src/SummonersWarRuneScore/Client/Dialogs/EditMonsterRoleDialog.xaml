@@ -19,7 +19,7 @@
 					<Setter.Value>
 						<ControlTemplate TargetType="ListBoxItem">
 							<Border Background="{TemplateBinding Background}">
-								<ContentPresenter Margin="2, 2, 0, 2" />
+								<ContentPresenter Margin="2, 1, 0, 1" />
 							</Border>
 							
 							<ControlTemplate.Triggers>
