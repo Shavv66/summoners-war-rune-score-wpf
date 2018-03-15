@@ -105,10 +105,15 @@ namespace SummonersWarRuneScore
 			{
 				Owner = this
 			};
+
 			if (inputDialog.ShowDialog() == true)
 			{
 				var newRole = new MonsterRole(inputDialog.RoleName, inputDialog.RuneSets);
-				newRole.CopyWeightsFrom(inputDialog.RoleToClone);
+				if (inputDialog.CloneExistingWeights && inputDialog.RoleToClone != null)
+				{
+					newRole.CopyWeightsFrom(inputDialog.RoleToClone);
+				}
+
 				mMonsterRoles.Add(newRole);
 				LvMonsterRoles.SelectedItem = inputDialog.RoleName;
 			}
