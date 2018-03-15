@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-		xmlns:usercontrols="clr-namespace:SummonersWarRuneScore.UserControls"
+		xmlns:usercontrols="clr-namespace:SummonersWarRuneScore.Client.UserControls"
 		xmlns:summonerswarrunescore="clr-namespace:SummonersWarRuneScore"
 		mc:Ignorable="d"
         Title="Summoners War Rune Score" Height="960" Width="1280" Loaded="Window_Loaded">
@@ -12,7 +12,7 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Resources/ThemeResources.xaml" />
+				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<summonerswarrunescore:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />

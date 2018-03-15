@@ -1,4 +1,4 @@
-﻿namespace SummonersWarRuneScore.ProfileImport
+﻿namespace SummonersWarRuneScore.Components.ProfileImport
 {
 	public interface IProfileImportService
     {

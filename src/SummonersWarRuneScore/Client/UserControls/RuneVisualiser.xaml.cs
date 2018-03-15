@@ -7,7 +7,7 @@ using System.Windows.Data;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
 
-namespace SummonersWarRuneScore.UserControls
+namespace SummonersWarRuneScore.Client.UserControls
 {
 	/// <summary>
 	/// Interaction logic for RuneVisualiser.xaml

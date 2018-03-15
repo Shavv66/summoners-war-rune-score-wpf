@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SummonersWarRuneScore.Components.Domain;
 
-namespace SummonersWarRuneScore.Filtering
+namespace SummonersWarRuneScore.Components.Filtering
 {
 	public interface IRuneFilteringService
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SummonersWarRuneScore.Components.Domain.Constants;
 
-namespace SummonersWarRuneScore.ProfileImport
+namespace SummonersWarRuneScore.Components.ProfileImport
 {
 	public class ProfileImportService : IProfileImportService
     {

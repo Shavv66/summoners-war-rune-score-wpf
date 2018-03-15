@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using SummonersWarRuneScore.Components.Domain;
-using SummonersWarRuneScore.Domain;
 
-namespace SummonersWarRuneScore.RuneScoring
+namespace SummonersWarRuneScore.Components.RuneScoring
 {
 	public interface IRuneScoringService
 	{
