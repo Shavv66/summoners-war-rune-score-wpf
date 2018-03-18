@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using SummonersWarRuneScore.Client.Dialogs;
+using SummonersWarRuneScore.Client.UserControls.RoleManager.Events;
 using SummonersWarRuneScore.Components.DataAccess;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
@@ -8,7 +8,6 @@ using SummonersWarRuneScore.Components.ProfileImport;
 using SummonersWarRuneScore.Components.RuneScoring;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -25,7 +24,6 @@ namespace SummonersWarRuneScore
 		private MainWindowDataContext mDataContext;
 		private IRuneRepository mRuneRepository;
 		private IMonsterRoleRepository mMonsterRoleRepository;
-		private ObservableCollection<MonsterRole> mMonsterRoles;
 		private IRuneScoringService mRuneScoringService;
 		private IScoreRankingService mScoreRankingService;
 		private List<Rune> mRunes;
@@ -45,7 +43,6 @@ namespace SummonersWarRuneScore
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			mMonsterRoleRepository = new MonsterRoleRepository();
-			mMonsterRoles = new ObservableCollection<MonsterRole>();
 
 			mRuneRepository = new RuneRepository();
 			mRunes = mRuneRepository.GetAll();
@@ -60,11 +57,6 @@ namespace SummonersWarRuneScore
 			mDataContext = new MainWindowDataContext();
 			DataContext = mDataContext;
 
-			mMonsterRoles.CollectionChanged += MonsterRoles_CollectionChanged;
-
-			CbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
-			CbxRuneSet.SelectedIndex = 0;
-
 			mAllItem = "<All>";
 			CbxSlotFilter.ItemsSource = new List<string> { mAllItem, "1", "2", "3", "4", "5", "6" };
 			CbxSlotFilter.SelectAll();
@@ -74,90 +66,9 @@ namespace SummonersWarRuneScore
 			CbxLocationFilter.SelectedItems.Add("Inventory");
 		}
 
-		private void MonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-		{
-			LvMonsterRoles.ItemsSource = mMonsterRoles.Select(monsterRole => monsterRole.Name);
-		}
-
-		private void CbxRuneSet_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			mMonsterRoles.Clear();
-			List<MonsterRole> monsterRoles = mMonsterRoleRepository.GetByRuneSet((RuneSet)CbxRuneSet.SelectedValue);
-			foreach (MonsterRole monsterRole in monsterRoles)
-			{
-				mMonsterRoles.Add(monsterRole);
-			}
-			LvMonsterRoles.SelectedIndex = 0;
-			PopulateGrid();
-		}
-
-		private void LvMonsterRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (mMonsterRoles.Count > 0 && LvMonsterRoles.SelectedIndex >= 0)
-			{
-				mDataContext.SelectedMonsterRole = mMonsterRoles[LvMonsterRoles.SelectedIndex];
-			}
-		}
-
-		private void BtnAdd_Click(object sender, RoutedEventArgs e)
-		{
-			var inputDialog = new EditMonsterRoleDialog
-			{
-				Owner = this
-			};
-
-			if (inputDialog.ShowDialog() == true)
-			{
-				var newRole = new MonsterRole(inputDialog.RoleName, inputDialog.RuneSets);
-				if (inputDialog.CloneExistingWeights && inputDialog.RoleToClone != null)
-				{
-					newRole.CopyWeightsFrom(inputDialog.RoleToClone);
-				}
-
-				mMonsterRoles.Add(newRole);
-				LvMonsterRoles.SelectedItem = inputDialog.RoleName;
-			}
-		}
-
-		private void BtnSave_Click(object sender, RoutedEventArgs e)
-		{
-			if (LvMonsterRoles.SelectedIndex < 0) return;
-
-			MonsterRole updatedRole;
-			if (mDataContext.SelectedMonsterRole.IsNew())
-			{
-				updatedRole = mMonsterRoleRepository.Add(mDataContext.SelectedMonsterRole);
-			}
-			else
-			{
-				updatedRole = mMonsterRoleRepository.Update(mDataContext.SelectedMonsterRole);
-			}
-
-			mMonsterRoles[LvMonsterRoles.SelectedIndex] = updatedRole;
-			mDataContext.SelectedMonsterRole = updatedRole;
-
-			List<RuneScoringResult> updatedRoleScores = mRuneScoringService.CalculateScores(mRunes, new List<MonsterRole> { updatedRole });
-			mRuneScoreCache.AddOrUpdateScores(updatedRoleScores);
-			List<ScoreRankingResult> updatedRanks = mScoreRankingService.CalculateRanks(updatedRoleScores);
-			mScoreRankCache.AddOrUpdateRanks(updatedRanks);
-
-			PopulateGrid();
-		}
-
-		private void BtnDelete_Click(object sender, RoutedEventArgs e)
-		{
-			if (MessageBox.Show(this, $"Are you sure you want to delete role '{mDataContext.SelectedMonsterRole.Name}'?", "Delete Monster Role", MessageBoxButton.YesNo, MessageBoxImage.Warning)
-				== MessageBoxResult.Yes)
-			{
-				mMonsterRoleRepository.Delete(mDataContext.SelectedMonsterRole.Id);
-				mMonsterRoles.Remove(mDataContext.SelectedMonsterRole);
-				PopulateGrid();
-			}
-		}
-
 		private void BtnImport_Click(object sender, RoutedEventArgs e)
 		{
-			OpenFileDialog openFileDialog = new OpenFileDialog
+			var openFileDialog = new OpenFileDialog
 			{
 				DefaultExt = ".json",
 				Filter = "JSON File|*.json"
@@ -170,6 +81,26 @@ namespace SummonersWarRuneScore
 				mRunes = mRuneRepository.GetAll();
 				PopulateGrid();
 			}
+		}
+
+		private void RoleManager_OnSelectedRuneSetChanged(object sender, EventArgs e)
+		{
+			PopulateGrid();
+		}
+
+		private void RoleManager_OnRoleChanged(object sender, RoleChangedEventArgs e)
+		{
+			List<RuneScoringResult> updatedRoleScores = mRuneScoringService.CalculateScores(mRunes, new List<MonsterRole> { e.ChangedRole });
+			mRuneScoreCache.AddOrUpdateScores(updatedRoleScores);
+			List<ScoreRankingResult> updatedRanks = mScoreRankingService.CalculateRanks(updatedRoleScores);
+			mScoreRankCache.AddOrUpdateRanks(updatedRanks);
+
+			PopulateGrid();
+		}
+
+		private void RoleManager_OnRoleDeleted(object sender, EventArgs e)
+		{
+			PopulateGrid();
 		}
 
 		private void ReScoreAllRunes(List<Rune> filteredRunes)
@@ -217,7 +148,7 @@ namespace SummonersWarRuneScore
 			//table.Columns.Add("RES", typeof(int));
 			//table.Columns.Add("ACC", typeof(int));
 
-			foreach (MonsterRole role in mMonsterRoles)
+			foreach (MonsterRole role in RoleManager.MonsterRoles)
 			{
 				table.Columns.Add(role.Name, typeof(RankedScore));
 			}
@@ -255,7 +186,7 @@ namespace SummonersWarRuneScore
 				//	}
 				//}
 
-				foreach (MonsterRole role in mMonsterRoles)
+				foreach (MonsterRole role in RoleManager.MonsterRoles)
 				{
 					RuneScoringResult runeScore = mRuneScoreCache.GetScore(role.Id, rune.Id);
 					ScoreRankingResult scoreRank = mScoreRankCache.GetRank(role.Id, rune.Id, ScoreType.Current);
@@ -289,7 +220,7 @@ namespace SummonersWarRuneScore
 		{
 			var filters = new List<IFilter>();
 
-			var setFilter = new FilterItem(RuneFilterProperty.Set, OperatorType.Equal, (RuneSet)CbxRuneSet.SelectedValue);
+			var setFilter = new FilterItem(RuneFilterProperty.Set, OperatorType.Equal, RoleManager.SelectedRuneSet);
 			filters.Add(setFilter);
 
 			var slotFilter = new List<IFilter>();
@@ -380,17 +311,6 @@ namespace SummonersWarRuneScore
 
 	public class MainWindowDataContext : INotifyPropertyChanged
 	{
-		private MonsterRole mSelectedMonsterRole;
-		public MonsterRole SelectedMonsterRole
-		{
-			get => mSelectedMonsterRole;
-			set
-			{
-				mSelectedMonsterRole = value;
-				NotifyPropertyChanged("SelectedMonsterRole");
-			}
-		}
-
 		private Rune mSelectedRune;
 		public Rune SelectedRune
 		{

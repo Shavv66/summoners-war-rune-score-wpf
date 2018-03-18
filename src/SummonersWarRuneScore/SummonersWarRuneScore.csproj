@@ -81,6 +81,10 @@
     </ApplicationDefinition>
     <Compile Include="Client\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Client\Converters\RuneColourToBrushConverter.cs" />
+    <Compile Include="Client\UserControls\RoleManager\Events\RoleChangedEventArgs.cs" />
+    <Compile Include="Client\UserControls\RoleManager\RoleManager.xaml.cs">
+      <DependentUpon>RoleManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Domain\Enumerations\FilterLogic.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneFilterProperty.cs" />
     <Compile Include="Components\Domain\FilterOperator.cs" />
@@ -108,7 +112,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Client\Resources\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\Resources\RuneColours.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\UserControls\RoleManager\RoleManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

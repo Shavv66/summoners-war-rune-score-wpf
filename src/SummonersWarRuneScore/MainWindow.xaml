@@ -3,9 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:SummonersWarRuneScore.Client.Converters"
         xmlns:usercontrols="clr-namespace:SummonersWarRuneScore.Client.UserControls"
+        xmlns:roleManager="clr-namespace:SummonersWarRuneScore.Client.UserControls.RoleManager"
         mc:Ignorable="d"
         Title="Summoners War Rune Score" Height="960" Width="1280" Loaded="Window_Loaded">
 
@@ -13,14 +13,11 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
+				<ResourceDictionary Source="/Client/Resources/ButtonStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-		
-			<SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlDarkDarkColorKey}}" />
-			<SolidColorBrush x:Key="PrimaryFontBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}" />
-			<SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
-			<SolidColorBrush x:Key="AlternateSecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}" />
+
 			<!--<SolidColorBrush x:Key="RuneVisualiserBorder" Color=-->
 
 			<Style TargetType="{x:Type Window}">
@@ -161,45 +158,6 @@
 				</Setter>
 			</Style>
 
-			<Style x:Key="DecimalBoxStyle" TargetType="{x:Type xctk:DecimalUpDown}">
-				<Setter Property="BorderThickness" Value="0, 1, 0, 1" />
-			</Style>
-
-			<Style x:Key="ButtonBase" TargetType="Button">
-				<Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
-				<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
-				<Setter Property="BorderThickness" Value="1" />
-				<Setter Property="BorderBrush" Value="{StaticResource SecondaryBackgroundBrush}" />
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type Button}">
-							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-								<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-							</Border>
-
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsMouseOver" Value="True">
-									<Setter Property="Background" Value="{StaticResource ThemeStandardBrush}" />
-								</Trigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-
-			<Style x:Key="MajorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
-				<Setter Property="Height" Value="30" />
-				<Setter Property="FontSize" Value="14" />
-			</Style>
-
-			<Style x:Key="MinorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
-				<Setter Property="Height" Value="22" />
-			</Style>
-
-			<Style x:Key="RightMostMinorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource MinorFunctionButtonStyle}">
-				<Setter Property="BorderThickness"  Value="0, 1, 1, 1" />
-			</Style>
-
 			<Style x:Key="FilterListBoxItemStyle" TargetType="ListBoxItem">
 				<Setter Property="FontSize" Value="14" />
 				<Setter Property="Template">
@@ -244,62 +202,11 @@
 
 		<Grid>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="25*" />
-				<ColumnDefinition Width="25*"/>
+				<ColumnDefinition Width="50*" />
 				<ColumnDefinition Width="50*" />
 			</Grid.ColumnDefinitions>
 
-			<Grid.RowDefinitions>
-				<RowDefinition Height="22" />
-				<RowDefinition Height="50*" />
-				<RowDefinition Height="22" />
-				<RowDefinition Height="50*" />
-				<RowDefinition Height="22" />
-			</Grid.RowDefinitions>
-
-			<ComboBox Name="CbxRuneSet" Grid.ColumnSpan="2" SelectionChanged="CbxRuneSet_SelectionChanged" />
-			<ListView Name="LvMonsterRoles" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" SelectionChanged="LvMonsterRoles_SelectionChanged" />
-
-			<Button Name="BtnAdd" Content="Add New Role" Grid.Row="2" Grid.ColumnSpan="2" Click="BtnAdd_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
-
-			<ScrollViewer Grid.Row="3" Grid.ColumnSpan="2">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-
-					<StackPanel>
-						<Label Content="HP%:" Target="{Binding ElementName=TbHpPercent}" />
-						<xctk:DecimalUpDown Name="TbHpPercent" Text="{Binding Path=SelectedMonsterRole.HpPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="ATK%:" Target="{Binding ElementName=TbAtkPercent}" />
-						<xctk:DecimalUpDown Name="TbAtkPercent" Text="{Binding Path=SelectedMonsterRole.AtkPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="DEF%:" Target="{Binding ElementName=TbDefPercent}" />
-						<xctk:DecimalUpDown Name="TbDefPercent" Text="{Binding Path=SelectedMonsterRole.DefPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Expected Base HP:" Target="{Binding ElementName=TbExpectedBaseHp}" />
-						<xctk:DecimalUpDown Name="TbExpectedBaseHp" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseHp}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Expected Base ATK:" Target="{Binding ElementName=TbExpectedBaseAtk}" />
-						<xctk:DecimalUpDown Name="TbExpectedBaseAtk" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseAtk}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Expected Base DEF:" Target="{Binding ElementName=TbExpectedBaseDef}" />
-						<xctk:DecimalUpDown Name="TbExpectedBaseDef" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" Style="{StaticResource DecimalBoxStyle}" />
-					</StackPanel>
-					<StackPanel Grid.Column="1">
-						<Label Content="SPD:" Target="{Binding ElementName=TbSpd}" />
-						<xctk:DecimalUpDown Name="TbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Cri Rate:" Target="{Binding ElementName=TbCritRate}" />
-						<xctk:DecimalUpDown Name="TbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Cri Dmg:" Target="{Binding ElementName=TbCritDmg}" />
-						<xctk:DecimalUpDown Name="TbCritDmg" Text="{Binding Path=SelectedMonsterRole.CritDmgWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Resistance:" Target="{Binding ElementName=TbResistance}" />
-						<xctk:DecimalUpDown Name="TbResistance" Text="{Binding Path=SelectedMonsterRole.ResistanceWeight}" Style="{StaticResource DecimalBoxStyle}" />
-						<Label Content="Accuracy:" Target="{Binding ElementName=TbAccuracy}" />
-						<xctk:DecimalUpDown Name="TbAccuracy" Text="{Binding Path=SelectedMonsterRole.AccuracyWeight}" Style="{StaticResource DecimalBoxStyle}" />
-					</StackPanel>
-				</Grid>
-			</ScrollViewer>
-
-			<Button Name="BtnSave" Content="Save" Grid.Row="4" Click="BtnSave_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
-			<Button Name="BtnDelete" Content="Delete" Grid.Row="4" Grid.Column="1" Click="BtnDelete_Click" Style="{StaticResource RightMostMinorFunctionButtonStyle}" />
+			<roleManager:RoleManager x:Name="RoleManager" SelectedRuneSetChanged="RoleManager_OnSelectedRuneSetChanged" RoleChanged="RoleManager_OnRoleChanged" RoleDeleted="RoleManager_OnRoleDeleted" />
 
 			<StackPanel Grid.Column="2" Grid.RowSpan="2">
 				<Button Name="BtnImport" Content="Import Runes" Click="BtnImport_Click" Style="{StaticResource MajorFunctionButtonStyle}" />

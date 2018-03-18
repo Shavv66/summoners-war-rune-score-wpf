@@ -3,5 +3,9 @@
 	
 	<Color x:Key="ThemeColour">RoyalBlue</Color>
 	<SolidColorBrush x:Key="ThemeStandardBrush" Color="{StaticResource ThemeColour}" />
+
+	<SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlDarkDarkColorKey}}" />
+	<SolidColorBrush x:Key="PrimaryFontBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}" />
+	<SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
+	<SolidColorBrush x:Key="AlternateSecondaryBackgroundBrush" Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}" />
 </ResourceDictionary>
-	
