@@ -29,6 +29,7 @@ namespace SummonersWarRuneScoreWebsite
 					!Path.HasExtension(context.Request.Path.Value) &&
 					!context.Request.Path.Value.StartsWith("/api/"))
 				{
+					Console.Write(context.Request.Path);
 					context.Request.Path = "./Client/dist/index.html";
 					await next();
 				}
