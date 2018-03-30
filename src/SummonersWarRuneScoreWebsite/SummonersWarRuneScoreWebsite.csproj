@@ -13,4 +13,8 @@
 	<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SummonersWarRuneScore\SummonersWarRuneScore.csproj" />
+  </ItemGroup>
+
 </Project>
