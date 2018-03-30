@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,32 +11,38 @@ using System.IO;
 
 namespace SummonersWarRuneScoreWebsite
 {
-    public class Startup
-    {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
+	public class Startup
+	{
+		// This method gets called by the runtime. Use this method to add services to the container.
+		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+		public void ConfigureServices(IServiceCollection services)
+		{
 			services.AddMvc();
 		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-			app.Use(async (context, next) => {
-				await next();
-				if (context.Response.StatusCode == 404 &&
-					!Path.HasExtension(context.Request.Path.Value) &&
-					!context.Request.Path.Value.StartsWith("/api/"))
-				{
-					Console.Write(context.Request.Path);
-					context.Request.Path = "./Client/dist/index.html";
-					await next();
-				}
-			});
-			app.UseMvcWithDefaultRoute();
-			app.UseDefaultFiles();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		{
+
+			//app.Use(async (context, next) =>
+			//{
+			//	await next();
+			//	if (context.Response.StatusCode == 404 &&
+			//		!Path.HasExtension(context.Request.Path.Value) &&
+			//		!context.Request.Path.Value.StartsWith("/api/"))
+			//	{
+			//		Console.Write(context.Request.Path);
+			//		context.Request.Path = "./Client/dist/index.html";
+			//		await next();
+			//	}
+			//});
+			//app.UseMvcWithDefaultRoute();
+
+
+		  app.UseDefaultFiles();
+      
 			app.UseStaticFiles();
+			app.UseMvc();
 		}
-    }
+	}
 }
