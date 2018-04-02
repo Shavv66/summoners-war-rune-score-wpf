@@ -9,5 +9,9 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
+  ],
+  "include": [
+    "../node_modules/angular-4-data-table/src/index.ts",
+    "*"
   ]
 }

@@ -2,14 +2,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { RunesPageComponent } from './runes-page/runes-page.component';
-import { RolesPageComponent } from './roles-page/roles-page.component';
+import { HomeComponent } from './components/home/home.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { RunesPageComponent } from './components/runes-page/runes-page.component';
+import { RolesPageComponent } from './components/roles-page/roles-page.component';
+import { NavBarStateService } from './services/nav-bar-state.service';
+import { RunesGridComponent } from './components/runes-grid/runes-grid.component';
 
 const appRoutes: Routes = [
   {
@@ -34,17 +36,18 @@ const appRoutes: Routes = [
     HomeComponent,
     NavBarComponent,
     RunesPageComponent,
-    RolesPageComponent
+    RolesPageComponent,
+    RunesGridComponent
   ],
   imports: [
-    NgbModule,
     NgbModule.forRoot(),
     BrowserModule,
     RouterModule.forRoot(
       appRoutes
     ),
+    NgxDatatableModule
   ],
-  providers: [],
+  providers: [NavBarStateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
