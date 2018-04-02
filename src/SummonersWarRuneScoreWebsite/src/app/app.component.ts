@@ -1,4 +1,5 @@
 import { Component, Renderer2 } from '@angular/core';
+import { NavBarStateService } from './services/nav-bar-state.service';
 
 @Component({
   selector: 'app-root',
@@ -6,10 +7,17 @@ import { Component, Renderer2 } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
-  constructor(private renderer: Renderer2) {
+
+  title = 'Summoners War Rune Score';
+
+  constructor(private renderer: Renderer2, private navBarStateService: NavBarStateService) {
+    this.navBarStateService.renderer = this.renderer;
     //Sets Body class for theme
     this.renderer.addClass(document.body, "fixed-nav");
     this.renderer.addClass(document.body, "bg-dark");
+
+
+    // Collapse side nav bar by default
+    this.navBarStateService.SetNavBarCollapsed(true);
   }
 }
