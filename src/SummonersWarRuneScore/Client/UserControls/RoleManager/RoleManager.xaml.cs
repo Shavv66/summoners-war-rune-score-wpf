@@ -112,6 +112,8 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 
 		private void BtnDelete_Click(object sender, RoutedEventArgs e)
 		{
+			if (LvMonsterRoles.SelectedIndex < 0) return;
+
 			if (MessageBox.Show(this.FindLogicalAncestor<Window>(), $"Are you sure you want to delete role '{mDataContext.SelectedMonsterRole.Name}'?", "Delete Monster Role", MessageBoxButton.YesNo, MessageBoxImage.Warning)
 			    == MessageBoxResult.Yes)
 			{
