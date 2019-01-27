@@ -5,11 +5,13 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager.Events
 {
 	public class RoleChangedEventArgs : EventArgs
 	{
-		public MonsterRole ChangedRole { get; private set; }
+		public MonsterRole ChangedRole { get; }
+		public bool IsNew { get; }
 
-		public RoleChangedEventArgs(MonsterRole changedRole)
+		public RoleChangedEventArgs(MonsterRole changedRole, bool isNew)
 		{
 			ChangedRole = changedRole;
+			IsNew = isNew;
 		}
 	}
 }

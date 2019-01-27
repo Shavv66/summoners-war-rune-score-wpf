@@ -12,6 +12,8 @@ namespace SummonersWarRuneScore.Components.DataAccess
 	public class MonsterRoleRepository : IMonsterRoleRepository
 	{
 		private readonly string mFilePath;
+		private List<MonsterRole> mCachedAll;
+		private DateTime mLastCachedTimestamp;
 
 		public MonsterRoleRepository() : this(FileConstants.MONSTER_ROLES_PATH) { }
 
@@ -24,8 +26,14 @@ namespace SummonersWarRuneScore.Components.DataAccess
 		{
 			try
 			{
+				if (CacheIsValid())
+				{
+					return mCachedAll;
+				}
+
+				mLastCachedTimestamp = File.GetLastWriteTime(mFilePath);
 				string json = File.ReadAllText(mFilePath);
-				return JsonConvert.DeserializeObject<List<MonsterRole>>(json);
+				return mCachedAll = JsonConvert.DeserializeObject<List<MonsterRole>>(json);
 			}
 			catch(Exception)
 			{
@@ -91,6 +99,11 @@ namespace SummonersWarRuneScore.Components.DataAccess
 		{
 			string json = JsonConvert.SerializeObject(roles);
 			File.WriteAllText(mFilePath, json);
+		}
+
+		private bool CacheIsValid()
+		{
+			return mCachedAll != null && (DateTime.Compare(mLastCachedTimestamp, File.GetLastWriteTime(mFilePath)) == 0);
 		}
 	}
 }
