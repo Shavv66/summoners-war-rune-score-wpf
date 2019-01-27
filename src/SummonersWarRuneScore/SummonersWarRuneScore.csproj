@@ -88,6 +88,12 @@
     <Compile Include="Client\UserControls\RoleManager\RoleManager.xaml.cs">
       <DependentUpon>RoleManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Client\UserControls\RuneScoringGrid\Domain\GridSortInfo.cs" />
+    <Compile Include="Client\UserControls\RuneScoringGrid\Domain\RuneScoringGridData.cs" />
+    <Compile Include="Client\UserControls\RuneScoringGrid\Events\RuneScoringGridSelectionChangedEventArgs.cs" />
+    <Compile Include="Client\UserControls\RuneScoringGrid\RuneScoringGrid.xaml.cs">
+      <DependentUpon>RuneScoringGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Domain\Enumerations\FilterLogic.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneFilterProperty.cs" />
     <Compile Include="Components\Domain\FilterOperator.cs" />
@@ -124,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Client\UserControls\RoleManager\RoleManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\UserControls\RuneScoringGrid\RuneScoringGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

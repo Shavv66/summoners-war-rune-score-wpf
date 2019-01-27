@@ -95,7 +95,8 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 			if (LvMonsterRoles.SelectedIndex < 0) return;
 
 			MonsterRole updatedRole;
-			if (mDataContext.SelectedMonsterRole.IsNew())
+			bool isNew = mDataContext.SelectedMonsterRole.IsNew();
+			if (isNew)
 			{
 				updatedRole = mMonsterRoleRepository.Add(mDataContext.SelectedMonsterRole);
 			}
@@ -107,7 +108,7 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 			MonsterRoles[LvMonsterRoles.SelectedIndex] = updatedRole;
 			mDataContext.SelectedMonsterRole = updatedRole;
 
-			RoleChanged?.Invoke(this, new RoleChangedEventArgs(updatedRole));
+			RoleChanged?.Invoke(this, new RoleChangedEventArgs(updatedRole, isNew));
 		}
 
 		private void BtnDelete_Click(object sender, RoutedEventArgs e)
