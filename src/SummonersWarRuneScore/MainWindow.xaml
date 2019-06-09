@@ -13,6 +13,7 @@
 			</ResourceDictionary.MergedDictionaries>
 
 			<Style TargetType="{x:Type Window}">
+				<Setter Property="Background" Value="{StaticResource AlternateSecondaryBackgroundBrush}" />
 				<Setter Property="FontFamily" Value="Gadugi" />
 				<Setter Property="FontWeight" Value="Light" />
 			</Style>

@@ -4,13 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+			 xmlns:rm="clr-namespace:SummonersWarRuneScore.Client.UserControls.RoleManager"
 			 mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+			 Padding="50 10 50 10">
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
 				<ResourceDictionary Source="/Client/Resources/ButtonStyles.xaml" />
+				<ResourceDictionary Source="/Client/Resources/SliderStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<Style x:Key="DecimalBoxStyle" TargetType="{x:Type xctk:DecimalUpDown}">
@@ -26,29 +29,49 @@
 		</Grid.ColumnDefinitions>
 
 		<Grid.RowDefinitions>
-			<RowDefinition Height="22" />
+			<RowDefinition Height="50" />
+			<RowDefinition Height="25" />
 			<RowDefinition Height="40*" />
-			<RowDefinition Height="22" />
-			<RowDefinition Height="60*" />
+			<RowDefinition Height="150" />
 			<RowDefinition Height="22" />
 		</Grid.RowDefinitions>
 
 		<ComboBox Name="CbxRuneSet"  Grid.ColumnSpan="2" SelectionChanged="CbxRuneSet_SelectionChanged" />
-		<ListView Name="LvMonsterRoles" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" SelectionChanged="LvMonsterRoles_SelectionChanged" />
+		<Button Name="BtnAdd" Content="Add New Role" Grid.Row="1" Grid.ColumnSpan="2" Click="BtnAdd_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
 
-		<Button Name="BtnAdd" Content="Add New Role" Grid.Row="2" Grid.ColumnSpan="2" Click="BtnAdd_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
+		<ListView Name="LvMonsterRoles" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" SelectionChanged="LvMonsterRoles_SelectionChanged" />
 
-		<ScrollViewer Grid.Row="3" Grid.ColumnSpan="2">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
+		<Grid Grid.Row="3" Grid.ColumnSpan="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 
-				<StackPanel>
-					<Label Content="HP%:" Target="{Binding ElementName=TbHpPercent}" />
-					<xctk:DecimalUpDown Name="TbHpPercent" Text="{Binding Path=SelectedMonsterRole.HpPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
-					<Label Content="ATK%:" Target="{Binding ElementName=TbAtkPercent}" />
+			<StackPanel>
+				<!--<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="40" />
+							<ColumnDefinition />
+							<ColumnDefinition Width="30" />
+						</Grid.ColumnDefinitions>
+
+						<Label Content="HP%:" Padding="3 2 0 0 " />
+						<Slider Grid.Column="1" Name="HpSlider" Style="{StaticResource Slider}" Value="{Binding Path=SelectedMonsterRole.HpPercentWeight}" Maximum="50" TickFrequency="1" IsSnapToTickEnabled="True" />
+						<TextBox Grid.Column="2" Text="{Binding ElementName=HpSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" Margin="5 2 0 0" BorderThickness="0" />
+					</Grid>-->
+				<rm:RoleManagerSlider LabelText="HP%:" Value="{Binding Path=SelectedMonsterRole.HpPercentWeight}" />
+				<rm:RoleManagerSlider LabelText="ATK%:" Value="{Binding Path=SelectedMonsterRole.AtkPercentWeight}" />
+				<rm:RoleManagerSlider LabelText="DEF%:" Value="{Binding Path=SelectedMonsterRole.DefPercentWeight}" />
+				<rm:RoleManagerSlider LabelText="~ Base HP:" Value="{Binding Path=SelectedMonsterRole.ExpectedBaseHp}" />
+				<rm:RoleManagerSlider LabelText="~ Base ATK:" Value="{Binding Path=SelectedMonsterRole.ExpectedBaseAtk}" />
+				<rm:RoleManagerSlider LabelText="~ Base DEF:" Value="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" />
+
+				<!--<Label Content="HP%:" />-->
+
+
+				<!--<xctk:DecimalUpDown Name="TbHpPercent" Text="{Binding Path=SelectedMonsterRole.HpPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />-->
+
+				<!--<Label Content="ATK%:" Target="{Binding ElementName=TbAtkPercent}" />
 					<xctk:DecimalUpDown Name="TbAtkPercent" Text="{Binding Path=SelectedMonsterRole.AtkPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
 					<Label Content="DEF%:" Target="{Binding ElementName=TbDefPercent}" />
 					<xctk:DecimalUpDown Name="TbDefPercent" Text="{Binding Path=SelectedMonsterRole.DefPercentWeight}" Style="{StaticResource DecimalBoxStyle}" />
@@ -57,22 +80,27 @@
 					<Label Content="Expected Base ATK:" Target="{Binding ElementName=TbExpectedBaseAtk}" />
 					<xctk:DecimalUpDown Name="TbExpectedBaseAtk" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseAtk}" Style="{StaticResource DecimalBoxStyle}" />
 					<Label Content="Expected Base DEF:" Target="{Binding ElementName=TbExpectedBaseDef}" />
-					<xctk:DecimalUpDown Name="TbExpectedBaseDef" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" Style="{StaticResource DecimalBoxStyle}" />
-				</StackPanel>
-				<StackPanel Grid.Column="1">
-					<Label Content="SPD:" Target="{Binding ElementName=TbSpd}" />
-					<xctk:DecimalUpDown Name="TbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" Style="{StaticResource DecimalBoxStyle}" />
-					<Label Content="Cri Rate:" Target="{Binding ElementName=TbCritRate}" />
-					<xctk:DecimalUpDown Name="TbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" Style="{StaticResource DecimalBoxStyle}" />
-					<Label Content="Cri Dmg:" Target="{Binding ElementName=TbCritDmg}" />
-					<xctk:DecimalUpDown Name="TbCritDmg" Text="{Binding Path=SelectedMonsterRole.CritDmgWeight}" Style="{StaticResource DecimalBoxStyle}" />
-					<Label Content="Resistance:" Target="{Binding ElementName=TbResistance}" />
-					<xctk:DecimalUpDown Name="TbResistance" Text="{Binding Path=SelectedMonsterRole.ResistanceWeight}" Style="{StaticResource DecimalBoxStyle}" />
-					<Label Content="Accuracy:" Target="{Binding ElementName=TbAccuracy}" />
-					<xctk:DecimalUpDown Name="TbAccuracy" Text="{Binding Path=SelectedMonsterRole.AccuracyWeight}" Style="{StaticResource DecimalBoxStyle}" />
-				</StackPanel>
-			</Grid>
-		</ScrollViewer>
+					<xctk:DecimalUpDown Name="TbExpectedBaseDef" Text="{Binding Path=SelectedMonsterRole.ExpectedBaseDef}" Style="{StaticResource DecimalBoxStyle}" />-->
+			</StackPanel>
+			<StackPanel Grid.Column="1">
+				<rm:RoleManagerSlider LabelText="SPD:" Value="{Binding Path=SelectedMonsterRole.SpdWeight}" />
+				<rm:RoleManagerSlider LabelText="Cri Rate:" Value="{Binding Path=SelectedMonsterRole.CritRateWeight}" />
+				<rm:RoleManagerSlider LabelText="Cri Dmg:" Value="{Binding Path=SelectedMonsterRole.CritDmgWeight}" />
+				<rm:RoleManagerSlider LabelText="Resistance:" Value="{Binding Path=SelectedMonsterRole.ResistanceWeight}" />
+				<rm:RoleManagerSlider LabelText="Accuracy:" Value="{Binding Path=SelectedMonsterRole.AccuracyWeight}" />
+
+				<!--<Label Content="SPD:" Target="{Binding ElementName=TbSpd}" />
+				<xctk:DecimalUpDown Name="TbSpd" Text="{Binding Path=SelectedMonsterRole.SpdWeight}" Style="{StaticResource DecimalBoxStyle}" />
+				<Label Content="Cri Rate:" Target="{Binding ElementName=TbCritRate}" />
+				<xctk:DecimalUpDown Name="TbCritRate" Text="{Binding Path=SelectedMonsterRole.CritRateWeight}" Style="{StaticResource DecimalBoxStyle}" />
+				<Label Content="Cri Dmg:" Target="{Binding ElementName=TbCritDmg}" />
+				<xctk:DecimalUpDown Name="TbCritDmg" Text="{Binding Path=SelectedMonsterRole.CritDmgWeight}" Style="{StaticResource DecimalBoxStyle}" />
+				<Label Content="Resistance:" Target="{Binding ElementName=TbResistance}" />
+				<xctk:DecimalUpDown Name="TbResistance" Text="{Binding Path=SelectedMonsterRole.ResistanceWeight}" Style="{StaticResource DecimalBoxStyle}" />
+				<Label Content="Accuracy:" Target="{Binding ElementName=TbAccuracy}" />
+				<xctk:DecimalUpDown Name="TbAccuracy" Text="{Binding Path=SelectedMonsterRole.AccuracyWeight}" Style="{StaticResource DecimalBoxStyle}" />-->
+			</StackPanel>
+		</Grid>
 
 		<Button Name="BtnSave" Content="Save" Grid.Row="4" Click="BtnSave_Click" Style="{StaticResource MinorFunctionButtonStyle}" />
 		<Button Name="BtnDelete" Content="Delete" Grid.Row="4" Grid.Column="1" Click="BtnDelete_Click" Style="{StaticResource RightMostMinorFunctionButtonStyle}" />
