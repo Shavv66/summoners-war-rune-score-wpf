@@ -1,6 +1,6 @@
 ﻿namespace SummonersWarRuneScore.Components.Domain.Enumerations
 {
-	public enum RuneSet
+	public enum RuneSet : byte
 	{
 		Energy = 1,
 		Guard = 2,

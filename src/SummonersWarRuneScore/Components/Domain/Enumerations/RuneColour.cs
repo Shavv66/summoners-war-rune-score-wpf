@@ -1,6 +1,6 @@
 ﻿namespace SummonersWarRuneScore.Components.Domain.Enumerations
 {
-	public enum RuneColour
+	public enum RuneColour : byte
 	{
 		White = 1,
 		Green = 2,

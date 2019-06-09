@@ -2,7 +2,7 @@
 
 namespace SummonersWarRuneScore.Components.Domain.Enumerations
 {
-	public enum RuneStatType
+	public enum RuneStatType : byte
 	{
 		HpFlat = 1,
 		HpPercent = 2,
@@ -43,12 +43,7 @@ namespace SummonersWarRuneScore.Components.Domain.Enumerations
 
 		public static bool IsPercentStat(this RuneStatType runeStatType)
 		{
-			if (runeStatType == RuneStatType.HpFlat || runeStatType == RuneStatType.AtkFlat || runeStatType == RuneStatType.DefFlat || runeStatType == RuneStatType.Spd)
-			{
-				return false;
-			}
-
-			return true;
+            return !(runeStatType == RuneStatType.HpFlat || runeStatType == RuneStatType.AtkFlat || runeStatType == RuneStatType.DefFlat || runeStatType == RuneStatType.Spd);
 		}
 	}
 }

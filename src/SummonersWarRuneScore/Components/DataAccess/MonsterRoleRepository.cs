@@ -3,42 +3,41 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using SummonersWarRuneScore.Components.DataAccess.Domain;
+using SummonersWarRuneScore.Components.DataAccess.Services;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Constants;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.Components.DataAccess
 {
-	public class MonsterRoleRepository : IMonsterRoleRepository
+	public class MonsterRoleRepository : IMonsterRoleRepository, IRepositoryTimestampProvider
 	{
 		private readonly string mFilePath;
-		private List<MonsterRole> mCachedAll;
-		private DateTime mLastCachedTimestamp;
+		private readonly RepositoryCache<MonsterRole> mCache;
 
 		public MonsterRoleRepository() : this(FileConstants.MONSTER_ROLES_PATH) { }
 
 		public MonsterRoleRepository(string filePath)
 		{
 			mFilePath = filePath;
+			mCache = new RepositoryCache<MonsterRole>(this);
 		}
 
 		public List<MonsterRole> GetAll()
 		{
-			try
-			{
-				if (CacheIsValid())
-				{
-					return mCachedAll;
-				}
-
-				mLastCachedTimestamp = File.GetLastWriteTime(mFilePath);
-				string json = File.ReadAllText(mFilePath);
-				return mCachedAll = JsonConvert.DeserializeObject<List<MonsterRole>>(json);
-			}
-			catch(Exception)
+			if (!File.Exists(mFilePath))
 			{
 				return new List<MonsterRole>();
 			}
+
+			if (!mCache.CachedAllIsValid())
+			{
+				string json = File.ReadAllText(mFilePath);
+				mCache.CacheAll(JsonConvert.DeserializeObject<List<MonsterRole>>(json));
+			}
+				
+			return mCache.CachedAll;
 		}
 
 		public List<MonsterRole> GetByRuneSet(RuneSet runeSet)
@@ -95,15 +94,15 @@ namespace SummonersWarRuneScore.Components.DataAccess
 			WriteRoles(allRoles);
 		}
 
+		public DateTime GetResourceLastWriteTime()
+		{
+			return File.GetLastWriteTime(mFilePath);
+		}
+
 		private void WriteRoles(List<MonsterRole> roles)
 		{
 			string json = JsonConvert.SerializeObject(roles);
 			File.WriteAllText(mFilePath, json);
-		}
-
-		private bool CacheIsValid()
-		{
-			return mCachedAll != null && (DateTime.Compare(mLastCachedTimestamp, File.GetLastWriteTime(mFilePath)) == 0);
 		}
 	}
 }

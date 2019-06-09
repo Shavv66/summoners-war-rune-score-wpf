@@ -1,0 +1,46 @@
+[*.cs]
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+dotnet_naming_rule.private_and_protected_fields.severity = suggestion
+dotnet_naming_rule.private_and_protected_fields.symbols = private_and_protected_fields_symbols
+dotnet_naming_rule.private_and_protected_fields.style = private_and_protected_fields_styles
+dotnet_naming_symbols.private_and_protected_fields_symbols.applicable_kinds = field
+dotnet_naming_symbols.private_and_protected_fields_symbols.applicable_accessibilities = private,protected
+dotnet_naming_style.private_and_protected_fields_styles.capitalization = pascal_case
+dotnet_naming_style.private_and_protected_fields_styles.required_prefix = m
+
+dotnet_naming_rule.properties.severity = suggestion
+dotnet_naming_rule.properties.symbols = properties_symbols
+dotnet_naming_rule.properties.style = properties_styles
+dotnet_naming_symbols.properties_symbols.applicable_kinds = properties
+dotnet_naming_symbols.properties_symbols.applicable_accessibilities = *
+dotnet_naming_style.properties_styles.capitalization = pascal_case
+
+dotnet_naming_rule.methods.severity = suggestion
+dotnet_naming_rule.methods.symbols = methods_symbols
+dotnet_naming_rule.methods.style = methods_styles
+dotnet_naming_symbols.methods_symbols.applicable_kinds = methods
+dotnet_naming_symbols.methods_symbols.applicable_accessibilities = *
+dotnet_naming_style.methods_styles.capitalization = pascal_case
+
+dotnet_naming_rule.types.severity = suggestion
+dotnet_naming_rule.types.symbols = types_symbols
+dotnet_naming_rule.types.style = types_styles
+dotnet_naming_symbols.types_symbols.applicable_kinds = class,struct,enum,delegate
+dotnet_naming_symbols.types_symbols.applicable_accessibilities = *
+dotnet_naming_style.types_styles.capitalization = pascal_case
+
+dotnet_naming_rule.interfaces.severity = suggestion
+dotnet_naming_rule.interfaces.symbols = interfaces_symbols
+dotnet_naming_rule.interfaces.style = interfaces_styles
+dotnet_naming_symbols.interfaces_symbols.applicable_kinds = interface
+dotnet_naming_symbols.interfaces_symbols.applicable_accessibilities = *
+dotnet_naming_style.interfaces_styles.capitalization = pascal_case
+dotnet_naming_style.interfaces_styles.required_prefix = I
+
+dotnet_naming_rule.parameters.severity = suggestion
+dotnet_naming_rule.parameters.symbols = parameters_symbols
+dotnet_naming_rule.parameters.style = parameters_styles
+dotnet_naming_symbols.parameters_symbols.applicable_kinds = parameter
+dotnet_naming_symbols.parameters_symbols.applicable_accessibilities = *
+dotnet_naming_style.parameters_styles.capitalization = camel_case

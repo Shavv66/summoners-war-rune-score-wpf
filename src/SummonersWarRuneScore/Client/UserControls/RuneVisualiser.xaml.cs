@@ -15,6 +15,7 @@ namespace SummonersWarRuneScore.Client.UserControls
 	public partial class RuneVisualiser : UserControl
     {
 		private readonly RuneVisualiserDataContext mDataContext;
+
 		public Rune Rune
 		{
 			get { return mDataContext.Rune; }
@@ -26,7 +27,7 @@ namespace SummonersWarRuneScore.Client.UserControls
             InitializeComponent();
 
 			mDataContext = new RuneVisualiserDataContext();
-			(this.Content as FrameworkElement).DataContext = mDataContext;
+			(Content as FrameworkElement).DataContext = mDataContext;
         }
     }
 
