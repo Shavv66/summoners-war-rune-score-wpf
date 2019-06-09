@@ -7,21 +7,21 @@ namespace SummonersWarRuneScore.Components.Domain
 {
 	public class Rune
 	{
-		public long Id { get; private set; }
-		public long SummonerId { get; private set; }
-		public RuneLocation Location { get; private set; }
-		public long MonsterId { get; private set; }
-		public int Slot { get; private set; }
-		public RuneColour Colour { get; private set; }
-		public int Stars { get; private set; }
-		public RuneSet Set { get; private set; }
-		public int MaxLevel { get; private set; }
-		public int Level { get; private set; }
-		public int SellValue { get; private set; }
-		public RuneStat PrimaryStat { get; private set; }
-		public RuneStat PrefixStat { get; private set; }
-		public List<RuneStat> Substats { get; private set; }
-		public RuneQuality Quality { get; private set; }
+		public long Id { get; }
+		public long SummonerId { get; }
+		public RuneLocation Location { get; }
+		public long MonsterId { get; }
+		public byte Slot { get; }
+		public RuneColour Colour { get; }
+		public byte Stars { get; }
+		public RuneSet Set { get; }
+		public byte MaxLevel { get; }
+		public byte Level { get; }
+		public int SellValue { get; }
+		public RuneStat PrimaryStat { get; }
+		public RuneStat PrefixStat { get; }
+		public List<RuneStat> Substats { get; }
+		public RuneQuality Quality { get; }
 
 		//public Rune(int id, int summonerId, RuneLocation location, int monsterId, int slot, RuneColour colour, int stars, RuneSet set, int maxLevel, int level, int sellValue,
 		//	RuneStat primaryStat, RuneStat prefixStat, List<RuneStat> substats, RuneQuality quality)
@@ -44,8 +44,8 @@ namespace SummonersWarRuneScore.Components.Domain
 		//}
 
 		[JsonConstructor]
-		public Rune(long rune_id, long wizard_id, RuneLocation occupied_type, long occupied_id, int slot_no, RuneColour rank, int @class, RuneSet set_id, int upgrade_limit,
-			int upgrade_curr, int sell_value, List<int> pri_eff, List<int> prefix_eff, List<List<int>> sec_eff, RuneQuality extra)
+		public Rune(long rune_id, long wizard_id, RuneLocation occupied_type, long occupied_id, byte slot_no, RuneColour rank, byte @class, RuneSet set_id, byte upgrade_limit, byte upgrade_curr,
+			int sell_value, List<short> pri_eff, List<short> prefix_eff, List<List<short>> sec_eff, RuneQuality extra)
 		{
 			Id = rune_id;
 			SummonerId = wizard_id;

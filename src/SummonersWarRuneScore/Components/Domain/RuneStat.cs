@@ -7,18 +7,18 @@ namespace SummonersWarRuneScore.Components.Domain
 	public class RuneStat : IComparable
 	{
 		public RuneStatType Type { get; private set; }
-		public int Amount { get; private set; }
+		public short Amount { get; private set; }
 
 		public string TypeText => Type.ToDisplayString();
 		public string AmountText => $"+{Amount}{(Type.IsPercentStat() ? "%" : "")}";
 
-		public RuneStat(RuneStatType type, int amount)
+		public RuneStat(RuneStatType type, short amount)
 		{
 			Type = type;
 			Amount = amount;
 		}
 
-		public RuneStat(List<int> statAsIntList) : this((RuneStatType)statAsIntList[0], statAsIntList[1]) { }
+		public RuneStat(List<short> statAsIntList) : this((RuneStatType)statAsIntList[0], statAsIntList[1]) { }
 
 		public int CompareTo(object other)
 		{

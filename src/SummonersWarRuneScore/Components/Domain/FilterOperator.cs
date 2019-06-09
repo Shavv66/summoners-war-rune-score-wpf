@@ -95,11 +95,9 @@ namespace SummonersWarRuneScore.Components.Domain
 
 		private IComparable TryParseComparable(object operand)
 		{
-			IComparable comparable = operand as IComparable;
-
-			if (comparable == null)
+			if (!(operand is IComparable comparable))
 			{
-				throw new ArgumentException($"Filter operator '{this.Type}' cannot be applied to type '{operand.GetType().Name}'");
+				throw new ArgumentException($"Filter operator '{Type}' cannot be applied to type '{operand.GetType().Name}'");
 			}
 
 			return comparable;

@@ -48,6 +48,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -84,6 +88,12 @@
     </ApplicationDefinition>
     <Compile Include="Client\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Client\Converters\RuneColourToBrushConverter.cs" />
+    <Compile Include="Client\Domain\CustomDisplay.cs" />
+    <Compile Include="Client\Domain\Enumerations\View.cs" />
+    <Compile Include="Client\UserControls\NavigationMenuBar\Events\NavigationItemClickedEventArgs.cs" />
+    <Compile Include="Client\UserControls\NavigationMenuBar\NavigationMenuBar.xaml.cs">
+      <DependentUpon>NavigationMenuBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\UserControls\RoleManager\Events\RoleChangedEventArgs.cs" />
     <Compile Include="Client\UserControls\RoleManager\RoleManager.xaml.cs">
       <DependentUpon>RoleManager.xaml</DependentUpon>
@@ -94,6 +104,23 @@
     <Compile Include="Client\UserControls\RuneScoringGrid\RuneScoringGrid.xaml.cs">
       <DependentUpon>RuneScoringGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Client\ViewModels\AboutViewModel.cs" />
+    <Compile Include="Client\ViewModels\Domain\IProfileImportListener.cs" />
+    <Compile Include="Client\ViewModels\RolesViewModel.cs" />
+    <Compile Include="Client\ViewModels\ScoresViewModel.cs" />
+    <Compile Include="Client\Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Views\RolesView.xaml.cs">
+      <DependentUpon>RolesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Views\ScoresView.xaml.cs">
+      <DependentUpon>ScoresView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\DataAccess\Domain\IRepositoryTimestampProvider.cs" />
+    <Compile Include="Components\DataAccess\ISummonerRepository.cs" />
+    <Compile Include="Components\DataAccess\Services\RepositoryCache.cs" />
+    <Compile Include="Components\DataAccess\SummonerRepository.cs" />
     <Compile Include="Components\Domain\Enumerations\FilterLogic.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneFilterProperty.cs" />
     <Compile Include="Components\Domain\FilterOperator.cs" />
@@ -102,6 +129,7 @@
     <Compile Include="Components\Domain\IFilter.cs" />
     <Compile Include="Components\Domain\Enumerations\ScoreType.cs" />
     <Compile Include="Components\Domain\RankedScore.cs" />
+    <Compile Include="Components\Domain\Summoner.cs" />
     <Compile Include="Components\RuneScoring\IRuneScoreCache.cs" />
     <Compile Include="Components\RuneScoring\IScoreRankCache.cs" />
     <Compile Include="Components\RuneScoring\RuneScoreCache.cs" />
@@ -125,7 +153,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Client\Resources\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\Resources\RuneColours.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\UserControls\NavigationMenuBar\NavigationMenuBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,6 +170,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Client\UserControls\RuneScoringGrid\RuneScoringGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Views\RolesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Views\ScoresView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

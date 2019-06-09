@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="SummonersWarRuneScore.Client.Views.ScoresView"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			xmlns:local="clr-namespace:SummonersWarRuneScore.Client.Views"
+			xmlns:converters="clr-namespace:SummonersWarRuneScore.Client.Converters"
+			xmlns:usercontrols="clr-namespace:SummonersWarRuneScore.Client.UserControls"
+			xmlns:runeScoringGrid="clr-namespace:SummonersWarRuneScore.Client.UserControls.RuneScoringGrid"
+			mc:Ignorable="d" 
+			d:DesignHeight="850" d:DesignWidth="1600">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
+				<ResourceDictionary Source="/Client/Resources/ButtonStyles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+
+			<Style x:Key="FilterListBoxItemStyle" TargetType="ListBoxItem">
+				<Setter Property="FontSize" Value="15" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="ListBoxItem">
+							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+								<ContentPresenter Margin="4, 0, 0, 2" HorizontalAlignment="Center" />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsSelected" Value="True">
+									<Setter Property="Background">
+										<Setter.Value>
+											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.25" />
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+								<MultiTrigger>
+									<MultiTrigger.Conditions>
+										<Condition Property="IsSelected" Value="False" />
+										<Condition Property="IsMouseOver" Value="True" />
+									</MultiTrigger.Conditions>
+									<Setter Property="Background">
+										<Setter.Value>
+											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.12" />
+										</Setter.Value>
+									</Setter>
+								</MultiTrigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="171" />
+		</Grid.RowDefinitions>
+
+		<DockPanel>
+			<!--Filters-->
+			<DockPanel DockPanel.Dock="Left" Width="250" Margin="8, 0, 15 , 0">
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="22" Margin="4, 4, 4, 18">Filters</TextBlock>
+				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=CbxSetFilter}" Margin="0, 0, 44, 0" FontSize="14">Set</Label>
+					<ComboBox Name="CbxSetFilter" FontSize="15" SelectionChanged="CbxSetFilter_SelectionChanged" DockPanel.Dock="Right" Height="28" HorizontalContentAlignment="Center" />
+				</DockPanel>
+				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0, 20, 0, 0">
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=CbxLocationFilter}" Margin="0, 0, 11, 0" FontSize="14">Location</Label>
+					<ListBox ItemContainerStyle="{StaticResource FilterListBoxItemStyle}" DockPanel.Dock="Right" SelectionMode="Multiple" Name="CbxLocationFilter" SelectionChanged="CbxLocationFilter_SelectionChanged" />
+				</DockPanel>
+				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0, 20, 0, 0">
+					<Label DockPanel.Dock="Left" Target="{Binding ElementName=CbxSlotFilter}" Margin="0, 0, 40, 0" FontSize="14">Slot</Label>
+					<ListBox ItemContainerStyle="{StaticResource FilterListBoxItemStyle}" DockPanel.Dock="Right" SelectionMode="Multiple" Name="CbxSlotFilter" SelectionChanged="CbxSlotFilter_SelectionChanged" />
+				</DockPanel>
+			</DockPanel>
+
+			<!--Grid-->
+			<runeScoringGrid:RuneScoringGrid x:Name="RuneScoringGrid" SelectionChanged="RuneScoringGrid_SelectionChanged" />
+		</DockPanel>
+
+		<!--Bottom Info Section-->
+		<WrapPanel Grid.Row="1" Background="{StaticResource AlternateSecondaryBackgroundBrush}">
+			<usercontrols:RuneVisualiser
+				x:Name="RuneVisualiser"
+				Visibility="{Binding Path=SelectedRune, Converter={StaticResource NullToVisibilityConverter}}"
+				Grid.RowSpan="2"
+				VerticalAlignment="Bottom" HorizontalAlignment="Left"
+				Margin="2, 0, 0, 1" 
+			/>
+		</WrapPanel>
+	</Grid>
+</UserControl>

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SummonersWarRuneScore.Client.UserControls.RuneScoringGrid.Domain;
+using SummonersWarRuneScore.Client.Domain;
 
 namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 {
@@ -63,11 +64,11 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 		private void AddStaticColumns()
 		{
 			mTable.Columns.Add("Rune ID", typeof(long));
-			mTable.Columns.Add("Location", typeof(string));
-			mTable.Columns.Add("Slot", typeof(int));
-			mTable.Columns.Add("Grade", typeof(int));
 			mTable.Columns.Add("Set", typeof(string));
-			mTable.Columns.Add("Level", typeof(int));
+			mTable.Columns.Add("Slot", typeof(byte));
+			mTable.Columns.Add("Grade", typeof(CustomDisplay<int>));
+			mTable.Columns.Add("Level", typeof(CustomDisplay<int>));
+			mTable.Columns.Add("Location", typeof(string));
 			mTable.Columns.Add("Primary Stat", typeof(RuneStat));
 			//mTable.Columns.Add("In-built Stat", typeof(RuneStat));
 			//mTable.Columns.Add("HP%", typeof(int));
@@ -99,11 +100,11 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 			{
 				DataRow row = mTable.NewRow();
 				row["Rune ID"] = rune.Id;
-				row["Location"] = rune.Location;
-				row["Slot"] = rune.Slot;
-				row["Grade"] = rune.Stars;
 				row["Set"] = rune.Set;
-				row["Level"] = rune.Level;
+				row["Slot"] = rune.Slot;
+				row["Grade"] = new CustomDisplay<int>(rune.Stars, DisplayGrade);
+				row["Level"] = new CustomDisplay<int>(rune.Level, DisplayLevel);
+				row["Location"] = rune.Location;
 				row["Primary Stat"] = rune.PrimaryStat;
 				//row["In-built Stat"] = rune.PrefixStat;
 
@@ -185,7 +186,12 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 			}
 		}
 
-        private void DtGrdRunes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private string DisplayLevel(int level) => $"+{level}";
+
+		private string DisplayGrade(int grade) => $"{grade}\u2605";
+
+
+		private void DtGrdRunes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 			Rune selectedRune = null;
 

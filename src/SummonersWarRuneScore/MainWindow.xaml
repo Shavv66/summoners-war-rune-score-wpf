@@ -3,108 +3,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:SummonersWarRuneScore.Client.Converters"
-        xmlns:usercontrols="clr-namespace:SummonersWarRuneScore.Client.UserControls"
-        xmlns:roleManager="clr-namespace:SummonersWarRuneScore.Client.UserControls.RoleManager"
-		xmlns:runeScoringGrid="clr-namespace:SummonersWarRuneScore.Client.UserControls.RuneScoringGrid"
+		xmlns:navigationMenuBar="clr-namespace:SummonersWarRuneScore.Client.UserControls.NavigationMenuBar"
         mc:Ignorable="d"
-        Title="Summoners War Rune Score" Height="960" Width="1280" Loaded="Window_Loaded">
-
+        Title="Summoners War Rune Score" Height="900" Width="1600" Loaded="Window_Loaded">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
-				<ResourceDictionary Source="/Client/Resources/ButtonStyles.xaml" />
+				<ResourceDictionary Source="/Client/Resources/DataTemplates.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-
-			<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-
-			<!--<SolidColorBrush x:Key="RuneVisualiserBorder" Color=-->
 
 			<Style TargetType="{x:Type Window}">
 				<Setter Property="FontFamily" Value="Gadugi" />
 				<Setter Property="FontWeight" Value="Light" />
-			</Style>
-
-			<Style x:Key="FilterListBoxItemStyle" TargetType="ListBoxItem">
-				<Setter Property="FontSize" Value="15" />
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="ListBoxItem">
-							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-								<ContentPresenter Margin="4, 0, 0, 2" HorizontalAlignment="Center" />
-							</Border>
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsSelected" Value="True">
-									<Setter Property="Background">
-										<Setter.Value>
-											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.25" />
-										</Setter.Value>
-									</Setter>
-								</Trigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="IsSelected" Value="False" />
-										<Condition Property="IsMouseOver" Value="True" />
-									</MultiTrigger.Conditions>
-									<Setter Property="Background">
-										<Setter.Value>
-											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.12" />
-										</Setter.Value>
-									</Setter>
-								</MultiTrigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
 			</Style>
 		</ResourceDictionary>
 	</Window.Resources>
 	
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="50*" />
-			<RowDefinition Height="5" />
-			<RowDefinition Height="50*" />
+			<RowDefinition Height="50" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="50*" />
-				<ColumnDefinition Width="50*" />
-			</Grid.ColumnDefinitions>
+		<navigationMenuBar:NavigationMenuBar x:Name="navigationBar" NavigationItemClicked="NavigationMenuBar_NavigationItemClicked" ImportClicked="navigationBar_ImportClicked" />
 
-			<roleManager:RoleManager x:Name="RoleManager" SelectedRuneSetChanged="RoleManager_OnSelectedRuneSetChanged" RoleChanged="RoleManager_OnRoleChanged" RoleDeleted="RoleManager_OnRoleDeleted" />
-
-			<StackPanel Grid.Column="2" Grid.RowSpan="2">
-				<Button Name="BtnImport" Content="Import Runes" Click="BtnImport_Click" Style="{StaticResource MajorFunctionButtonStyle}" />
-			</StackPanel>
-
-			<usercontrols:RuneVisualiser
-				x:Name="RuneVisualiser"
-				Visibility="{Binding Path=SelectedRune, Converter={StaticResource NullToVisibilityConverter}}"
-				Grid.Column="2" Grid.Row="3" Grid.RowSpan="2"
-				HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Margin="2, 0, 0, 1" 
-			/>
+		<Grid Grid.Row="2">
+			<ContentControl Content="{Binding CurrentView}" />
 		</Grid>
-
-		<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" />
-
-		<DockPanel Grid.Row="2">
-			<DockPanel DockPanel.Dock="Left" Width="250" Margin="5, 0, 10 , 0">
-				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="22" Margin="4, 4, 4, 18">Filters</TextBlock>
-				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
-					<Label DockPanel.Dock="Left" Target="{Binding ElementName=CbxSlotFilter}" Margin="0, 0, 11, 0" FontSize="14">Location</Label>
-					<ListBox ItemContainerStyle="{StaticResource FilterListBoxItemStyle}" DockPanel.Dock="Right" SelectionMode="Multiple" Name="CbxLocationFilter" SelectionChanged="CbxLocationFilter_SelectionChanged" />
-				</DockPanel>
-				<DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0, 20, 0, 0">
-					<Label DockPanel.Dock="Left" Target="{Binding ElementName=CbxSlotFilter}" Margin="0, 0, 40, 0" FontSize="14">Slot</Label>
-					<ListBox ItemContainerStyle="{StaticResource FilterListBoxItemStyle}" DockPanel.Dock="Right" SelectionMode="Multiple" Name="CbxSlotFilter" SelectionChanged="CbxSlotFilter_SelectionChanged" />
-				</DockPanel>
-			</DockPanel>
-
-			<runeScoringGrid:RuneScoringGrid x:Name="RuneScoringGrid" SelectionChanged="RuneScoringGrid_SelectionChanged" />
-        </DockPanel>
 	</Grid>
 </Window>

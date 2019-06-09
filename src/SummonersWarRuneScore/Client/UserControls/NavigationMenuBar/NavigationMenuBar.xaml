@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="SummonersWarRuneScore.Client.UserControls.NavigationMenuBar.NavigationMenuBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SummonersWarRuneScore.Client.UserControls.NavigationMenuBar"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="1600">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<Style x:Key="MenuBarRadioButtonStyle" TargetType="RadioButton">
+				<Setter Property="Background" Value="{StaticResource ThemeStandardBrush}" />
+				<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
+				<Setter Property="FontSize" Value="18" />
+				<Setter Property="BorderThickness" Value="0" />
+				<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="RadioButton">
+							<Border Background="{TemplateBinding Background}">
+								<!--<Border.Effect>
+									<DropShadowEffect Color="#FF72FFE5" ShadowDepth="-0"/>
+								</Border.Effect>-->
+								<!--<TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+								<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
+								</Trigger>
+								<Trigger Property="IsChecked" Value="True">
+									<Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<Style x:Key="MenuBarButtonStyle" TargetType="Button">
+				<Setter Property="Background" Value="{StaticResource ThemeStandardBrush}" />
+				<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
+				<Setter Property="FontSize" Value="18" />
+				<Setter Property="BorderThickness" Value="0" />
+				<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<Border Background="{TemplateBinding Background}">
+								<!--<Border.Effect>
+									<DropShadowEffect Color="#FF72FFE5" ShadowDepth="-0"/>
+								</Border.Effect>-->
+								<!--<TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+								<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<Style x:Key="InfoTextStyle" TargetType="TextBlock">
+				<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
+				<Setter Property="FontSize" Value="14" />
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid Background="{StaticResource ThemeStandardBrush}">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition />
+			<ColumnDefinition Width="200" />
+			<ColumnDefinition Width="100" />
+		</Grid.ColumnDefinitions>
+
+		<!--View switching buttons-->
+		<RadioButton Name="BtnScores" Content="Scores" Style="{StaticResource MenuBarRadioButtonStyle}" Click="ScoresButton_Click" />
+		<RadioButton Name="BtnRoles"  Content="Roles" Grid.Column="1" Style="{StaticResource MenuBarRadioButtonStyle}" Click="RolesButton_Click" />
+		<RadioButton Name="BtnAbout" Content="About" Grid.Column="2" Style="{StaticResource MenuBarRadioButtonStyle}" Click="AboutButton_Click" />
+
+		<!--Info text-->
+		<StackPanel Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
+			<WrapPanel>
+				<TextBlock Text="Summoner: " Style="{StaticResource InfoTextStyle}" />
+				<TextBlock Text="{Binding Path=SummonerName}" Style="{StaticResource InfoTextStyle}" />
+			</WrapPanel>
+			<WrapPanel>
+				<TextBlock Text="Runes: " Style="{StaticResource InfoTextStyle}" />
+				<TextBlock Text="{Binding Path=RuneCount}" Style="{StaticResource InfoTextStyle}" />
+			</WrapPanel>
+		</StackPanel>
+
+		<!--Import button-->
+		<Button Name="BtnImport" Content="Import" Grid.Column="5" Style="{StaticResource MenuBarButtonStyle}" Click="BtnImport_Click" />
+	</Grid>
+</UserControl>

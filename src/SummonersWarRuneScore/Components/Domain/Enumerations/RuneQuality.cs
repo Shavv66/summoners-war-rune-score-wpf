@@ -1,6 +1,6 @@
 ﻿namespace SummonersWarRuneScore.Components.Domain.Enumerations
 {
-	public enum RuneQuality
+	public enum RuneQuality : byte
 	{
 		Unknown = 0,
 		Common = 1,
