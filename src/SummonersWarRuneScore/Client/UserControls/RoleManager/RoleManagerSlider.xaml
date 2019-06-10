@@ -22,7 +22,7 @@
 		</Grid.ColumnDefinitions>
 
 		<Label Content="{Binding LabelText, RelativeSource={RelativeSource FindAncestor, AncestorType=local:RoleManagerSlider}}" Padding="3 2 0 0 " />
-		<Slider Grid.Column="1" Name="HpSlider" Style="{StaticResource Slider}" Value="{Binding Value}" Maximum="50" TickFrequency="1" IsSnapToTickEnabled="True" />
+		<Slider Grid.Column="1" Name="HpSlider" Style="{StaticResource Slider}" Value="{Binding Value}" Maximum="4" TickFrequency="0.05" IsSnapToTickEnabled="True" />
 		<TextBox Grid.Column="2" Text="{Binding ElementName=HpSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" Margin="20 3 0 0" />
 	</Grid>
 </UserControl>

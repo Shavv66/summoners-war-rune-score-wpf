@@ -9,11 +9,12 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
 				<ResourceDictionary Source="/Client/Resources/DataTemplates.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<Style TargetType="{x:Type Window}">
-				<Setter Property="Background" Value="{StaticResource AlternateSecondaryBackgroundBrush}" />
+				<Setter Property="Background" Value="{StaticResource SecondaryBackgroundBrush}" />
 				<Setter Property="FontFamily" Value="Gadugi" />
 				<Setter Property="FontWeight" Value="Light" />
 			</Style>

@@ -23,9 +23,7 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 		private readonly IMonsterRoleRepository mMonsterRoleRepository;
 
 		public ObservableCollection<MonsterRole> MonsterRoles { get; }
-		public RuneSet SelectedRuneSet => (RuneSet)CbxRuneSet.SelectedValue;
 
-		public event EventHandler SelectedRuneSetChanged;
 		public event EventHandler<RoleChangedEventArgs> RoleChanged;
 		public event EventHandler RoleDeleted;
 
@@ -39,27 +37,32 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 			mMonsterRoleRepository = new MonsterRoleRepository();
 
 			MonsterRoles = new ObservableCollection<MonsterRole>();
-			MonsterRoles.CollectionChanged += MonsterRoles_CollectionChanged;
+			List<MonsterRole> monsterRoles = mMonsterRoleRepository.GetAll();
+			foreach (MonsterRole monsterRole in monsterRoles)
+			{
+				MonsterRoles.Add(monsterRole);
+			}
 
-			CbxRuneSet.ItemsSource = Enum.GetValues(typeof(RuneSet));
-			CbxRuneSet.SelectedIndex = 0;
+			UpdateListView();
+			LvMonsterRoles.SelectedIndex = 0;
+
+			MonsterRoles.CollectionChanged += MonsterRoles_CollectionChanged;
+		}
+
+		private void UpdateListView()
+		{
+			LvMonsterRoles.ItemsSource = MonsterRoles.Select(monsterRole => monsterRole.Name);
 		}
 
 		private void MonsterRoles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			LvMonsterRoles.ItemsSource = MonsterRoles.Select(monsterRole => monsterRole.Name);
+			UpdateListView();
 		}
 
 		private void CbxRuneSet_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			MonsterRoles.Clear();
-			List<MonsterRole> monsterRoles = mMonsterRoleRepository.GetByRuneSet((RuneSet)CbxRuneSet.SelectedValue);
-			foreach (MonsterRole monsterRole in monsterRoles)
-			{
-				MonsterRoles.Add(monsterRole);
-			}
-			LvMonsterRoles.SelectedIndex = 0;
-			SelectedRuneSetChanged?.Invoke(this, EventArgs.Empty);
+			
 		}
 
 		private void LvMonsterRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)

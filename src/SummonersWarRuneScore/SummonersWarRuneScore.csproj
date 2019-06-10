@@ -90,6 +90,7 @@
     <Compile Include="Client\Converters\RuneColourToBrushConverter.cs" />
     <Compile Include="Client\Domain\CustomDisplay.cs" />
     <Compile Include="Client\Domain\Enumerations\View.cs" />
+    <Compile Include="Client\Extensions\MultiStyleExtension.cs" />
     <Compile Include="Client\UserControls\NavigationMenuBar\Events\NavigationItemClickedEventArgs.cs" />
     <Compile Include="Client\UserControls\NavigationMenuBar\NavigationMenuBar.xaml.cs">
       <DependentUpon>NavigationMenuBar.xaml</DependentUpon>

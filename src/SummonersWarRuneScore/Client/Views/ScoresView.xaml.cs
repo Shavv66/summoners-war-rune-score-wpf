@@ -19,10 +19,11 @@ namespace SummonersWarRuneScore.Client.Views
 	{
 		private string mAllItem;
 		private bool mChangingListBoxSelection;
+		private bool mInitialised;
 		
 		private List<Rune> mFilteredRunes;
 
-		private ScoresViewModel ViewModel => DataContext as ScoresViewModel;
+		private ScoresViewModel mViewModel;
 
 		public ScoresView()
 		{
@@ -33,9 +34,11 @@ namespace SummonersWarRuneScore.Client.Views
 
 		private void ScoresView_Loaded(object sender, RoutedEventArgs e)
 		{
-			ViewModel.ProfileImported += ProfileImported;
+			mViewModel = DataContext as ScoresViewModel;
+		
+			mViewModel.ProfileImported += ProfileImported;
 
-			ViewModel.UpdateRunes();
+			mViewModel.UpdateRunes();
 
 			CbxSetFilter.ItemsSource = Enum.GetValues(typeof(RuneSet));
 			CbxSetFilter.SelectedIndex = 0;
@@ -47,7 +50,7 @@ namespace SummonersWarRuneScore.Client.Views
 			CbxLocationFilter.ItemsSource = new List<string> { "Inventory", "EquippedOnMonster" };
 			CbxLocationFilter.SelectedItems.Add("Inventory");
 
-			ViewModel.SelectedRune = null;
+			mViewModel.SelectedRune = null;
 
 			FilterAndScoreRunes();
 			var gridData = new RuneScoringGridData
@@ -55,7 +58,8 @@ namespace SummonersWarRuneScore.Client.Views
 				MonsterRoles = GetCurrentMonsterRoles(),
 				Runes = mFilteredRunes
 			};
-			RuneScoringGrid.Initialise(ViewModel.RuneScoreCache, ViewModel.ScoreRankCache, gridData);
+			RuneScoringGrid.Initialise(mViewModel.RuneScoreCache, mViewModel.ScoreRankCache, gridData);
+			mInitialised = true;
 		}
 
 		private void UpdateGrid()
@@ -71,15 +75,15 @@ namespace SummonersWarRuneScore.Client.Views
 
 		private void FilterAndScoreRunes()
 		{
-			mFilteredRunes = ViewModel.RuneFilteringService.FilterRunes(ViewModel.Runes, BuildRuneFilter());
-			List<RuneScoringResult> scores = ViewModel.RuneScoringService.CalculateScores(mFilteredRunes, GetCurrentMonsterRoles());
-			ViewModel.RuneScoreCache.SetScores(scores);
-			ViewModel.ScoreRankCache.SetRanks(ViewModel.ScoreRankingService.CalculateRanks(scores));
+			mFilteredRunes = mViewModel.RuneFilteringService.FilterRunes(mViewModel.Runes, BuildRuneFilter());
+			List<RuneScoringResult> scores = mViewModel.RuneScoringService.CalculateScores(mFilteredRunes, GetCurrentMonsterRoles());
+			mViewModel.RuneScoreCache.SetScores(scores);
+			mViewModel.ScoreRankCache.SetRanks(mViewModel.ScoreRankingService.CalculateRanks(scores));
 		}
 
 		private List<MonsterRole> GetCurrentMonsterRoles()
 		{
-			return ViewModel.MonsterRoleRepository.GetByRuneSet((RuneSet)CbxSetFilter.SelectedValue);
+			return mViewModel.MonsterRoleRepository.GetByRuneSet((RuneSet)CbxSetFilter.SelectedValue);
 		}
 
 		private Filter BuildRuneFilter()
@@ -116,10 +120,7 @@ namespace SummonersWarRuneScore.Client.Views
 
 		private void CbxSlotFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (mChangingListBoxSelection)
-			{
-				return;
-			}
+			if (!mInitialised || mChangingListBoxSelection) return;
 
 			mChangingListBoxSelection = true;
 
@@ -159,17 +160,21 @@ namespace SummonersWarRuneScore.Client.Views
 
 		private void CbxLocationFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			if (!mInitialised) return;
+			
 			UpdateGrid();
 		}
 
 		private void RuneScoringGrid_SelectionChanged(object sender, RuneScoringGridSelectionChangedEventArgs e)
 		{
-			ViewModel.SelectedRune = e.SelectedRune;
+			mViewModel.SelectedRune = e.SelectedRune;
 			RuneVisualiser.Rune = e.SelectedRune;
 		}
 
 		private void CbxSetFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			if (!mInitialised) return;
+
 			UpdateGrid();
 		}
 	}
