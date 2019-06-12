@@ -41,7 +41,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>256 SWRS Icon Upscaled + Smudged + Re-Downscaled + Sized.ico</ApplicationIcon>
+    <ApplicationIcon>SWRS Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -317,15 +317,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="SWRS Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="SWRS Icon Sized.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="SWRS Icon Upscaled + Smudged + Re-Downscaled + Sized.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="256 SWRS Icon Upscaled + Smudged + Re-Downscaled + Sized.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
