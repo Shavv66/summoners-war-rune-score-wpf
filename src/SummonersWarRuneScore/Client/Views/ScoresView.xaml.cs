@@ -1,10 +1,8 @@
-﻿using Microsoft.Win32;
-using SummonersWarRuneScore.Client.UserControls.RuneScoringGrid.Domain;
+﻿using SummonersWarRuneScore.Client.UserControls.RuneScoringGrid.Domain;
 using SummonersWarRuneScore.Client.UserControls.RuneScoringGrid.Events;
 using SummonersWarRuneScore.Client.ViewModels;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
-using SummonersWarRuneScore.Components.ProfileImport;
 using System;
 using System.Collections.Generic;
 using System.Windows;

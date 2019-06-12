@@ -9,7 +9,6 @@ using SummonersWarRuneScore.Client.Dialogs;
 using SummonersWarRuneScore.Client.UserControls.RoleManager.Events;
 using SummonersWarRuneScore.Components.DataAccess;
 using SummonersWarRuneScore.Components.Domain;
-using SummonersWarRuneScore.Components.Domain.Enumerations;
 using Xceed.Wpf.AvalonDock.Controls;
 
 namespace SummonersWarRuneScore.Client.UserControls.RoleManager

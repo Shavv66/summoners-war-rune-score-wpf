@@ -1,11 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using SummonersWarRuneScore.Components.Domain;
-using SummonersWarRuneScore.Components.Domain.Enumerations;
 
 namespace SummonersWarRuneScore.Client.UserControls
 {
