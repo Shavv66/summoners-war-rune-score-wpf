@@ -30,17 +30,17 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\artifacts\Release\SummonersWarRuneScore.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\MonsterRoles.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\SummonersWarRuneScore.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Xceed.Wpf.AvalonDock.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Xceed.Wpf.AvalonDock.Themes.Aero.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Xceed.Wpf.AvalonDock.Themes.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Xceed.Wpf.AvalonDock.Themes.VS2010.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Xceed.Wpf.DataGrid.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\artifacts\Release\Xceed.Wpf.Toolkit.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\artifacts\Release\x64\SummonersWarRuneScore.exe"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\MonsterRoles.json"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\SummonersWarRuneScore.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Xceed.Wpf.AvalonDock.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Xceed.Wpf.AvalonDock.Themes.Aero.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Xceed.Wpf.AvalonDock.Themes.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Xceed.Wpf.AvalonDock.Themes.VS2010.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Xceed.Wpf.DataGrid.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
+Source: "..\artifacts\Release\x64\Xceed.Wpf.Toolkit.dll"; DestDir: "{app}"; Flags: ignoreversion; Permissions: users-full
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -51,3 +51,5 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Dirs]
+Name: {app}; Permissions: users-full
