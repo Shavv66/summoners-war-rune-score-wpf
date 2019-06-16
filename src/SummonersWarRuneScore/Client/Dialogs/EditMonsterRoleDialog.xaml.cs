@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using SummonersWarRuneScore.Components.DataAccess;
 using SummonersWarRuneScore.Components.Domain;
@@ -14,8 +15,8 @@ namespace SummonersWarRuneScore.Client.Dialogs
 	/// </summary>
 	public partial class EditMonsterRoleDialog : Window
 	{
-		private readonly EditMonsterRoleDataContext mDataContext;
-		private readonly List<MonsterRole> mAllMonsterRoles;
+		private EditMonsterRoleDataContext mDataContext;
+		private IReadOnlyList<MonsterRole> mAllMonsterRoles;
 
 		public string RoleName => txtRoleName.Text;
 
@@ -35,7 +36,12 @@ namespace SummonersWarRuneScore.Client.Dialogs
 		{
 			InitializeComponent();
 
-			mAllMonsterRoles = new MonsterRoleRepository().GetAll();
+			Loaded += EditMonsterRoleDialog_Loaded;
+		}
+
+		private async void EditMonsterRoleDialog_Loaded(object sender, RoutedEventArgs e)
+		{
+			Task<List<MonsterRole>> getMonsterRolesTask = new MonsterRoleRepository().GetAllAsync();
 
 			mDataContext = new EditMonsterRoleDataContext();
 			((FrameworkElement)Content).DataContext = mDataContext;
@@ -47,6 +53,7 @@ namespace SummonersWarRuneScore.Client.Dialogs
 			}
 			mDataContext.RuneSetItems = runeSetItems;
 
+			mAllMonsterRoles = await getMonsterRolesTask;
 			cbxRoleToClone.ItemsSource = mAllMonsterRoles;
 		}
 

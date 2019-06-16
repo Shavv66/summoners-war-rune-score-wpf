@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace SummonersWarRuneScore.Components.DataAccess.Services
+namespace SummonersWarRuneScore.Components.DataAccess.Tools
 {
 	public class RepositoryCache<T>
 	{
 		private IRepositoryTimestampProvider mRepositoryTimestampProvider;
-		
 		private DateTime mLastCachedAllTimestamp;
 
 		public List<T> CachedAll { get; private set; }
@@ -25,7 +24,7 @@ namespace SummonersWarRuneScore.Components.DataAccess.Services
 
 		public bool CachedAllIsValid()
 		{
-			return CachedAll != null && (DateTime.Compare(mLastCachedAllTimestamp, mRepositoryTimestampProvider.GetResourceLastWriteTime()) == 0);
+			return CachedAll != null && DateTime.Compare(mLastCachedAllTimestamp, mRepositoryTimestampProvider.GetResourceLastWriteTime()) == 0;
 		}
 	}
 }

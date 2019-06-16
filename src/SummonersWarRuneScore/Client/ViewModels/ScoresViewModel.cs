@@ -6,6 +6,7 @@ using SummonersWarRuneScore.Components.RuneScoring;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace SummonersWarRuneScore.Client.ViewModels
 {
@@ -56,14 +57,14 @@ namespace SummonersWarRuneScore.Client.ViewModels
 			ScoreRankCache = scoreRankCache;
 		}
 
-		public void UpdateRunes()
+		public async Task UpdateRunes()
 		{
-			Runes = RuneRepository.GetAll();
+			Runes = await RuneRepository.GetAllAsync();
 		}
 
-		public void HandleProfileImport()
+		public async void HandleProfileImport()
 		{
-			UpdateRunes();
+			await UpdateRunes();
 			ProfileImported?.Invoke(this, new EventArgs());
 		}
 

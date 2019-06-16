@@ -159,7 +159,9 @@
     </Compile>
     <Compile Include="Components\DataAccess\Domain\IRepositoryTimestampProvider.cs" />
     <Compile Include="Components\DataAccess\ISummonerRepository.cs" />
-    <Compile Include="Components\DataAccess\Services\RepositoryCache.cs" />
+    <Compile Include="Components\DataAccess\Services\AsyncGetAllService.cs" />
+    <Compile Include="Components\DataAccess\Services\IAsyncGetAllService.cs" />
+    <Compile Include="Components\DataAccess\Tools\RepositoryCache.cs" />
     <Compile Include="Components\DataAccess\SummonerRepository.cs" />
     <Compile Include="Components\Domain\Enumerations\FilterLogic.cs" />
     <Compile Include="Components\Domain\Enumerations\RuneFilterProperty.cs" />
@@ -301,6 +303,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Components\DataProvider\" />
     <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <ItemGroup>

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SummonersWarRuneScore.Components.DataAccess.Domain;
 using SummonersWarRuneScore.Components.DataAccess.Services;
+using SummonersWarRuneScore.Components.DataAccess.Tools;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Constants;
 
@@ -14,14 +16,24 @@ namespace SummonersWarRuneScore.Components.DataAccess
 	public class RuneRepository : IRuneRepository, IRepositoryTimestampProvider
 	{
 		private readonly string mFilePath;
+		private readonly IAsyncGetAllService<Rune> mAsyncGetAllService;
 		private readonly RepositoryCache<Rune> mCache;
 
-		public RuneRepository() : this(FileConstants.CURRENT_PROFILE_PATH) { }
+		public RuneRepository() : this(FileConstants.CURRENT_PROFILE_PATH, null)
+		{
+			mAsyncGetAllService = new AsyncGetAllService<Rune>(GetAll);
+		}
 
-		public RuneRepository(string filePath)
+		public RuneRepository(string filePath, IAsyncGetAllService<Rune> asyncGetAllService)
 		{
 			mFilePath = filePath;
+			mAsyncGetAllService = asyncGetAllService;
 			mCache = new RepositoryCache<Rune>(this);
+		}
+
+		public async Task<List<Rune>> GetAllAsync()
+		{
+			return await mAsyncGetAllService.GetTask();
 		}
 
 		public List<Rune> GetAll()
@@ -41,7 +53,7 @@ namespace SummonersWarRuneScore.Components.DataAccess
 				{
 					runes.AddRange(ParseRunesJson(monster["runes"]));
 				}
-				
+
 				mCache.CacheAll(runes);
 			}
 

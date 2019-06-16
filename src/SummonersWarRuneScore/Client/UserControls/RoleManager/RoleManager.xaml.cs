@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using SummonersWarRuneScore.Client.Dialogs;
@@ -18,10 +19,10 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 	/// </summary>
 	public partial class RoleManager : UserControl
 	{
-		private readonly RoleManagerDataContext mDataContext;
-		private readonly IMonsterRoleRepository mMonsterRoleRepository;
+		private RoleManagerDataContext mDataContext;
+		private IMonsterRoleRepository mMonsterRoleRepository;
 
-		public ObservableCollection<MonsterRole> MonsterRoles { get; }
+		public ObservableCollection<MonsterRole> MonsterRoles { get; private set; }
 
 		public event EventHandler<RoleChangedEventArgs> RoleChanged;
 		public event EventHandler RoleDeleted;
@@ -30,13 +31,21 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 		{
 			InitializeComponent();
 
+			Loaded += RoleManager_Loaded;
+		}
+
+		private async void RoleManager_Loaded(object sender, RoutedEventArgs e)
+		{
+			mMonsterRoleRepository = new MonsterRoleRepository();
+			Task<List<MonsterRole>> getMonsterRolesTask = mMonsterRoleRepository.GetAllAsync();
+
 			mDataContext = new RoleManagerDataContext();
 			((FrameworkElement)Content).DataContext = mDataContext;
 
-			mMonsterRoleRepository = new MonsterRoleRepository();
-
 			MonsterRoles = new ObservableCollection<MonsterRole>();
-			List<MonsterRole> monsterRoles = mMonsterRoleRepository.GetAll();
+
+			List<MonsterRole> monsterRoles = await getMonsterRolesTask;
+
 			foreach (MonsterRole monsterRole in monsterRoles)
 			{
 				MonsterRoles.Add(monsterRole);
@@ -61,7 +70,6 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 		private void CbxRuneSet_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			MonsterRoles.Clear();
-			
 		}
 
 		private void LvMonsterRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -92,20 +100,22 @@ namespace SummonersWarRuneScore.Client.UserControls.RoleManager
 			}
 		}
 
-		private void BtnSave_Click(object sender, RoutedEventArgs e)
+		private async void BtnSave_Click(object sender, RoutedEventArgs e)
 		{
 			if (LvMonsterRoles.SelectedIndex < 0) return;
 
-			MonsterRole updatedRole;
 			bool isNew = mDataContext.SelectedMonsterRole.IsNew();
+			Task<MonsterRole> addOrUpdateRoleTask;
 			if (isNew)
 			{
-				updatedRole = mMonsterRoleRepository.Add(mDataContext.SelectedMonsterRole);
+				addOrUpdateRoleTask = mMonsterRoleRepository.AddAsync(mDataContext.SelectedMonsterRole);
 			}
 			else
 			{
-				updatedRole = mMonsterRoleRepository.Update(mDataContext.SelectedMonsterRole);
+				addOrUpdateRoleTask = mMonsterRoleRepository.UpdateAsync(mDataContext.SelectedMonsterRole);
 			}
+
+			MonsterRole updatedRole = await addOrUpdateRoleTask;
 
 			MonsterRoles[LvMonsterRoles.SelectedIndex] = updatedRole;
 			mDataContext.SelectedMonsterRole = updatedRole;

@@ -5,6 +5,7 @@ using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -30,16 +31,16 @@ namespace SummonersWarRuneScore.Client.Views
 			Loaded += ScoresView_Loaded;
 		}
 
-		private void ScoresView_Loaded(object sender, RoutedEventArgs e)
+		private async void ScoresView_Loaded(object sender, RoutedEventArgs e)
 		{
 			mViewModel = DataContext as ScoresViewModel;
-		
-			mViewModel.ProfileImported += ProfileImported;
 
-			mViewModel.UpdateRunes();
+			var updateRunesTask = mViewModel.UpdateRunes();
 
 			CbxSetFilter.ItemsSource = Enum.GetValues(typeof(RuneSet));
 			CbxSetFilter.SelectedIndex = 0;
+
+			var getCurrentMonsterRolesTask = GetCurrentMonsterRoles();
 
 			mAllItem = "<All>";
 			CbxSlotFilter.ItemsSource = new List<string> { mAllItem, "1", "2", "3", "4", "5", "6" };
@@ -50,38 +51,45 @@ namespace SummonersWarRuneScore.Client.Views
 
 			mViewModel.SelectedRune = null;
 
-			FilterAndScoreRunes();
+			List<MonsterRole> monsterRoles = await getCurrentMonsterRolesTask;
+			await updateRunesTask;
+
+			FilterAndScoreRunes(monsterRoles);
 			var gridData = new RuneScoringGridData
 			{
-				MonsterRoles = GetCurrentMonsterRoles(),
+				MonsterRoles = monsterRoles,
 				Runes = mFilteredRunes
 			};
 			RuneScoringGrid.Initialise(mViewModel.RuneScoreCache, mViewModel.ScoreRankCache, gridData);
 			mInitialised = true;
+
+			mViewModel.ProfileImported += ProfileImported;
 		}
 
-		private void UpdateGrid()
+		private async void UpdateGrid()
 		{
-			FilterAndScoreRunes();
+			List<MonsterRole> monsterRoles = await GetCurrentMonsterRoles();
+
+			FilterAndScoreRunes(monsterRoles);
 
 			RuneScoringGrid.Update(new RuneScoringGridData
 			{
-				MonsterRoles = GetCurrentMonsterRoles(),
+				MonsterRoles = monsterRoles,
 				Runes = mFilteredRunes
 			});
 		}
 
-		private void FilterAndScoreRunes()
+		private void FilterAndScoreRunes(List<MonsterRole> monsterRoles)
 		{
 			mFilteredRunes = mViewModel.RuneFilteringService.FilterRunes(mViewModel.Runes, BuildRuneFilter());
-			List<RuneScoringResult> scores = mViewModel.RuneScoringService.CalculateScores(mFilteredRunes, GetCurrentMonsterRoles());
+			List<RuneScoringResult> scores = mViewModel.RuneScoringService.CalculateScores(mFilteredRunes, monsterRoles);
 			mViewModel.RuneScoreCache.SetScores(scores);
 			mViewModel.ScoreRankCache.SetRanks(mViewModel.ScoreRankingService.CalculateRanks(scores));
 		}
 
-		private List<MonsterRole> GetCurrentMonsterRoles()
+		private async Task<List<MonsterRole>> GetCurrentMonsterRoles()
 		{
-			return mViewModel.MonsterRoleRepository.GetByRuneSet((RuneSet)CbxSetFilter.SelectedValue);
+			return await mViewModel.MonsterRoleRepository.GetByRuneSetAsync((RuneSet)CbxSetFilter.SelectedValue);
 		}
 
 		private Filter BuildRuneFilter()

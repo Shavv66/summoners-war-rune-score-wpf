@@ -4,11 +4,16 @@ using SummonersWarRuneScore.Client.UserControls.NavigationMenuBar.Events;
 using SummonersWarRuneScore.Client.ViewModels;
 using SummonersWarRuneScore.Client.ViewModels.Domain;
 using SummonersWarRuneScore.Components.DataAccess;
+using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Filtering;
 using SummonersWarRuneScore.Components.ProfileImport;
 using SummonersWarRuneScore.Components.RuneScoring;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace SummonersWarRuneScore
 {
@@ -32,10 +37,13 @@ namespace SummonersWarRuneScore
 			UpdateNavigationBarInfoText();
 		}
 
-		private void UpdateNavigationBarInfoText()
+		private async void UpdateNavigationBarInfoText()
 		{
-			navigationBar.SummonerName = MainDataContext.SummonerRepository.Get()?.Name;
-			navigationBar.RuneCount = MainDataContext.RuneRepository.GetAll().Count;
+			Task<Summoner> getSummonerTask = MainDataContext.SummonerRepository.GetAsync();
+			Task<List<Rune>> getRunesTask = MainDataContext.RuneRepository.GetAllAsync();
+
+			navigationBar.SummonerName = (await getSummonerTask)?.Name;
+			navigationBar.RuneCount = (await getRunesTask).Count;
 		}
 
 		private void NavigationMenuBar_NavigationItemClicked(object sender, NavigationItemClickedEventArgs e)

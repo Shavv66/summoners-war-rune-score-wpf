@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SummonersWarRuneScore.Components.DataAccess.Domain;
 using SummonersWarRuneScore.Components.DataAccess.Services;
+using SummonersWarRuneScore.Components.DataAccess.Tools;
 using SummonersWarRuneScore.Components.Domain;
 using SummonersWarRuneScore.Components.Domain.Constants;
 using SummonersWarRuneScore.Components.Domain.Enumerations;
@@ -14,17 +17,27 @@ namespace SummonersWarRuneScore.Components.DataAccess
 	public class MonsterRoleRepository : IMonsterRoleRepository, IRepositoryTimestampProvider
 	{
 		private readonly string mFilePath;
+		private readonly IAsyncGetAllService<MonsterRole> mAsyncGetAllService;
 		private readonly RepositoryCache<MonsterRole> mCache;
 
-		public MonsterRoleRepository() : this(FileConstants.MONSTER_ROLES_PATH) { }
+		public MonsterRoleRepository() : this(FileConstants.MONSTER_ROLES_PATH, null)
+		{
+			mAsyncGetAllService = new AsyncGetAllService<MonsterRole>(GetAll);
+		}
 
-		public MonsterRoleRepository(string filePath)
+		public MonsterRoleRepository(string filePath, IAsyncGetAllService<MonsterRole> asyncGetAllService)
 		{
 			mFilePath = filePath;
+			mAsyncGetAllService = asyncGetAllService;
 			mCache = new RepositoryCache<MonsterRole>(this);
 		}
 
-		public List<MonsterRole> GetAll()
+		public async Task<List<MonsterRole>> GetAllAsync()
+		{
+			return await mAsyncGetAllService.GetTask();
+		}
+
+		private List<MonsterRole> GetAll()
 		{
 			if (!File.Exists(mFilePath))
 			{
@@ -36,8 +49,13 @@ namespace SummonersWarRuneScore.Components.DataAccess
 				string json = File.ReadAllText(mFilePath);
 				mCache.CacheAll(JsonConvert.DeserializeObject<List<MonsterRole>>(json));
 			}
-				
+
 			return mCache.CachedAll;
+		}
+
+		public async Task<List<MonsterRole>> GetByRuneSetAsync(RuneSet runeSet)
+		{
+			return await Task.Run(() => GetByRuneSet(runeSet));
 		}
 
 		public List<MonsterRole> GetByRuneSet(RuneSet runeSet)
@@ -45,7 +63,12 @@ namespace SummonersWarRuneScore.Components.DataAccess
 			return GetAll().Where(monsterRole => monsterRole.RuneSets.Contains(runeSet)).ToList();
 		}
 
-		public MonsterRole Add(MonsterRole monsterRole)
+		public async Task<MonsterRole> AddAsync(MonsterRole monsterRole)
+		{
+			return await Task.Run(() => Add(monsterRole));
+		}
+
+		private MonsterRole Add(MonsterRole monsterRole)
 		{
 			List<MonsterRole> allRoles = GetAll();
 			int id = allRoles.Count > 0 ? allRoles.Select(existingMonsterRole => existingMonsterRole.Id).Max() + 1 : 0;
@@ -60,7 +83,12 @@ namespace SummonersWarRuneScore.Components.DataAccess
 			return newRole;
 		}
 
-		public MonsterRole Update(MonsterRole monsterRole)
+		public async Task<MonsterRole> UpdateAsync(MonsterRole monsterRole)
+		{
+			return await Task.Run(() => Update(monsterRole));
+		}
+
+		private MonsterRole Update(MonsterRole monsterRole)
 		{
 			List<MonsterRole> allRoles = GetAll();
 			MonsterRole roleToUpdate = allRoles.Find(existingMonsterRole => existingMonsterRole.Id == monsterRole.Id);
@@ -89,9 +117,15 @@ namespace SummonersWarRuneScore.Components.DataAccess
 
 		public void Delete(int id)
 		{
-			List<MonsterRole> allRoles = GetAll();
-			allRoles.Remove(allRoles.Find(monsterRole => monsterRole.Id == id));
-			WriteRoles(allRoles);
+			Task.Run(() =>
+			{
+				Task<List<MonsterRole>> getAllTask = GetAllAsync();
+				getAllTask.Wait();
+
+				List<MonsterRole> allRoles = getAllTask.Result;
+				allRoles.Remove(allRoles.Find(monsterRole => monsterRole.Id == id));
+				WriteRoles(allRoles);
+			});
 		}
 
 		public DateTime GetResourceLastWriteTime()
