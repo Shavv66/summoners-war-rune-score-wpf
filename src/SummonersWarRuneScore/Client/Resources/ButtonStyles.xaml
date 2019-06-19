@@ -4,36 +4,34 @@
 		<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
+	<ControlTemplate x:Key="ButtonBaseTemplate" TargetType="{x:Type Button}">
+		<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+			<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		</Border>
+
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Background" Value="{StaticResource ThemeStandardBrush}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
 	<Style x:Key="ButtonBase" TargetType="Button">
 		<Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
 		<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="BorderBrush" Value="{StaticResource SecondaryBackgroundBrush}" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type Button}">
-					<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-					</Border>
-
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" Value="{StaticResource ThemeStandardBrush}" />
-						</Trigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
+		<Setter Property="Template" Value="{StaticResource ButtonBaseTemplate}" />
 	</Style>
 
 	<Style x:Key="BottomMajorButtonStyle" TargetType="{x:Type Button}">
-		<Setter Property="Margin" Value="10, 10, 10, 10" />
+		<Setter Property="Margin" Value="10, 10, 0, 10" />
 	</Style>
 
 	<Style x:Key="MajorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
 		<Setter Property="Height" Value="30" />
 		<Setter Property="FontSize" Value="14" />
-		<Setter Property="Margin" Value="5, 5, 5, 5" />
+		<Setter Property="Margin" Value="10, 10, 0, 0" />
 	</Style>
 
 	<Style x:Key="MinorFunctionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="SummonersWarRuneScore.Client.UserControls.PagingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:ex="clr-namespace:SummonersWarRuneScore.Client.Extensions" 
+             xmlns:local="clr-namespace:SummonersWarRuneScore.Client.UserControls"
+			 xmlns:converters="clr-namespace:SummonersWarRuneScore.Client.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="1300">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Client/Resources/ThemeResources.xaml" />
+				<ResourceDictionary Source="/Client/Resources/ButtonStyles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+
+			<Style x:Key="PagingButtonStyle" TargetType="{x:Type Button}" BasedOn="{ex:MultiStyle MajorFunctionButtonStyle BottomMajorButtonStyle}">
+				<Setter Property="Width" Value="40" />
+				<Setter Property="Height" Value="35" />
+				<Style.Triggers>
+					<Trigger Property="IsVisible" Value="False" >
+						<Setter Property="Width" Value="0" />
+						<Setter Property="Margin" Value="0" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition Width="200" />
+		</Grid.ColumnDefinitions>
+
+		<WrapPanel>
+			<Button Name="BtnFirst" Content="&lt;&lt;" Style="{StaticResource PagingButtonStyle}" Click="BtnFirst_Click" />
+			<Button Name="BtnPrev" Content="&lt;" Style="{StaticResource PagingButtonStyle}" Click="BtnPrev_Click" />
+			<Button Name="BtnPage0" Content="{Binding Path=VisiblePageNumbers[0]}" Style="{StaticResource PagingButtonStyle}" Click="NumberButton_Click" Visibility="{Binding Path=VisiblePageNumbers[0], Converter={StaticResource NullToVisibilityConverter}}" />
+			<Button Name="BtnPage1" Content="{Binding Path=VisiblePageNumbers[1]}" Style="{StaticResource PagingButtonStyle}" Click="NumberButton_Click" Visibility="{Binding Path=VisiblePageNumbers[1], Converter={StaticResource NullToVisibilityConverter}}" />
+			<Button Name="BtnPage2" Content="{Binding Path=VisiblePageNumbers[2]}" Style="{StaticResource PagingButtonStyle}" Click="NumberButton_Click" Visibility="{Binding Path=VisiblePageNumbers[2], Converter={StaticResource NullToVisibilityConverter}}" />
+			<Button Name="BtnPage3" Content="{Binding Path=VisiblePageNumbers[3]}" Style="{StaticResource PagingButtonStyle}" Click="NumberButton_Click" Visibility="{Binding Path=VisiblePageNumbers[3], Converter={StaticResource NullToVisibilityConverter}}" />
+			<Button Name="BtnPage4" Content="{Binding Path=VisiblePageNumbers[4]}" Style="{StaticResource PagingButtonStyle}" Click="NumberButton_Click" Visibility="{Binding Path=VisiblePageNumbers[4], Converter={StaticResource NullToVisibilityConverter}}" />
+			<Button Name="BtnNext" Content="&gt;" Style="{StaticResource PagingButtonStyle}" Click="BtnNext_Click" />
+			<Button Name="BtnLast" Content="&gt;&gt;" Style="{StaticResource PagingButtonStyle}" Click="BtnLast_Click" />
+		</WrapPanel>
+	</Grid>
+</UserControl>

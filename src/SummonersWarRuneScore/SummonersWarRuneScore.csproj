@@ -88,6 +88,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -130,6 +131,9 @@
     <Compile Include="Client\UserControls\NavigationMenuBar\Events\NavigationItemClickedEventArgs.cs" />
     <Compile Include="Client\UserControls\NavigationMenuBar\NavigationMenuBar.xaml.cs">
       <DependentUpon>NavigationMenuBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\UserControls\PagingControl.xaml.cs">
+      <DependentUpon>PagingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Client\UserControls\RoleManager\Events\RoleChangedEventArgs.cs" />
     <Compile Include="Client\UserControls\RoleManager\RoleManager.xaml.cs">
@@ -208,6 +212,10 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Client\UserControls\NavigationMenuBar\NavigationMenuBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\UserControls\PagingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

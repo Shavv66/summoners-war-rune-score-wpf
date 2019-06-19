@@ -48,10 +48,14 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 		{
 			if (!mInitialised) return;
 
+			PgCtrlRunes.PageChanged -= PgCtrlRunes_PageChanged;
+
 			SaveSort();
 
 			mMonsterRoles = data.MonsterRoles;
 			mRunes = data.Runes;
+
+			PgCtrlRunes.Update(mRunes.Count);
 
 			mTable = new DataTable();
 
@@ -59,6 +63,8 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 			AddDynamicColumns();
 			PopulateData();
 			RefreshView();
+
+			PgCtrlRunes.PageChanged += PgCtrlRunes_PageChanged;
 		}
 
 		private void AddStaticColumns()
@@ -96,7 +102,7 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 		{
 			mTable.BeginLoadData();
 
-			foreach (Rune rune in mRunes)
+			foreach (Rune rune in mRunes.Skip((PgCtrlRunes.Page - 1) * PgCtrlRunes.PageSize).Take(PgCtrlRunes.PageSize))
 			{
 				DataRow row = mTable.NewRow();
 				row["Rune ID"] = rune.Id;
@@ -190,7 +196,6 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 
 		private string DisplayGrade(int grade) => $"{grade}\u2605";
 
-
 		private void DtGrdRunes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 			Rune selectedRune = null;
@@ -203,5 +208,15 @@ namespace SummonersWarRuneScore.Client.UserControls.RuneScoringGrid
 			
 			SelectionChanged?.Invoke(this, new RuneScoringGridSelectionChangedEventArgs(selectedRune));
 		}
-    }
+
+		private void PgCtrlRunes_PageChanged(object sender, EventArgs e)
+		{
+			SaveSort();
+		
+			mTable.Clear();
+		
+			PopulateData();
+			RefreshView();
+		}
+	}
 }

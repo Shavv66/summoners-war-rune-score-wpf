@@ -18,37 +18,35 @@
 
 			<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
 
+			<ControlTemplate x:Key="FilterListBoxItemTemplate" TargetType="ListBoxItem">
+				<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+					<ContentPresenter Margin="4, 0, 0, 2" HorizontalAlignment="Center" />
+				</Border>
+				<ControlTemplate.Triggers>
+					<Trigger Property="IsSelected" Value="True">
+						<Setter Property="Background">
+							<Setter.Value>
+								<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.25" />
+							</Setter.Value>
+						</Setter>
+					</Trigger>
+					<MultiTrigger>
+						<MultiTrigger.Conditions>
+							<Condition Property="IsSelected" Value="False" />
+							<Condition Property="IsMouseOver" Value="True" />
+						</MultiTrigger.Conditions>
+						<Setter Property="Background">
+							<Setter.Value>
+								<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.12" />
+							</Setter.Value>
+						</Setter>
+					</MultiTrigger>
+				</ControlTemplate.Triggers>
+			</ControlTemplate>
+
 			<Style x:Key="FilterListBoxItemStyle" TargetType="ListBoxItem">
 				<Setter Property="FontSize" Value="15" />
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="ListBoxItem">
-							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-								<ContentPresenter Margin="4, 0, 0, 2" HorizontalAlignment="Center" />
-							</Border>
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsSelected" Value="True">
-									<Setter Property="Background">
-										<Setter.Value>
-											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.25" />
-										</Setter.Value>
-									</Setter>
-								</Trigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="IsSelected" Value="False" />
-										<Condition Property="IsMouseOver" Value="True" />
-									</MultiTrigger.Conditions>
-									<Setter Property="Background">
-										<Setter.Value>
-											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.12" />
-										</Setter.Value>
-									</Setter>
-								</MultiTrigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
+				<Setter Property="Template" Value="{StaticResource FilterListBoxItemTemplate}" />
 			</Style>
 		</ResourceDictionary>
 	</UserControl.Resources>

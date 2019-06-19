@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SummonersWarRuneScore.Client.UserControls.RuneScoringGrid"
+			 xmlns:uc="clr-namespace:SummonersWarRuneScore.Client.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -13,66 +14,59 @@
 			</ResourceDictionary.MergedDictionaries>
 
 			<!-- Styling for the column headers. Copied, modified and documented from https://social.msdn.microsoft.com/Forums/sqlserver/en-US/2c9e160a-d99f-4022-9002-55a1df94c4b0/wpf-how-to-keep-the-sort-arrow-displayed-in-the-sorted-column-in-datagrid?forum=wpf -->
-			<Style x:Key="GridColumnHeaderStyle" 
-			 TargetType="{x:Type DataGridColumnHeader}">
-				<Setter Property="SnapsToDevicePixels" Value="True" />
-				<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
-				<Setter Property="Cursor" Value="Hand" />
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-							<Grid Background="{StaticResource PrimaryBackgroundBrush}">
-								<!-- One column for the title and another for the sort arrow -->
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
+			<ControlTemplate x:Key="GridColumnHeaderTemplate" TargetType="{x:Type DataGridColumnHeader}">
+				<Grid Background="{StaticResource PrimaryBackgroundBrush}">
+					<!-- One column for the title and another for the sort arrow -->
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
 
-								<!-- Top and bottom border for each header -->
-								<!--<Border x:Name="BackgroundBorder" BorderThickness="0,1,0,1" 
+					<!-- Top and bottom border for each header -->
+					<!--<Border x:Name="BackgroundBorder" BorderThickness="0,1,0,1" 
 								  Background="{StaticResource PrimaryBackgroundBrush}" 
 								  BorderBrush="{StaticResource PrimaryFontBrush}" 
 								  Grid.ColumnSpan="2" />-->
 
-								<!-- Title text positioning -->
-								<ContentPresenter Margin="7,3,6,5" VerticalAlignment="Center" />
+					<!-- Title text positioning -->
+					<ContentPresenter Margin="7,3,6,5" VerticalAlignment="Center" />
 
-								<!-- 
+					<!-- 
 									The sort arrow, including the shape, positioning, size.
 									Data is a geometry object defined using a mini-language, see https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/path-markup-syntax
 								-->
-								<Path x:Name="SortArrow" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
+					<Path x:Name="SortArrow" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
 									Grid.Column="1" Width="8" Height="6" Fill="{StaticResource PrimaryFontBrush}" Margin="0,0,8,0" 
 									VerticalAlignment="Center" RenderTransformOrigin="0.5,0.4" 
 								/>
 
-								<!-- Separators between headers -->
-								<!--<Rectangle Width="1" Fill="{StaticResource PrimaryFontBrush}" HorizontalAlignment="Right" Grid.ColumnSpan="2" />-->
+					<!-- Separators between headers -->
+					<!--<Rectangle Width="1" Fill="{StaticResource PrimaryFontBrush}" HorizontalAlignment="Right" Grid.ColumnSpan="2" />-->
 
-								<!-- Other separators between headers? -->
-								<!--<Rectangle Width="1" Margin="0,0,1,0" Fill="#425B10" 
+					<!-- Other separators between headers? -->
+					<!--<Rectangle Width="1" Margin="0,0,1,0" Fill="#425B10" 
 									 HorizontalAlignment="Right" Grid.ColumnSpan="2" />-->
 
-								<!-- Column resize draggers I guess, if the style was defined -->
-								<!--<Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" 
+					<!-- Column resize draggers I guess, if the style was defined -->
+					<!--<Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" 
 								 Style="{StaticResource ColumnHeaderGripperStyle}"/>
 								<Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" 
 								 Style="{StaticResource ColumnHeaderGripperStyle}"/>-->
-							</Grid>
-							<ControlTemplate.Triggers>
-								<Trigger Property="SortDirection" Value="{x:Null}">
-									<!-- Changes the top and bottom border defined above depending on whether a column is being sorted on -->
-									<!--<Setter TargetName="BackgroundBorder" Property="Background" 
+				</Grid>
+				<ControlTemplate.Triggers>
+					<Trigger Property="SortDirection" Value="{x:Null}">
+						<!-- Changes the top and bottom border defined above depending on whether a column is being sorted on -->
+						<!--<Setter TargetName="BackgroundBorder" Property="Background" 
 									  Value="{DynamicResource DataGridHeaderBackgroundBrush}" />
 									<Setter TargetName="BackgroundBorder" Property="BorderBrush"  
 									  Value="Transparent" />-->
 
-									<!-- Hide the sort arrow for columns which aren't being sorted on -->
-									<Setter TargetName="SortArrow" Property="Visibility" Value="Hidden" />
-								</Trigger>
+						<!-- Hide the sort arrow for columns which aren't being sorted on -->
+						<Setter TargetName="SortArrow" Property="Visibility" Value="Hidden" />
+					</Trigger>
 
-								<!-- Hover styling -->
-								<!--<MultiTrigger>
+					<!-- Hover styling -->
+					<!--<MultiTrigger>
 									<MultiTrigger.Conditions>
 										<Condition Property="IsMouseOver" Value="True" />
 										<Condition Property="SortDirection" Value="{x:Null}" />
@@ -93,28 +87,32 @@
 									  Value="{StaticResource DataGridHeaderBorderBrush}" />
 								</MultiTrigger>-->
 
-								<!-- Show the sort arrow when a column is sorted on -->
-								<Trigger Property="SortDirection" Value="Ascending">
-									<Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
-									<Setter TargetName="SortArrow" Property="RenderTransform">
-										<Setter.Value>
-											<RotateTransform Angle="180" />
-										</Setter.Value>
-									</Setter>
-								</Trigger>
-								<Trigger Property="SortDirection" Value="Descending">
-									<Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
-								</Trigger>
+					<!-- Show the sort arrow when a column is sorted on -->
+					<Trigger Property="SortDirection" Value="Ascending">
+						<Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+						<Setter TargetName="SortArrow" Property="RenderTransform">
+							<Setter.Value>
+								<RotateTransform Angle="180" />
+							</Setter.Value>
+						</Setter>
+					</Trigger>
+					<Trigger Property="SortDirection" Value="Descending">
+						<Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+					</Trigger>
 
-								<!-- Not sure what this is -->
-								<!--<Trigger Property="DisplayIndex" Value="0">
+					<!-- Not sure what this is -->
+					<!--<Trigger Property="DisplayIndex" Value="0">
 									<Setter Property="Visibility" Value="Collapsed" 
 									  TargetName="PART_LeftHeaderGripper"></Setter>
 								</Trigger>-->
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
+				</ControlTemplate.Triggers>
+			</ControlTemplate>
+			
+			<Style x:Key="GridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+				<Setter Property="SnapsToDevicePixels" Value="True" />
+				<Setter Property="Foreground" Value="{StaticResource PrimaryFontBrush}" />
+				<Setter Property="Cursor" Value="Hand" />
+				<Setter Property="Template" Value="{StaticResource GridColumnHeaderTemplate}" />
 			</Style>
 
 			<!--<Style x:Key="GridRowStyle" TargetType="{x:Type DataGridRow}">
@@ -124,43 +122,49 @@
 				<Setter Property="IsHitTestVisible" Value="False" />
 			</Style>-->
 
-			<Style x:Key="GridCellStyle" TargetType="{x:Type DataGridCell}">
-				<!-- Position text inside cells (vertical centering, left and right margin for padding) -->
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type DataGridCell}">
-							<Grid Background="{TemplateBinding Background}">
-								<ContentPresenter VerticalAlignment="Center" Margin="4, 0, 4, 0" />
-							</Grid>
+			<SolidColorBrush x:Key="GridCellBackgroundBrush" Color="{StaticResource ThemeColour}" Opacity="0.75" />
 
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsSelected" Value="True">
-									<Setter Property="Background">
-										<Setter.Value>
-											<SolidColorBrush Color="{StaticResource ThemeColour}" Opacity="0.75" />
-										</Setter.Value>
-									</Setter>
-								</Trigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
+			<ControlTemplate x:Key="GridCellTemplate" TargetType="{x:Type DataGridCell}">
+				<!-- Position text inside cells (vertical centering, left and right margin for padding) -->
+				<Grid Background="{TemplateBinding Background}">
+					<ContentPresenter VerticalAlignment="Center" Margin="4, 0, 4, 0" />
+				</Grid>
+
+				<ControlTemplate.Triggers>
+					<Trigger Property="IsSelected" Value="True">
+						<Setter Property="Background" Value="{StaticResource GridCellBackgroundBrush}" />
+					</Trigger>
+				</ControlTemplate.Triggers>
+			</ControlTemplate>
+
+			<Style x:Key="GridCellStyle" TargetType="{x:Type DataGridCell}">
+				<Setter Property="Template" Value="{StaticResource GridCellTemplate}" />
 			</Style>
 		</ResourceDictionary>
 	</UserControl.Resources>
 
-	<DataGrid
-		Name="DtGrdRunes"
-		IsReadOnly="True"
-		ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}"
-		CellStyle="{StaticResource GridCellStyle}"
-		FontSize="16"
-		Background="{x:Null}"
-		ColumnHeaderHeight="45" RowHeight="32"
-		CanUserResizeColumns="False" CanUserReorderColumns="False"
-		BorderThickness="0" RowHeaderWidth="0"
-		GridLinesVisibility="Vertical" VerticalGridLinesBrush="{StaticResource AlternateSecondaryBackgroundBrush}"
-		AlternatingRowBackground="{StaticResource SecondaryBackgroundBrush}"
-		SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="DtGrdRunes_SelectionChanged"
-	/>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="55" />
+		</Grid.RowDefinitions>
+
+		<DataGrid
+			Name="DtGrdRunes"
+			IsReadOnly="True"
+			ColumnHeaderStyle="{StaticResource GridColumnHeaderStyle}"
+			CellStyle="{StaticResource GridCellStyle}"
+			EnableRowVirtualization="True"
+			FontSize="16"
+			Background="{x:Null}"
+			ColumnHeaderHeight="45" RowHeight="32"
+			CanUserResizeColumns="False" CanUserReorderColumns="False"
+			BorderThickness="0" RowHeaderWidth="0"
+			GridLinesVisibility="Vertical" VerticalGridLinesBrush="{StaticResource AlternateSecondaryBackgroundBrush}"
+			AlternatingRowBackground="{StaticResource SecondaryBackgroundBrush}"
+			SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="DtGrdRunes_SelectionChanged"
+		/>
+
+		<uc:PagingControl x:Name="PgCtrlRunes" Grid.Row="1" />
+	</Grid>
 </UserControl>
